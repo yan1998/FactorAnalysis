@@ -1,10 +1,13 @@
-﻿using System;
+﻿using DataAccess.Model;
+using System;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository.Abstraction
 {
     public interface IExchangeRateFactorsRepository
     {
+        Task<ExchangeRateFactors> GetExchangeRateFactorsByDate(DateTime date);
+
         #region SeedData
 
         Task AddOrUpdateExchangeRateUSD(DateTime date, decimal exchangeRateUSD);

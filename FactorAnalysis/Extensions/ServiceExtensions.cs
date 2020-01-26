@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using DataAccess.Repository.Abstraction;
+using DataAccess.Repository.Implementation;
+using BusinessLogic.Service.Abstraction;
+using BusinessLogic.Service.Implementation;
 
 namespace FactorAnalysis.Extensions
 {
@@ -12,8 +16,12 @@ namespace FactorAnalysis.Extensions
             var connectionString = config["ConnectionStrings:SqlConnectionString"];
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString));
 
-            // services.AddScoped<ICallsRepository, CallsRepository>();
+            services.AddScoped<IExchangeRateFactorsRepository, ExchangeRateFactorsRepository>();
         }
 
+        public static void ConfigureServices(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddScoped<ISeedExchangeRateFactorsService, SeedExchangeRateFactorsService>();
+        }
     }
 }

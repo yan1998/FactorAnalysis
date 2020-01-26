@@ -1,4 +1,6 @@
-﻿using DataAccess.Repository.Abstraction;
+﻿using DataAccess.Model;
+using DataAccess.Repository.Abstraction;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -6,44 +8,130 @@ namespace DataAccess.Repository.Implementation
 {
     public class ExchangeRateFactorsRepository : IExchangeRateFactorsRepository
     {
+        public readonly DatabaseContext _context;
+
+        public ExchangeRateFactorsRepository(DatabaseContext context)
+        {
+            _context = context;
+        }
+
+        public Task<ExchangeRateFactors> GetExchangeRateFactorsByDate(DateTime date)
+        {
+            return _context.ExchangeRateFactors.AsNoTracking().FirstOrDefaultAsync(erf => erf.Date.Date == date.Date);
+        }
 
         #region SeedData
 
-        public Task AddOrUpdateCreditRate(DateTime date, double creditRate)
+        public async Task AddOrUpdateCreditRate(DateTime date, double creditRate)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.CreditRate = creditRate;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateExchangeRateEUR(DateTime date, decimal exchangeRateEUR)
+        public async Task AddOrUpdateExchangeRateEUR(DateTime date, decimal exchangeRateEUR)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.ExchangeRateEUR = exchangeRateEUR;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateExchangeRateUSD(DateTime date, decimal exchangeRateUSD)
+        public async Task AddOrUpdateExchangeRateUSD(DateTime date, decimal exchangeRateUSD)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.ExchangeRateUSD = exchangeRateUSD;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateExportIndicator(DateTime date, double exportIndicator)
+        public async Task AddOrUpdateExportIndicator(DateTime date, double exportIndicator)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.ExportIndicator = exportIndicator;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateGDPIndicator(DateTime date, long gdpIndicator)
+        public async Task AddOrUpdateGDPIndicator(DateTime date, long gdpIndicator)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.GDPIndicator = gdpIndicator;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateImportIndicator(DateTime date, double importIndicator)
+        public async Task AddOrUpdateImportIndicator(DateTime date, double importIndicator)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.ImportIndicator = importIndicator;
+            await _context.SaveChangesAsync();
         }
 
-        public Task AddOrUpdateInflationIndex(DateTime date, double inflationIndex)
+        public async Task AddOrUpdateInflationIndex(DateTime date, double inflationIndex)
         {
-            throw new NotImplementedException();
+            var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
+
+            if (exchangeRateFactors == null)
+            {
+                exchangeRateFactors = new ExchangeRateFactors
+                {
+                    Date = date.Date
+                };
+            }
+            exchangeRateFactors.InflationIndex = inflationIndex;
+            await _context.SaveChangesAsync();
         }
 
         #endregion
+
+        private Task<ExchangeRateFactors> GetExchangeRateFactorsByDateInternal(DateTime date)
+        {
+            return _context.ExchangeRateFactors.FirstOrDefaultAsync(erf => erf.Date.Date == date.Date);
+        }
     }
 }

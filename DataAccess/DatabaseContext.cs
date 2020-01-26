@@ -21,8 +21,8 @@ namespace DataAccess
             modelBuilder.Entity<ExchangeRateFactors>()
                 .HasKey(x => x.Id);
             modelBuilder.Entity<ExchangeRateFactors>()
-                .HasIndex(x => x.Date);
-
+                .HasIndex(x => x.Date)
+                .IsUnique();
         }
     }
 }
