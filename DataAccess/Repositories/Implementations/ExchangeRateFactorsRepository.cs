@@ -1,10 +1,10 @@
 ﻿using DataAccess.Model;
-using DataAccess.Repository.Abstraction;
+using DataAccess.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repository.Implementation
+namespace DataAccess.Repositories.Implementations
 {
     public class ExchangeRateFactorsRepository : IExchangeRateFactorsRepository
     {
@@ -32,6 +32,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.CreditRate = creditRate;
             await _context.SaveChangesAsync();
@@ -47,6 +48,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.ExchangeRateEUR = exchangeRateEUR;
             await _context.SaveChangesAsync();
@@ -62,6 +64,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.ExchangeRateUSD = exchangeRateUSD;
             await _context.SaveChangesAsync();
@@ -77,6 +80,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.ExportIndicator = exportIndicator;
             await _context.SaveChangesAsync();
@@ -92,6 +96,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.GDPIndicator = gdpIndicator;
             await _context.SaveChangesAsync();
@@ -107,6 +112,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.ImportIndicator = importIndicator;
             await _context.SaveChangesAsync();
@@ -122,6 +128,7 @@ namespace DataAccess.Repository.Implementation
                 {
                     Date = date.Date
                 };
+                _context.ExchangeRateFactors.Add(exchangeRateFactors);
             }
             exchangeRateFactors.InflationIndex = inflationIndex;
             await _context.SaveChangesAsync();

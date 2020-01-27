@@ -23,6 +23,12 @@ namespace DataAccess
             modelBuilder.Entity<ExchangeRateFactors>()
                 .HasIndex(x => x.Date)
                 .IsUnique();
+            modelBuilder.Entity<ExchangeRateFactors>()
+                .Property(p => p.ExchangeRateEUR)
+                .HasColumnType("Money");
+            modelBuilder.Entity<ExchangeRateFactors>()
+                 .Property(p => p.ExchangeRateUSD)
+                 .HasColumnType("Money");
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repository.Abstraction
+namespace DataAccess.Repositories.Abstractions
 {
     public interface IExchangeRateFactorsRepository
     {

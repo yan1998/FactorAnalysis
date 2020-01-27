@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using DataAccess.Repository.Abstraction;
-using DataAccess.Repository.Implementation;
-using BusinessLogic.Service.Abstraction;
-using BusinessLogic.Service.Implementation;
+using DataAccess.Repositories.Abstractions;
+using DataAccess.Repositories.Implementations;
+using BusinessLogic.Services.Abstractions;
+using BusinessLogic.Services.Implementations;
 
 namespace FactorAnalysis.Extensions
 {

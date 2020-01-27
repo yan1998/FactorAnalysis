@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FactorAnalysis</name>
+    </assembly>
+    <members>
+        <member name="T:FactorAnalysis.Controllers.SeedExchangeRateFactorsController">
+            <summary>
+            Controller for Seed data to ExchangeRateFactors table
+            </summary>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExchangeRateEUR(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed ExchangeRateEUR field to Database
+            SeedData/ExchangeRateEUR.csv
+            </summary> 
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExchangeRateUSD(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed ExchangeRateUSD field to Database
+            SeedData/ExchangeRateUSD.csv
+            </summary> 
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedCreditRate(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed CreditRate field to Database
+            SeedData/CreditRate.csv
+            </summary> 
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExportIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed ExportIndicator field to Database
+            SeedData/ExportIndicator.csv
+            </summary> 
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedImportIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed ImportIndicator field to Database
+            SeedData/ImportIndicator.csv
+            </summary> 
+        </member>
+    </members>
+</doc>
