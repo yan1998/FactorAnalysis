@@ -4,6 +4,16 @@
         <name>FactorAnalysis</name>
     </assembly>
     <members>
+        <member name="T:FactorAnalysis.Controllers.ExchangeRateFactorsController">
+            <summary>
+            Controller for interact with ExchangeRateFactors
+            </summary>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.GetExchangeRateFactorsRange(System.DateTime,System.DateTime)">
+            <summary>
+            Get ExchangeRateFactors for date range
+            </summary> 
+        </member>
         <member name="T:FactorAnalysis.Controllers.SeedExchangeRateFactorsController">
             <summary>
             Controller for Seed data to ExchangeRateFactors table

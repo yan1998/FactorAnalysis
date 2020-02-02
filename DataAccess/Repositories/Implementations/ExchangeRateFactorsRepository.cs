@@ -2,6 +2,8 @@
 using DataAccess.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repositories.Implementations
@@ -18,6 +20,11 @@ namespace DataAccess.Repositories.Implementations
         public Task<ExchangeRateFactors> GetExchangeRateFactorsByDate(DateTime date)
         {
             return _context.ExchangeRateFactors.AsNoTracking().FirstOrDefaultAsync(erf => erf.Date.Date == date.Date);
+        }
+
+        public Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
+        {
+            return _context.ExchangeRateFactors.AsNoTracking().Where(erf => erf.Date >= dateFrom && erf.Date <= dateTo).ToListAsync();
         }
 
         #region SeedData

@@ -22,6 +22,7 @@ namespace FactorAnalysis.Extensions
         public static void ConfigureServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddScoped<ISeedExchangeRateFactorsService, SeedExchangeRateFactorsService>();
+            services.AddScoped<IExchangeRateFactorsService, ExchangeRateFactorsService>();
         }
     }
 }
