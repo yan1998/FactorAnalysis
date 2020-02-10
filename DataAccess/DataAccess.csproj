@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FactorAnalysisML.Model\FactorAnalysisML.Model.csproj" />
+  </ItemGroup>
+
 </Project>
