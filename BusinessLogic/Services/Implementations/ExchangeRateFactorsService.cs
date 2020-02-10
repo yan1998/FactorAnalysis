@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FactorAnalysisML.Model;
 
 namespace BusinessLogic.Services.Implementations
 {
@@ -36,6 +37,20 @@ namespace BusinessLogic.Services.Implementations
                 ImportIndicator = x.ImportIndicator,
                 InflationIndex = x.InflationIndex
             }).ToList();
+        }
+
+        public float PredicateUSDCurrencyExchange(ExchangeRateFactors factors)
+        {
+            ModelInput input = new ModelInput
+            {
+                CreditRate = (float)factors.CreditRate,
+                GDPIndicator = factors.GDPIndicator,
+                ExportIndicator = (float)factors.ExportIndicator,
+                ImportIndicator = (float)factors.ImportIndicator,
+                InflationIndex = (float)factors.InflationIndex
+            };
+
+            return ConsumeModel.Predict(input).Score;
         }
     }
 }

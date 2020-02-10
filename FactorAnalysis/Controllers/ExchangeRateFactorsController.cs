@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using BusinessLogic.Models;
 using BusinessLogic.Services.Abstractions;
+using FactorAnalysis.Model.Requests;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -32,6 +33,23 @@ namespace FactorAnalysis.Controllers
         public async Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
         {
             return await _exchangeRateFactorsService.GetExchangeRateFactorsRange(dateFrom, dateTo);
+        }
+
+        /// <summary>
+        /// Get Currency Exchange prediction result for USD
+        /// </summary> 
+        [HttpGet("GetUSDCurrencyExchangePrediction/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
+        public float GetUSDCurrencyExchangePrediction([FromRoute]CurrencyExchangePredictionRequest request)
+        {
+            ExchangeRateFactors factors = new ExchangeRateFactors
+            {
+                CreditRate = request.CreditRate,
+                InflationIndex = request.InflationIndex,
+                ImportIndicator = request.ImportIndicator,
+                ExportIndicator = request.ExportIndicator,
+                GDPIndicator = request.GDPIndicator
+            };
+            return _exchangeRateFactorsService.PredicateUSDCurrencyExchange(factors);
         }
     }
 }
