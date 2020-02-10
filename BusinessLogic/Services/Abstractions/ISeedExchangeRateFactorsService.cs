@@ -11,12 +11,12 @@ namespace BusinessLogic.Services.Abstractions
 
         Task FillCreditRate(string filePath);
 
-        Task FillGDPIndicator(DateTime date, long gdpIndicator);
+        Task FillGDPIndicator(string filePath);
 
         Task FillImportIndicator(string filePath);
 
         Task FillExportIndicator(string filePath);
 
-        Task FillInflationIndex(DateTime date, double inflationIndex);
+        Task FillInflationIndex(string filePath);
     }
 }

@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -11,9 +11,13 @@ import { ExchangeRateFactorsDiagramComponent } from './exchange-rate-factors-dia
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
 import { ExchangeRateFactorsService } from './services/exchange-rate-factors.service';
-import { MatSelectModule, MatInputModule, MatDatepickerModule } from '@angular/material';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import {MatButtonModule} from '@angular/material/button';
+
 
 @NgModule({
   declarations: [
@@ -27,6 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     ChartsModule,
     MatInputModule,
@@ -34,6 +39,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
+    MatButtonModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
@@ -41,8 +47,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ])
   ],
   providers: [
-    ExchangeRateFactorsService,
-    MatDatepickerModule
+    ExchangeRateFactorsService
   ],
   bootstrap: [AppComponent]
 })

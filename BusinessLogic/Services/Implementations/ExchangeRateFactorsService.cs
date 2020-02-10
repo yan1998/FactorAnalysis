@@ -23,7 +23,7 @@ namespace BusinessLogic.Services.Implementations
                 throw new Exception("DateTo cannot be less than dateFrom!");
 
             var exchangeRateFactors = await _exchangeRateFactorsRepository.GetExchangeRateFactorsRange(dateFrom, dateTo);
-            //Should be refactores with AutoMapper
+            //Should be refactored with AutoMapper
             return exchangeRateFactors.Select(x => new ExchangeRateFactors
             {
                 CreditRate = x.CreditRate,

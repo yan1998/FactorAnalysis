@@ -49,5 +49,17 @@
             SeedData/ImportIndicator.csv
             </summary> 
         </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedGDPIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed GDPIndicator field to Database
+            SeedData/GDPIndicator.csv
+            </summary> 
+        </member>
+        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedInflationIndex(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
+            <summary>
+            Seed InflationIndex field to Database
+            SeedData/InflationIndex.csv
+            </summary> 
+        </member>
     </members>
 </doc>
