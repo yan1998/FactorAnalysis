@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ExchangeRateFactors } from '../models/exchange-rate-factors';
 import { CurrencyExchangePredicationRequest } from '../models/currency-exchange-predication-request';
 
