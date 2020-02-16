@@ -23,7 +23,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileDataRange<double>>().Where(x => x.DateFrom.Year >= 2000);
+                var records = csvReader.GetRecords<SeedFileDataRange<float>>().Where(x => x.DateFrom.Year >= 2000);
                 foreach (var record in records)
                 {
                     var tempDate = record.DateFrom;
@@ -67,7 +67,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileData<double>>();
+                var records = csvReader.GetRecords<SeedFileData<float>>();
                 foreach (var record in records)
                 {
                     var dateFrom = record.Date;
@@ -104,7 +104,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileData<double>>();
+                var records = csvReader.GetRecords<SeedFileData<float>>();
                 foreach (var record in records)
                 {
                     var dateFrom = record.Date;
@@ -123,7 +123,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileData<double>>();
+                var records = csvReader.GetRecords<SeedFileData<float>>();
                 foreach (var record in records)
                 {
                     var dateFrom = record.Date;

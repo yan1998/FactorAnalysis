@@ -17,15 +17,15 @@ namespace DataAccess.Repositories.Abstractions
 
         Task AddOrUpdateExchangeRateEUR(DateTime date, decimal exchangeRateEUR);
 
-        Task AddOrUpdateCreditRate(DateTime date, double creditRate);
+        Task AddOrUpdateCreditRate(DateTime date, float creditRate);
 
         Task AddOrUpdateGDPIndicator(DateTime date, long gdpIndicator);
 
-        Task AddOrUpdateImportIndicator(DateTime date, double importIndicator);
+        Task AddOrUpdateImportIndicator(DateTime date, float importIndicator);
 
-        Task AddOrUpdateExportIndicator(DateTime date, double exportIndicator);
+        Task AddOrUpdateExportIndicator(DateTime date, float exportIndicator);
 
-        Task AddOrUpdateInflationIndex(DateTime date, double inflationIndex);
+        Task AddOrUpdateInflationIndex(DateTime date, float inflationIndex);
 
         #endregion
     }

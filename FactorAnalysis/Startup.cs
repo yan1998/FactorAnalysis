@@ -1,3 +1,5 @@
+using AutoMapper;
+using BusinessLogic.Mappers;
 using DataAccess;
 using FactorAnalysis.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System;
 using System.IO;
+using System.Reflection;
 
 namespace FactorAnalysis
 {
@@ -26,7 +30,14 @@ namespace FactorAnalysis
         {
             services.AddControllersWithViews();
             services.ConfigureSqlContext(this.Configuration);
-            services.ConfigureServices(this.Configuration);
+            services.ConfigureServices();
+            services.AddAutoMapper(
+                (mapperConfigurationExpression) => {
+                    mapperConfigurationExpression.AddContractMappings();
+                    mapperConfigurationExpression.AddDataModelMappings();
+                },
+                Array.Empty<Assembly>(),
+                ServiceLifetime.Scoped);
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -44,8 +55,10 @@ namespace FactorAnalysis
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMapper mapper)
         {
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();

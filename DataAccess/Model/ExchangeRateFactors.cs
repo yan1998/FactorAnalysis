@@ -19,18 +19,18 @@ namespace DataAccess.Model
         public decimal ExchangeRateEUR { get; set; }
 
         // Учетная (кредитная) ставка
-        public double CreditRate { get; set; }
+        public float CreditRate { get; set; }
 
         // Показатель ВВП
         public long GDPIndicator { get; set; }
 
         // Показатель импорта товаров
-        public double ImportIndicator { get; set; }
+        public float ImportIndicator { get; set; }
 
         // Показатель экспорта товаров
-        public double ExportIndicator { get; set; }
+        public float ExportIndicator { get; set; }
 
         // Индекс инфляции (індекс споживчих цін)
-        public double InflationIndex { get; set; }
+        public float InflationIndex { get; set; }
     }
 }

@@ -6,16 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FactorAnalysisML.Model;
+using AutoMapper;
 
 namespace BusinessLogic.Services.Implementations
 {
     public class ExchangeRateFactorsService : IExchangeRateFactorsService
     {
         private readonly IExchangeRateFactorsRepository _exchangeRateFactorsRepository;
+        private readonly IMapper _mapper;
 
-        public ExchangeRateFactorsService(IExchangeRateFactorsRepository exchangeRateFactorsRepository)
+        public ExchangeRateFactorsService(IExchangeRateFactorsRepository exchangeRateFactorsRepository,
+            IMapper mapper)
         {
             _exchangeRateFactorsRepository = exchangeRateFactorsRepository;
+            _mapper = mapper;
         }
 
         public async Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
@@ -24,30 +28,18 @@ namespace BusinessLogic.Services.Implementations
                 throw new Exception("DateTo cannot be less than dateFrom!");
 
             var exchangeRateFactors = await _exchangeRateFactorsRepository.GetExchangeRateFactorsRange(dateFrom, dateTo);
-            //Should be refactored with AutoMapper
-            return exchangeRateFactors.Select(x => new ExchangeRateFactors
-            {
-                CreditRate = x.CreditRate,
-                Date = x.Date,
-                ExchangeRateEUR = x.ExchangeRateEUR,
-                ExchangeRateUSD = x.ExchangeRateUSD,
-                ExportIndicator = x.ExportIndicator,
-                GDPIndicator = x.GDPIndicator,
-                Id = x.Id,
-                ImportIndicator = x.ImportIndicator,
-                InflationIndex = x.InflationIndex
-            }).ToList();
+            return _mapper.Map<List<ExchangeRateFactors>>(exchangeRateFactors);
         }
 
         public float PredicateUSDCurrencyExchange(ExchangeRateFactors factors)
         {
             ModelInput input = new ModelInput
             {
-                CreditRate = (float)factors.CreditRate,
+                CreditRate = factors.CreditRate,
                 GDPIndicator = factors.GDPIndicator,
-                ExportIndicator = (float)factors.ExportIndicator,
-                ImportIndicator = (float)factors.ImportIndicator,
-                InflationIndex = (float)factors.InflationIndex
+                ExportIndicator = factors.ExportIndicator,
+                ImportIndicator = factors.ImportIndicator,
+                InflationIndex = factors.InflationIndex
             };
 
             return ConsumeModel.Predict(input).Score;

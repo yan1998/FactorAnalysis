@@ -6,6 +6,8 @@ using DataAccess.Repositories.Abstractions;
 using DataAccess.Repositories.Implementations;
 using BusinessLogic.Services.Abstractions;
 using BusinessLogic.Services.Implementations;
+using AutoMapper;
+using FactorAnalysis.Mappers;
 
 namespace FactorAnalysis.Extensions
 {
@@ -19,10 +21,15 @@ namespace FactorAnalysis.Extensions
             services.AddScoped<IExchangeRateFactorsRepository, ExchangeRateFactorsRepository>();
         }
 
-        public static void ConfigureServices(this IServiceCollection services, IConfiguration config)
+        public static void ConfigureServices(this IServiceCollection services)
         {
             services.AddScoped<ISeedExchangeRateFactorsService, SeedExchangeRateFactorsService>();
             services.AddScoped<IExchangeRateFactorsService, ExchangeRateFactorsService>();
+        }
+
+        public static void AddContractMappings(this IMapperConfigurationExpression mapperConfigurationExpression)
+        {
+            mapperConfigurationExpression.AddProfile<ContractToBusinnessProfile>();
         }
     }
 }

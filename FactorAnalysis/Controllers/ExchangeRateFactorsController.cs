@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLogic.Models;
 using BusinessLogic.Services.Abstractions;
 using FactorAnalysis.Model.Requests;
@@ -18,12 +19,15 @@ namespace FactorAnalysis.Controllers
     {
         private readonly ILogger<ExchangeRateFactorsController> _logger;
         private readonly IExchangeRateFactorsService _exchangeRateFactorsService;
+        private readonly IMapper _mapper;
 
         public ExchangeRateFactorsController(ILogger<ExchangeRateFactorsController> logger,
-            IExchangeRateFactorsService exchangeRateFactorsService)
+            IExchangeRateFactorsService exchangeRateFactorsService,
+            IMapper mapper)
         {
             _logger = logger;
             _exchangeRateFactorsService = exchangeRateFactorsService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -41,14 +45,7 @@ namespace FactorAnalysis.Controllers
         [HttpGet("GetUSDCurrencyExchangePrediction/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
         public float GetUSDCurrencyExchangePrediction([FromRoute]CurrencyExchangePredictionRequest request)
         {
-            ExchangeRateFactors factors = new ExchangeRateFactors
-            {
-                CreditRate = request.CreditRate,
-                InflationIndex = request.InflationIndex,
-                ImportIndicator = request.ImportIndicator,
-                ExportIndicator = request.ExportIndicator,
-                GDPIndicator = request.GDPIndicator
-            };
+            var factors = _mapper.Map<ExchangeRateFactors>(request);
             return _exchangeRateFactorsService.PredicateUSDCurrencyExchange(factors);
         }
     }

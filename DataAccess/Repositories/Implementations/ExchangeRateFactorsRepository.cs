@@ -29,7 +29,7 @@ namespace DataAccess.Repositories.Implementations
 
         #region SeedData
 
-        public async Task AddOrUpdateCreditRate(DateTime date, double creditRate)
+        public async Task AddOrUpdateCreditRate(DateTime date, float creditRate)
         {
             var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
 
@@ -77,7 +77,7 @@ namespace DataAccess.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddOrUpdateExportIndicator(DateTime date, double exportIndicator)
+        public async Task AddOrUpdateExportIndicator(DateTime date, float exportIndicator)
         {
             var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
 
@@ -109,7 +109,7 @@ namespace DataAccess.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddOrUpdateImportIndicator(DateTime date, double importIndicator)
+        public async Task AddOrUpdateImportIndicator(DateTime date, float importIndicator)
         {
             var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
 
@@ -125,7 +125,7 @@ namespace DataAccess.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddOrUpdateInflationIndex(DateTime date, double inflationIndex)
+        public async Task AddOrUpdateInflationIndex(DateTime date, float inflationIndex)
         {
             var exchangeRateFactors = await GetExchangeRateFactorsByDateInternal(date);
 
