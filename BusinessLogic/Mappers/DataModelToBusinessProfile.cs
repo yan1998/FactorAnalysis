@@ -11,8 +11,6 @@ namespace BusinessLogic.Mappers
         public DataModelToBusinessProfile()
         {
             CreateMap<ExchangeRateFactors, BusinessLogic.Models.ExchangeRateFactors>();
-            CreateMap<List<ExchangeRateFactors>, List<BusinessLogic.Models.ExchangeRateFactors>>()
-                .ForMember(x => x, opt => opt.MapFrom(y => y));
         }
     }
 }

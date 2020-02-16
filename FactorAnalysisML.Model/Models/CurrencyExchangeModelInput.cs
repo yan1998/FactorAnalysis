@@ -2,9 +2,9 @@
 
 using Microsoft.ML.Data;
 
-namespace FactorAnalysisML.Model
+namespace FactorAnalysisML.Model.Models
 {
-    public class ModelInput
+    public class CurrencyExchangeModelInput
     {
         [ColumnName("Id"), LoadColumn(0)]
         public float Id { get; set; }

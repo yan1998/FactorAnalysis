@@ -7,6 +7,7 @@ namespace BusinessLogic.Mappers
         public static void AddDataModelMappings(this IMapperConfigurationExpression mapperConfigurationExpression)
         {
             mapperConfigurationExpression.AddProfile<BusinessToDataModelProfile>();
+            mapperConfigurationExpression.AddProfile<BusinessToMLModelProfile>();
             mapperConfigurationExpression.AddProfile<DataModelToBusinessProfile>();
         }
     }

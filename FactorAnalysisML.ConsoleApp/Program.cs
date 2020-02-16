@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.ML;
 using FactorAnalysisML.Model;
+using FactorAnalysisML.Model.Models;
 
 namespace FactorAnalysisML.ConsoleApp
 {
@@ -34,7 +35,7 @@ namespace FactorAnalysisML.ConsoleApp
             //Console.WriteLine("=============== End of process, hit any key to finish ===============");
 
 
-            ModelInput sampleData = new ModelInput
+            CurrencyExchangeModelInput sampleData = new CurrencyExchangeModelInput
             {
                 CreditRate = 30,
                 GDPIndicator = 566997,
@@ -42,7 +43,7 @@ namespace FactorAnalysisML.ConsoleApp
                 ExportIndicator = 3215,
                 InflationIndex = 99
             };
-            ModelOutput predictionResult = ConsumeModel.Predict(sampleData);
+            var predictionResult = USDCurrencyExchangeConsumeModel.Predict(sampleData);
             Console.WriteLine($"Result = {predictionResult.Score}");
             Console.ReadKey();
         }
@@ -50,13 +51,13 @@ namespace FactorAnalysisML.ConsoleApp
         // Change this code to create your own sample data
         #region CreateSingleDataSample
         // Method to load single row of dataset to try a single prediction
-        private static ModelInput CreateSingleDataSample(string dataFilePath)
+        private static CurrencyExchangeModelInput CreateSingleDataSample(string dataFilePath)
         {
             // Create MLContext
             MLContext mlContext = new MLContext();
 
             // Load dataset
-            IDataView dataView = mlContext.Data.LoadFromTextFile<ModelInput>(
+            IDataView dataView = mlContext.Data.LoadFromTextFile<CurrencyExchangeModelInput>(
                                             path: dataFilePath,
                                             hasHeader: true,
                                             separatorChar: '\t',
@@ -65,7 +66,7 @@ namespace FactorAnalysisML.ConsoleApp
 
             // Use first line of dataset as model input
             // You can replace this with new test data (hardcoded or from end-user application)
-            ModelInput sampleForPrediction = mlContext.Data.CreateEnumerable<ModelInput>(dataView, false)
+            CurrencyExchangeModelInput sampleForPrediction = mlContext.Data.CreateEnumerable<CurrencyExchangeModelInput>(dataView, false)
                                                                         .First();
             return sampleForPrediction;
         }

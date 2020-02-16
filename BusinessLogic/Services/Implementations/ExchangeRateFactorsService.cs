@@ -3,10 +3,10 @@ using BusinessLogic.Services.Abstractions;
 using DataAccess.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FactorAnalysisML.Model;
 using AutoMapper;
+using FactorAnalysisML.Model.Models;
 
 namespace BusinessLogic.Services.Implementations
 {
@@ -33,16 +33,8 @@ namespace BusinessLogic.Services.Implementations
 
         public float PredicateUSDCurrencyExchange(ExchangeRateFactors factors)
         {
-            ModelInput input = new ModelInput
-            {
-                CreditRate = factors.CreditRate,
-                GDPIndicator = factors.GDPIndicator,
-                ExportIndicator = factors.ExportIndicator,
-                ImportIndicator = factors.ImportIndicator,
-                InflationIndex = factors.InflationIndex
-            };
-
-            return ConsumeModel.Predict(input).Score;
+            var input = _mapper.Map<CurrencyExchangeModelInput>(factors);
+            return USDCurrencyExchangeConsumeModel.Predict(input).Score;
         }
     }
 }

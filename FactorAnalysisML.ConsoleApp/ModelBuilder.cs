@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using FactorAnalysisML.Model.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using FactorAnalysisML.Model;
 using Microsoft.ML.Trainers.LightGbm;
 
 namespace FactorAnalysisML.ConsoleApp
@@ -23,7 +23,7 @@ namespace FactorAnalysisML.ConsoleApp
         public static void CreateModel()
         {
             // Load Data
-            IDataView trainingDataView = mlContext.Data.LoadFromTextFile<ModelInput>(
+            IDataView trainingDataView = mlContext.Data.LoadFromTextFile<CurrencyExchangeModelInput>(
                                             path: TRAIN_DATA_FILEPATH,
                                             hasHeader: true,
                                             separatorChar: '\t',

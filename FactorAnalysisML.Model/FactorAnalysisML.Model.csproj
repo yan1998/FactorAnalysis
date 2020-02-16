@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="MLModel.zip">
+    <None Update="USDCurrencyExchangeMLModel.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
