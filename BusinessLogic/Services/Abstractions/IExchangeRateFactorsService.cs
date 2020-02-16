@@ -10,5 +10,7 @@ namespace BusinessLogic.Services.Abstractions
         Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo);
 
         float PredicateUSDCurrencyExchange(ExchangeRateFactors factors);
+
+        float PredicateEURCurrencyExchange(ExchangeRateFactors factors);
     }
 }

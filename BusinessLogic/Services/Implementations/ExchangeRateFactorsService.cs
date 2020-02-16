@@ -36,5 +36,11 @@ namespace BusinessLogic.Services.Implementations
             var input = _mapper.Map<CurrencyExchangeModelInput>(factors);
             return USDCurrencyExchangeConsumeModel.Predict(input).Score;
         }
+
+        public float PredicateEURCurrencyExchange(ExchangeRateFactors factors)
+        {
+            var input = _mapper.Map<CurrencyExchangeModelInput>(factors);
+            return EURCurrencyExchangeConsumeModel.Predict(input).Score;
+        }
     }
 }

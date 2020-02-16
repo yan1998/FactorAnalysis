@@ -12,39 +12,27 @@ namespace FactorAnalysisML.ConsoleApp
     class Program
     {
         //Dataset to use for predictions 
-        private const string DATA_FILEPATH = @"C:\Users\gorsh\AppData\Local\Temp\4a0598cb-ca18-4dc7-bd95-0a58e315cb70.tsv";
+        private const string DATA_FILEPATH = @"C:\Users\gorsh\AppData\Local\Temp\91c5ac1a-65e8-49e9-949f-651e53185c8c.tsv";
 
         static void Main(string[] args)
         {
-            //// Create single instance of sample data from first line of dataset for model input
-            //ModelInput sampleData = CreateSingleDataSample(DATA_FILEPATH);
+            // Create single instance of sample data from first line of dataset for model input
+            CurrencyExchangeModelInput sampleData = CreateSingleDataSample(DATA_FILEPATH);
 
-            //// Make a single prediction on the sample data and print results
-            //ModelOutput predictionResult = ConsumeModel.Predict(sampleData);
+            // Make a single prediction on the sample data and print results
+            CurrencyExchangeModelOutput predictionResult = EURCurrencyExchangeConsumeModel.Predict(sampleData);
 
-            //Console.WriteLine("Using model to make single prediction -- Comparing actual ExchangeRateUSD with predicted ExchangeRateUSD from sample data...\n\n");
-            //Console.WriteLine($"Id: {sampleData.Id}");
-            //Console.WriteLine($"Date: {sampleData.Date}");
-            //Console.WriteLine($"ExchangeRateEUR: {sampleData.ExchangeRateEUR}");
-            //Console.WriteLine($"CreditRate: {sampleData.CreditRate}");
-            //Console.WriteLine($"GDPIndicator: {sampleData.GDPIndicator}");
-            //Console.WriteLine($"ImportIndicator: {sampleData.ImportIndicator}");
-            //Console.WriteLine($"ExportIndicator: {sampleData.ExportIndicator}");
-            //Console.WriteLine($"InflationIndex: {sampleData.InflationIndex}");
-            //Console.WriteLine($"\n\nActual ExchangeRateUSD: {sampleData.ExchangeRateUSD} \nPredicted ExchangeRateUSD: {predictionResult.Score}\n\n");
-            //Console.WriteLine("=============== End of process, hit any key to finish ===============");
-
-
-            CurrencyExchangeModelInput sampleData = new CurrencyExchangeModelInput
-            {
-                CreditRate = 30,
-                GDPIndicator = 566997,
-                ImportIndicator = 3081,
-                ExportIndicator = 3215,
-                InflationIndex = 99
-            };
-            var predictionResult = USDCurrencyExchangeConsumeModel.Predict(sampleData);
-            Console.WriteLine($"Result = {predictionResult.Score}");
+            Console.WriteLine("Using model to make single prediction -- Comparing actual ExchangeRateEUR with predicted ExchangeRateEUR from sample data...\n\n");
+            Console.WriteLine($"Id: {sampleData.Id}");
+            Console.WriteLine($"Date: {sampleData.Date}");
+            Console.WriteLine($"ExchangeRateUSD: {sampleData.ExchangeRateUSD}");
+            Console.WriteLine($"CreditRate: {sampleData.CreditRate}");
+            Console.WriteLine($"GDPIndicator: {sampleData.GDPIndicator}");
+            Console.WriteLine($"ImportIndicator: {sampleData.ImportIndicator}");
+            Console.WriteLine($"ExportIndicator: {sampleData.ExportIndicator}");
+            Console.WriteLine($"InflationIndex: {sampleData.InflationIndex}");
+            Console.WriteLine($"\n\nActual ExchangeRateEUR: {sampleData.ExchangeRateEUR} \nPredicted ExchangeRateEUR: {predictionResult.Score}\n\n");
+            Console.WriteLine("=============== End of process, hit any key to finish ===============");
             Console.ReadKey();
         }
 

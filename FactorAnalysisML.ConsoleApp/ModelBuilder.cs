@@ -4,16 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using FactorAnalysisML.Model.Models;
 using Microsoft.ML;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers.LightGbm;
+using FactorAnalysisML.Model;
+using FactorAnalysisML.Model.Models;
 
 namespace FactorAnalysisML.ConsoleApp
 {
     public static class ModelBuilder
     {
-        private static string TRAIN_DATA_FILEPATH = @"C:\Users\gorsh\AppData\Local\Temp\4a0598cb-ca18-4dc7-bd95-0a58e315cb70.tsv";
+        private static string TRAIN_DATA_FILEPATH = @"C:\Users\gorsh\AppData\Local\Temp\91c5ac1a-65e8-49e9-949f-651e53185c8c.tsv";
         private static string MODEL_FILEPATH = @"../../../../FactorAnalysisML.Model/MLModel.zip";
 
         // Create MLContext to be shared across the model creation workflow objects 
@@ -49,7 +49,7 @@ namespace FactorAnalysisML.ConsoleApp
             var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", new[] { "CreditRate", "GDPIndicator", "ImportIndicator", "ExportIndicator", "InflationIndex" });
 
             // Set the training algorithm 
-            var trainer = mlContext.Regression.Trainers.LightGbm(new LightGbmRegressionTrainer.Options() { NumberOfIterations = 50, LearningRate = 0.3489912f, NumberOfLeaves = 31, MinimumExampleCountPerLeaf = 1, UseCategoricalSplit = true, HandleMissingValue = true, MinimumExampleCountPerGroup = 100, MaximumCategoricalSplitPointCount = 64, CategoricalSmoothing = 10, L2CategoricalRegularization = 0.5, Booster = new GradientBooster.Options() { L2Regularization = 0.5, L1Regularization = 1 }, LabelColumnName = "ExchangeRateUSD", FeatureColumnName = "Features" });
+            var trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: "ExchangeRateEUR", featureColumnName: "Features");
             var trainingPipeline = dataProcessPipeline.Append(trainer);
 
             return trainingPipeline;
@@ -70,7 +70,7 @@ namespace FactorAnalysisML.ConsoleApp
             // Cross-Validate with single dataset (since we don't have two datasets, one for training and for evaluate)
             // in order to evaluate and get the model's accuracy metrics
             Console.WriteLine("=============== Cross-validating to get model's accuracy metrics ===============");
-            var crossValidationResults = mlContext.Regression.CrossValidate(trainingDataView, trainingPipeline, numberOfFolds: 5, labelColumnName: "ExchangeRateUSD");
+            var crossValidationResults = mlContext.Regression.CrossValidate(trainingDataView, trainingPipeline, numberOfFolds: 5, labelColumnName: "ExchangeRateEUR");
             PrintRegressionFoldsAverageMetrics(crossValidationResults);
         }
 

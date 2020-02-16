@@ -48,5 +48,15 @@ namespace FactorAnalysis.Controllers
             var factors = _mapper.Map<ExchangeRateFactors>(request);
             return _exchangeRateFactorsService.PredicateUSDCurrencyExchange(factors);
         }
+
+        /// <summary>
+        /// Get Currency Exchange prediction result for EUR
+        /// </summary> 
+        [HttpGet("GetEURCurrencyExchangePrediction/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
+        public float GetEURCurrencyExchangePrediction([FromRoute]CurrencyExchangePredictionRequest request)
+        {
+            var factors = _mapper.Map<ExchangeRateFactors>(request);
+            return _exchangeRateFactorsService.PredicateEURCurrencyExchange(factors);
+        }
     }
 }
