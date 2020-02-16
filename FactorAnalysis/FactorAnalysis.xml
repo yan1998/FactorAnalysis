@@ -14,12 +14,12 @@
             Get ExchangeRateFactors for date range
             </summary> 
         </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.GetUSDCurrencyExchangePrediction(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PredictUSDCurrencyExchange(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
             <summary>
             Get Currency Exchange prediction result for USD
             </summary> 
         </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.GetEURCurrencyExchangePrediction(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PredictEURCurrencyExchange(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
             <summary>
             Get Currency Exchange prediction result for EUR
             </summary> 

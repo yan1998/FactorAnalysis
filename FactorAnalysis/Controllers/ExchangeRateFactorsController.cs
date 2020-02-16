@@ -42,21 +42,21 @@ namespace FactorAnalysis.Controllers
         /// <summary>
         /// Get Currency Exchange prediction result for USD
         /// </summary> 
-        [HttpGet("GetUSDCurrencyExchangePrediction/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
-        public float GetUSDCurrencyExchangePrediction([FromRoute]CurrencyExchangePredictionRequest request)
+        [HttpGet("PredictUSDCurrencyExchange/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
+        public float PredictUSDCurrencyExchange([FromRoute]CurrencyExchangePredictionRequest request)
         {
             var factors = _mapper.Map<ExchangeRateFactors>(request);
-            return _exchangeRateFactorsService.PredicateUSDCurrencyExchange(factors);
+            return _exchangeRateFactorsService.PredictUSDCurrencyExchange(factors);
         }
 
         /// <summary>
         /// Get Currency Exchange prediction result for EUR
         /// </summary> 
-        [HttpGet("GetEURCurrencyExchangePrediction/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
-        public float GetEURCurrencyExchangePrediction([FromRoute]CurrencyExchangePredictionRequest request)
+        [HttpGet("PredictEURCurrencyExchange/{CreditRate}/{GDPIndicator}/{ImportIndicator}/{ExportIndicator}/{InflationIndex}")]
+        public float PredictEURCurrencyExchange([FromRoute]CurrencyExchangePredictionRequest request)
         {
             var factors = _mapper.Map<ExchangeRateFactors>(request);
-            return _exchangeRateFactorsService.PredicateEURCurrencyExchange(factors);
+            return _exchangeRateFactorsService.PredictEURCurrencyExchange(factors);
         }
     }
 }

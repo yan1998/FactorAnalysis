@@ -1,0 +1,37 @@
+<div class="example-container">
+    <form class="example-container" [formGroup]="currencyExchangePredictionForm" (ngSubmit)="predictCurrency()">
+        <mat-form-field>
+            <input matInput placeholder="Учетная ставка НБУ" type="number" formControlName="creditRate" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Уровень ВВП" type="number" formControlName="gdpIndicator" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Уровень импорта" type="number" formControlName="importIndicator" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Уровень экспорта" type="number" formControlName="exportIndicator" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Уровень инфляции" type="number" formControlName="inflationIndex" required>
+        </mat-form-field>
+
+        <div style="text-align: center;">
+            <mat-radio-group formControlName="currency">
+                <mat-radio-button value="USD">Доллар</mat-radio-button>
+                <mat-radio-button value="EUR">Евро</mat-radio-button>
+            </mat-radio-group>
+        </div>
+
+        <button type="submit" [disabled]="!currencyExchangePredictionForm.valid" mat-raised-button color="primary">Спрогнозировать</button>
+    </form>
+    
+    <div style="margin-top: 15px;" *ngIf="predictionResult != null">
+        <h3>Результат прогнозирования = {{predictionResult}} UAH за 100 {{this.currencyExchangePredictionForm.get('currency').value}}</h3>
+        <h4>Результат прогнозирования = {{predictionResult / 100}} UAH за 1 {{this.currencyExchangePredictionForm.get('currency').value}}</h4>
+    </div>
+</div>

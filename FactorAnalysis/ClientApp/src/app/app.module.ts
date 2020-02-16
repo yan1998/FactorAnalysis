@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
 import { ExchangeRateFactorsDiagramComponent } from './exchange-rate-factors-diagram/exchange-rate-factors-diagram.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChartsModule } from 'ng2-charts';
@@ -16,7 +15,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio'
+import { CurrencyExchangePredictionComponent } from './currency-exchange-prediction/currency-exchange-prediction.component';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import {MatButtonModule} from '@angular/material/button';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
+    CurrencyExchangePredictionComponent,
     ExchangeRateFactorsDiagramComponent
   ],
   imports: [
@@ -36,14 +37,15 @@ import {MatButtonModule} from '@angular/material/button';
     ChartsModule,
     MatInputModule,
     MatSelectModule,
+    MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,
     MatButtonModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'exchange-rate-factors-diagram', component: ExchangeRateFactorsDiagramComponent },
+      { path: 'currency-exchange-prediction', component: CurrencyExchangePredictionComponent },
+      { path: 'exchange-rate-factors-diagram', component: ExchangeRateFactorsDiagramComponent }
     ])
   ],
   providers: [

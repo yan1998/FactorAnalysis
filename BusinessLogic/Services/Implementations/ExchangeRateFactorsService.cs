@@ -31,13 +31,13 @@ namespace BusinessLogic.Services.Implementations
             return _mapper.Map<List<ExchangeRateFactors>>(exchangeRateFactors);
         }
 
-        public float PredicateUSDCurrencyExchange(ExchangeRateFactors factors)
+        public float PredictUSDCurrencyExchange(ExchangeRateFactors factors)
         {
             var input = _mapper.Map<CurrencyExchangeModelInput>(factors);
             return USDCurrencyExchangeConsumeModel.Predict(input).Score;
         }
 
-        public float PredicateEURCurrencyExchange(ExchangeRateFactors factors)
+        public float PredictEURCurrencyExchange(ExchangeRateFactors factors)
         {
             var input = _mapper.Map<CurrencyExchangeModelInput>(factors);
             return EURCurrencyExchangeConsumeModel.Predict(input).Score;
