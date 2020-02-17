@@ -24,6 +24,43 @@
             Get Currency Exchange prediction result for EUR
             </summary> 
         </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.ExchangeRateFactorsById(System.Int32)">
+            <summary>
+            Get Currency Exchange rate factors record by id
+            </summary>
+            <param name="id">Database id field</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PagedExchangeRateFactors(System.Int32,System.Int32)">
+            <summary>
+            Get Currency Exchange rate factors with pagination support
+            </summary>
+            <param name="pageNumber">Number of page</param>
+            <param name="perPage">Count of record per page</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.CreateExchangeRateFactors(DomainModel.ExchangeRateFactors.ExchangeRateFactors)">
+            <summary>
+            Create new ExchangeRateFactors record to database
+            </summary>
+            <param name="request">Creation request</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.UpdateExchangeRateFactors(System.Int32,DomainModel.ExchangeRateFactors.ExchangeRateFactors)">
+            <summary>
+            Update ExchangeRateFactors record by id
+            </summary>
+            <param name="id">Id of record</param>
+            <param name="request">Creation request</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.DeleteExchangeRateFactors(System.Int32)">
+            <summary>
+            Remove ExchangeRateFactors record from Database by id
+            </summary>
+            <param name="id">>Id of record</param>
+            <returns></returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.SeedExchangeRateFactorsController">
             <summary>
             Controller for Seed data to ExchangeRateFactors table

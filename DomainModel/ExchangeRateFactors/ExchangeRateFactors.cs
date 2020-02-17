@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusinessLogic.Models
+namespace DomainModel.ExchangeRateFactors
 {
     public class ExchangeRateFactors
     {

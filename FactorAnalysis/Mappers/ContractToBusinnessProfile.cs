@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.Models;
+using DomainModel.ExchangeRateFactors;
 using FactorAnalysis.Model.Requests;
 
 namespace FactorAnalysis.Mappers

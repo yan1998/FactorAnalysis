@@ -1,4 +1,4 @@
-﻿using DataAccess.Model;
+﻿using DomainModel.ExchangeRateFactors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,6 +10,16 @@ namespace DataAccess.Repositories.Abstractions
         Task<ExchangeRateFactors> GetExchangeRateFactorsByDate(DateTime date);
 
         Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo);
+
+        Task<ExchangeRateFactors> GetExchangeRateFactorsById(int id);
+
+        Task<PagedExchangeRateFactors> GetPagedExchangeRateFactors(int pageNumber, int perPage);
+
+        Task CreateExchangeRateFactors(ExchangeRateFactors factors);
+
+        Task UpdateExchangeRateFactors(ExchangeRateFactors factors);
+
+        Task RemoveExchangeRateFactors(int id);
 
         #region SeedData
 

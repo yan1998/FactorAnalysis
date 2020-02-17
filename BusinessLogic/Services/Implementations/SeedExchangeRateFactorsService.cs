@@ -1,8 +1,7 @@
-﻿using BusinessLogic.Models;
-using BusinessLogic.Services.Abstractions;
+﻿using BusinessLogic.Services.Abstractions;
 using CsvHelper;
 using DataAccess.Repositories.Abstractions;
-using System;
+using DomainModel.ExchangeRateFactors;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;

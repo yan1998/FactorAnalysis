@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
 using DataAccess.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BusinessLogic.Mappers
 {
@@ -10,7 +7,7 @@ namespace BusinessLogic.Mappers
     {
         public DataModelToBusinessProfile()
         {
-            CreateMap<ExchangeRateFactors, BusinessLogic.Models.ExchangeRateFactors>();
+            CreateMap<ExchangeRateFactors, DomainModel.ExchangeRateFactors.ExchangeRateFactors>();
         }
     }
 }

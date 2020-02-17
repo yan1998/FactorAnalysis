@@ -55,8 +55,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\FactorAnalysisML.Model\FactorAnalysisML.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>
