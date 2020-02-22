@@ -21,6 +21,8 @@ namespace DataAccess.Repositories.Abstractions
 
         Task RemoveExchangeRateFactors(int id);
 
+        Task<bool> DoesExchangeRateFactorsExist(DateTime date);
+
         #region SeedData
 
         Task AddOrUpdateExchangeRateUSD(DateTime date, decimal exchangeRateUSD);

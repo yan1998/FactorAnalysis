@@ -71,6 +71,11 @@ namespace DataAccess.Repositories.Implementations
             await _context.SaveChangesAsync();
         }
 
+        public Task<bool> DoesExchangeRateFactorsExist(DateTime date)
+        {
+            return _context.ExchangeRateFactors.AnyAsync(erf => erf.Date.Date == date.Date);
+        }
+
         #region SeedData
 
         public async Task AddOrUpdateCreditRate(DateTime date, float creditRate)

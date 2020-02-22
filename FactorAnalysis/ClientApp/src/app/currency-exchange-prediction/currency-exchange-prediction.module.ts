@@ -14,13 +14,23 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { ChartsModule } from 'ng2-charts';
 import { CurrencyExchangePredictionComponent } from './currency-exchange-prediction.component';
-
+import { ExchangeRateFactorsTableComponent } from './exchange-rate-factors-table/exchange-rate-factors-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../dialog-windows/confirmation-dialog/confirmation-dialog.component';
+import { ExchangeRateFactorsDialogComponent } from './dialog-windows/exchange-rate-factors-dialog/exchange-rate-factors-dialog.component';
 
 @NgModule({
   declarations: [
     CurrencyExchangePredictionComponent,
     PredictionComponent,
-    ExchangeRateFactorsDiagramComponent
+    ExchangeRateFactorsDiagramComponent,
+    ExchangeRateFactorsTableComponent,
+    ConfirmationDialogComponent,
+    ExchangeRateFactorsDialogComponent
   ],
   imports: [
     CommonModule,
@@ -34,10 +44,19 @@ import { CurrencyExchangePredictionComponent } from './currency-exchange-predict
     MatDatepickerModule,
     MatNativeDateModule,
     MatButtonModule,
-    ChartsModule
+    ChartsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatDialogModule,
+    MatMenuModule
   ],
   providers: [
     ExchangeRateFactorsService
+  ],
+  entryComponents: [
+    ConfirmationDialogComponent,
+    ExchangeRateFactorsDialogComponent
   ]
 })
 export class CurrencyExchangePredictionModule { }

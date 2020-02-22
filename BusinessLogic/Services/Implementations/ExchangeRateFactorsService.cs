@@ -64,6 +64,9 @@ namespace BusinessLogic.Services.Implementations
         public async Task CreateExchangeRateFactors(ExchangeRateFactors factors)
         {
             ValidateExchangeRateFactors(factors);
+            var doesExist = await _exchangeRateFactorsRepository.DoesExchangeRateFactorsExist(factors.Date);
+            if (doesExist)
+                throw new DomainErrorException($"Exchange rate factors with date = {factors.Date.ToString("d")} exists in db");
 
             await _exchangeRateFactorsRepository.CreateExchangeRateFactors(factors);
         }
@@ -71,6 +74,9 @@ namespace BusinessLogic.Services.Implementations
         public async Task UpdateExchangeRateFactors(ExchangeRateFactors factors)
         {
             ValidateExchangeRateFactors(factors);
+            var doesExist = await _exchangeRateFactorsRepository.DoesExchangeRateFactorsExist(factors.Date);
+            if (!doesExist)
+                throw new DomainErrorException($"Exchange rate factors with date = {factors.Date.ToString("d")} doesn't exist in db");
 
             await _exchangeRateFactorsRepository.UpdateExchangeRateFactors(factors);
         }
