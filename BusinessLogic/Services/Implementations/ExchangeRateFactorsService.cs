@@ -8,6 +8,7 @@ using AutoMapper;
 using FactorAnalysisML.Model.Models;
 using BusinessLogic.Exceptions;
 using DomainModel.ExchangeRateFactors;
+using FactorAnalysisML.Model.ModelBuilders;
 
 namespace BusinessLogic.Services.Implementations
 {
@@ -88,6 +89,18 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException("Id should be greater than 0!");
             }
             await _exchangeRateFactorsRepository.RemoveExchangeRateFactors(id);
+        }
+
+        public async Task CreateEURCurrencyExchangeMLModel()
+        {
+            var data = await _exchangeRateFactorsRepository.GetExchangeRateFactorsRange(DateTime.MinValue, DateTime.MaxValue);
+            EURCurrencyExchangeModelBuilder.CreateModel(_mapper.Map<List<CurrencyExchangeModelInput>>(data));
+        }
+
+        public Task RetrainEURCurrencyExchangeMLModel()
+        {
+            EURCurrencyExchangeModelBuilder.RetrainModel(null);
+            return Task.CompletedTask;
         }
 
         private void ValidateExchangeRateFactors(ExchangeRateFactors factors)

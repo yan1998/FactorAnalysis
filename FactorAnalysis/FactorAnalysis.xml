@@ -61,6 +61,21 @@
             <param name="id">>Id of record</param>
             <returns></returns>
         </member>
+        <member name="T:FactorAnalysis.Controllers.MLModelsController">
+            <summary>
+            Controller for interact with ML.NET
+            </summary>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.MLModelsController.CreateEURCurrencyExchangeModel">
+            <summary>
+            Create Predication model for EURCurrencyExchange
+            </summary>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.MLModelsController.RetrainEURCurrencyExchangeModel">
+            <summary>
+            Retrain Predication model for EURCurrencyExchange
+            </summary>
+        </member>
         <member name="T:FactorAnalysis.Controllers.SeedExchangeRateFactorsController">
             <summary>
             Controller for Seed data to ExchangeRateFactors table

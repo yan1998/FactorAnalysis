@@ -22,5 +22,9 @@ namespace BusinessLogic.Services.Abstractions
         Task UpdateExchangeRateFactors(ExchangeRateFactors factors);
 
         Task RemoveExchangeRateFactors(int id);
+
+        Task CreateEURCurrencyExchangeMLModel();
+
+        Task RetrainEURCurrencyExchangeMLModel();
     }
 }
