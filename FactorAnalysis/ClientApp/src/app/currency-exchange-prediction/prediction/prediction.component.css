@@ -1,0 +1,16 @@
+.example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-container > * {
+    width: 100%;
+  }
+
+  mat-radio-button {
+      margin-left: 20px;
+  }
+
+  button {
+    margin-top: 10px;
+  }

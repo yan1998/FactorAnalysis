@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusinessLogic.Models
+namespace DomainModel.ExchangeRateFactors
 {
     public class ExchangeRateFactors
     {
@@ -12,14 +12,14 @@ namespace BusinessLogic.Models
 
         public decimal ExchangeRateEUR { get; set; }
 
-        public double CreditRate { get; set; }
+        public float CreditRate { get; set; }
 
         public long GDPIndicator { get; set; }
 
-        public double ImportIndicator { get; set; }
+        public float ImportIndicator { get; set; }
 
-        public double ExportIndicator { get; set; }
+        public float ExportIndicator { get; set; }
 
-        public double InflationIndex { get; set; }
+        public float InflationIndex { get; set; }
     }
 }

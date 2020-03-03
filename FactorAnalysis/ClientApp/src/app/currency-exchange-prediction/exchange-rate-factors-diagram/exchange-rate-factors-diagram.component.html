@@ -1,0 +1,50 @@
+
+<div class="row">
+  <div class="col-xs-3 col-md-3 col-sm-3">
+    <mat-form-field>
+      <mat-label>Выберите фактор</mat-label>
+      <mat-select [(value)]="selectedFactor" (selectionChange)="changedFactor()">
+        <mat-option *ngFor="let option of options" [value]="option">
+          {{option}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="col-xs-3 col-md-3 col-sm-3">
+    <mat-form-field color="accent">
+      <mat-label>Дата от</mat-label>
+      <input matInput [matDatepicker]="picker1" [formControl]="dateFrom" [max] = "dateTo.value">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="col-xs-3 col-md-3 col-sm-3">
+    <mat-form-field color="accent">
+      <mat-label>Дата до</mat-label>
+      <input matInput [matDatepicker]="picker2" [formControl]="dateTo" [min] = "dateFrom.value">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2 disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="col-xs-2 col-md-2 col-sm-2">
+    <button mat-raised-button color="primary" (click)="getData()">Найти</button>
+  </div>
+</div>
+
+<div class="flex">
+  <div class="flex-item">
+    <div style="display: block;">
+    <canvas baseChart width="400" height="200"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                [plugins]="lineChartPlugins"></canvas>
+    </div>
+  </div>
+</div>

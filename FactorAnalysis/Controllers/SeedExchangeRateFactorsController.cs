@@ -72,5 +72,25 @@ namespace FactorAnalysis.Controllers
         {
             await _seedExchangeRateFactorsService.FillImportIndicator(filePathRequest.FilePath);
         }
+
+        /// <summary>
+        /// Seed GDPIndicator field to Database
+        /// SeedData/GDPIndicator.csv
+        /// </summary> 
+        [HttpPost("SeedGDPIndicator")]
+        public async Task SeedGDPIndicator([FromBody]SeedFilePathRequest filePathRequest)
+        {
+            await _seedExchangeRateFactorsService.FillGDPIndicator(filePathRequest.FilePath);
+        }
+
+        /// <summary>
+        /// Seed InflationIndex field to Database
+        /// SeedData/InflationIndex.csv
+        /// </summary> 
+        [HttpPost("SeedInflationIndex")]
+        public async Task SeedInflationIndex([FromBody]SeedFilePathRequest filePathRequest)
+        {
+            await _seedExchangeRateFactorsService.FillInflationIndex(filePathRequest.FilePath);
+        }
     }
 }

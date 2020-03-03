@@ -1,8 +1,7 @@
-﻿using BusinessLogic.Models;
-using BusinessLogic.Services.Abstractions;
+﻿using BusinessLogic.Services.Abstractions;
 using CsvHelper;
 using DataAccess.Repositories.Abstractions;
-using System;
+using DomainModel.ExchangeRateFactors;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileDataRange<double>>().Where(x => x.DateFrom.Year >= 2000);
+                var records = csvReader.GetRecords<SeedFileDataRange<float>>().Where(x => x.DateFrom.Year >= 2000);
                 foreach (var record in records)
                 {
                     var tempDate = record.DateFrom;
@@ -67,7 +66,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileData<double>>();
+                var records = csvReader.GetRecords<SeedFileData<float>>();
                 foreach (var record in records)
                 {
                     var dateFrom = record.Date;
@@ -81,9 +80,22 @@ namespace BusinessLogic.Services.Implementations
             }
         }
 
-        public Task FillGDPIndicator(DateTime date, long gdpIndicator)
+        public async Task FillGDPIndicator(string filePath)
         {
-            return _exchangeRateFactorsRepository.AddOrUpdateGDPIndicator(date, gdpIndicator);
+            using (var reader = new StreamReader(filePath))
+            {
+                var csvReader = new CsvReader(reader);
+                var records = csvReader.GetRecords<SeedFileDataRange<long>>().Where(x => x.DateFrom.Year >= 2000);
+                foreach (var record in records)
+                {
+                    var tempDate = record.DateFrom;
+                    while (tempDate.Date <= record.DateTo.Date)
+                    {
+                        await _exchangeRateFactorsRepository.AddOrUpdateGDPIndicator(tempDate.Date, record.Value);
+                        tempDate = tempDate.AddDays(1);
+                    }
+                }
+            }
         }
 
         public async Task FillImportIndicator(string filePath)
@@ -91,7 +103,7 @@ namespace BusinessLogic.Services.Implementations
             using (var reader = new StreamReader(filePath))
             {
                 var csvReader = new CsvReader(reader);
-                var records = csvReader.GetRecords<SeedFileData<double>>();
+                var records = csvReader.GetRecords<SeedFileData<float>>();
                 foreach (var record in records)
                 {
                     var dateFrom = record.Date;
@@ -105,9 +117,23 @@ namespace BusinessLogic.Services.Implementations
             }
         }
 
-        public Task FillInflationIndex(DateTime date, double inflationIndex)
+        public async Task FillInflationIndex(string filePath)
         {
-            return _exchangeRateFactorsRepository.AddOrUpdateInflationIndex(date, inflationIndex);
+            using (var reader = new StreamReader(filePath))
+            {
+                var csvReader = new CsvReader(reader);
+                var records = csvReader.GetRecords<SeedFileData<float>>();
+                foreach (var record in records)
+                {
+                    var dateFrom = record.Date;
+                    var dateTo = record.Date.AddMonths(1);
+                    while (dateFrom.Date <= dateTo.Date)
+                    {
+                        await _exchangeRateFactorsRepository.AddOrUpdateInflationIndex(dateFrom, record.Value);
+                        dateFrom = dateFrom.AddDays(1);
+                    }
+                }
+            }
         }
     }
 }

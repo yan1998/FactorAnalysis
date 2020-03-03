@@ -1,0 +1,45 @@
+<form class="example-container" [formGroup]="exchangeRateFactorsForm">
+    <mat-form-field color="accent" *ngIf="!isEditMode">
+        <mat-label>Дата</mat-label>
+        <input matInput [matDatepicker]="picker1" [formControl]="date" [max]="maxDate">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1 disabled="false"></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Курс доллара" formControlName="exchangeRateUSD" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Курс евро" formControlName="exchangeRateEUR" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Учетная ставка" formControlName="creditRate" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Показатель ВВП" formControlName="gdpIndicator" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Показатель импорта" formControlName="importIndicator" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Показатель экспорта" formControlName="exportIndicator" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <input matInput type="number" placeholder="Индекс инфляции" formControlName="inflationIndex" required>
+    </mat-form-field>
+
+    <div class="row">
+        <div class="col-md-6" >
+            <button type="submit" [disabled]="!exchangeRateFactorsForm.valid" (click)="onSubmitClick()" style="width: 100%" mat-raised-button color="primary">Сохранить</button>
+        </div>
+        <div class="col-md-6">
+            <button style="width: 100%" mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
+        </div>
+    </div>
+</form>

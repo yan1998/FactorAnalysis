@@ -26,8 +26,8 @@ namespace DataAccess.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<double>("CreditRate")
-                        .HasColumnType("float");
+                    b.Property<float>("CreditRate")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -38,17 +38,17 @@ namespace DataAccess.Migrations
                     b.Property<decimal>("ExchangeRateUSD")
                         .HasColumnType("Money");
 
-                    b.Property<double>("ExportIndicator")
-                        .HasColumnType("float");
+                    b.Property<float>("ExportIndicator")
+                        .HasColumnType("real");
 
                     b.Property<long>("GDPIndicator")
                         .HasColumnType("bigint");
 
-                    b.Property<double>("ImportIndicator")
-                        .HasColumnType("float");
+                    b.Property<float>("ImportIndicator")
+                        .HasColumnType("real");
 
-                    b.Property<double>("InflationIndex")
-                        .HasColumnType("float");
+                    b.Property<float>("InflationIndex")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 

@@ -1,4 +1,4 @@
-﻿using DataAccess.Model;
+﻿using DomainModel.ExchangeRateFactors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,21 +11,33 @@ namespace DataAccess.Repositories.Abstractions
 
         Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo);
 
+        Task<ExchangeRateFactors> GetExchangeRateFactorsById(int id);
+
+        Task<PagedExchangeRateFactors> GetPagedExchangeRateFactors(int pageNumber, int perPage);
+
+        Task CreateExchangeRateFactors(ExchangeRateFactors factors);
+
+        Task UpdateExchangeRateFactors(ExchangeRateFactors factors);
+
+        Task RemoveExchangeRateFactors(int id);
+
+        Task<bool> DoesExchangeRateFactorsExist(DateTime date);
+
         #region SeedData
 
         Task AddOrUpdateExchangeRateUSD(DateTime date, decimal exchangeRateUSD);
 
         Task AddOrUpdateExchangeRateEUR(DateTime date, decimal exchangeRateEUR);
 
-        Task AddOrUpdateCreditRate(DateTime date, double creditRate);
+        Task AddOrUpdateCreditRate(DateTime date, float creditRate);
 
         Task AddOrUpdateGDPIndicator(DateTime date, long gdpIndicator);
 
-        Task AddOrUpdateImportIndicator(DateTime date, double importIndicator);
+        Task AddOrUpdateImportIndicator(DateTime date, float importIndicator);
 
-        Task AddOrUpdateExportIndicator(DateTime date, double exportIndicator);
+        Task AddOrUpdateExportIndicator(DateTime date, float exportIndicator);
 
-        Task AddOrUpdateInflationIndex(DateTime date, double inflationIndex);
+        Task AddOrUpdateInflationIndex(DateTime date, float inflationIndex);
 
         #endregion
     }

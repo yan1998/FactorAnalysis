@@ -1,0 +1,76 @@
+<div>
+    <button mat-raised-button color="basic" (click)="addRecord()">Добавить данные</button>
+</div>
+
+<div class="example-container mat-elevation-z8">
+    <div class="example-loading-shade" *ngIf="isLoadingResults">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="example-table-container">
+        <table mat-table [dataSource]="data" class="example-table">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>Id</th>
+                <td mat-cell *matCellDef="let row">{{row.id}}</td>
+            </ng-container>
+
+            <!-- Title Column -->
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Дата</th>
+                <td mat-cell *matCellDef="let row">{{row.date}}</td>
+            </ng-container>
+
+            <!-- State Column -->
+            <ng-container matColumnDef="exchangeRateUSD">
+                <th mat-header-cell *matHeaderCellDef>Курс доллара</th>
+                <td mat-cell *matCellDef="let row">{{row.exchangeRateUSD}}</td>
+            </ng-container>
+
+            <!-- Created Column -->
+            <ng-container matColumnDef="exchangeRateEUR">
+                <th mat-header-cell *matHeaderCellDef>Курс Евро</th>
+                <td mat-cell *matCellDef="let row">{{row.exchangeRateEUR}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="creditRate">
+                <th mat-header-cell *matHeaderCellDef>Учетная ставка</th>
+                <td mat-cell *matCellDef="let row">{{row.creditRate}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="gdpIndicator">
+                <th mat-header-cell *matHeaderCellDef>Показатель ВВП</th>
+                <td mat-cell *matCellDef="let row">{{row.gdpIndicator}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="importIndicator">
+                <th mat-header-cell *matHeaderCellDef>Показатель импорта</th>
+                <td mat-cell *matCellDef="let row">{{row.importIndicator}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="exportIndicator">
+                <th mat-header-cell *matHeaderCellDef>Показатель экспорта</th>
+                <td mat-cell *matCellDef="let row">{{row.exportIndicator}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="inflationIndex">
+                <th mat-header-cell *matHeaderCellDef>Индекс инфляции</th>
+                <td mat-cell *matCellDef="let row">{{row.inflationIndex}}</td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let row">
+                    <button mat-button [matMenuTriggerFor]="menu">действия</button>
+                    <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="editRecord(row)">Редактировать</button>
+                        <button mat-menu-item (click)="removeRecord(row.id)">Удалить</button>
+                    </mat-menu>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+    <mat-paginator [length]="resultsLength" [pageSizeOptions]="[100, 200, 500]"></mat-paginator>
+</div>
