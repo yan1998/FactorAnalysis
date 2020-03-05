@@ -29,7 +29,7 @@ namespace FactorAnalysis
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.ConfigureSqlContext(this.Configuration);
+            services.ConfigureRepositories(this.Configuration);
             services.ConfigureServices();
             services.AddAutoMapper(
                 (mapperConfigurationExpression) => {

@@ -15,7 +15,7 @@ export class ExchangeRateFactorsService {
     constructor(private _httpClient: HttpClient) { }
 
     getExchangeRateFactorsRange(dateFrom: Date, dateTo: Date): Observable<ExchangeRateFactors[]> {
-        const href = this.serverUrl + `GetExchangeRateFactorsRange/${dateFrom.getFullYear()}-${dateFrom.getMonth() + 1}-${dateFrom.getDate()}/${dateTo.getFullYear()}-${dateTo.getMonth() + 1}-${dateTo.getDate()}`;
+        const href = this.serverUrl + `ExchangeRateFactorsRange/${dateFrom.getFullYear()}-${dateFrom.getMonth() + 1}-${dateFrom.getDate()}/${dateTo.getFullYear()}-${dateTo.getMonth() + 1}-${dateTo.getDate()}`;
         return this._httpClient.get<ExchangeRateFactors[]>(href);
     }
 

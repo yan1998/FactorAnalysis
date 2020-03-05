@@ -33,10 +33,10 @@ namespace FactorAnalysis.Controllers
         /// <summary>
         /// Get ExchangeRateFactors for date range
         /// </summary> 
-        [HttpGet("GetExchangeRateFactorsRange/{dateFrom}/{dateTo}")]
-        public async Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
+        [HttpGet("ExchangeRateFactorsRange/{dateFrom}/{dateTo}")]
+        public Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
         {
-            return await _exchangeRateFactorsService.GetExchangeRateFactorsRange(dateFrom, dateTo);
+            return _exchangeRateFactorsService.GetExchangeRateFactorsRange(dateFrom, dateTo);
         }
 
         /// <summary>

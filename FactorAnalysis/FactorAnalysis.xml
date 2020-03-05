@@ -61,6 +61,51 @@
             <param name="id">>Id of record</param>
             <returns></returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.GetForecastingTaskEntities">
+            <summary>
+            Get all forecasting tasks name from database
+            </summary>
+            <returns>List of entities name</returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateForecastingTaskEntity(FactorAnalysis.Model.Requests.CreateForecastingTaskEntityRequest)">
+            <summary>
+            Create new forecasting task in database
+            </summary>
+            <param name="request">Creation request</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.DeleteForecastingTaskEntity(System.String)">
+            <summary>
+            Delete forecasting task from database
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.DeleteForecastingTaskEntityValues(System.String,System.String)">
+            <summary>
+            Delete an array of factors values for task entity
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="id">Id of values array</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.AddForecstingTaskFactorsValue(System.String,FactorAnalysis.Model.Requests.AddForecstingTaskFactorsValueRequest)">
+            <summary>
+            Add new factors values to database
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="request">Request for adding new factors value</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.GetPagedForecastingTask(System.String,System.Int32,System.Int32)">
+            <summary>
+            Get paged ForecastingTask factors value
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="pageNumber">Number of page</param>
+            <param name="perPage">Amount of record per page</param>
+            <returns>Paged information</returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>
             Controller for interact with ML.NET
