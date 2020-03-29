@@ -1,0 +1,15 @@
+<div class="row" *ngFor="let factor of data;">
+    <mat-form-field>
+        <input matInput placeholder="{{factor.name}}" [(ngModel)]="obj[factor.id]">
+    </mat-form-field>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <button type="submit" (click)="onSubmitClick()" mat-raised-button color="primary">Сохранить</button>
+    </div>
+    <div class="col-md-6">
+        <button style="width: 100%" mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+<form class="example-form">
+    <mat-form-field>
+        <input matInput name="taskName" [(ngModel)]='taskName'  placeholder="Имя задачи">
+    </mat-form-field>
+
+    <div class="row" *ngFor="let taskFactor of taskFactors">
+        <mat-form-field class="col-xs-2 col-md-2 col-sm-2 col-2">
+            <input matInput placeholder="Название фактора" [(ngModel)]='taskFactor.name' [name]='taskFactor.name'>
+        </mat-form-field>
+        <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
+            <input matInput placeholder="Описание фактора" [(ngModel)]="taskFactor.description"  [name]='taskFactor.description'>
+        </mat-form-field>
+        <div class="checkboxes col-xs-3 col-md-3 col-sm-3 col-3">
+            <mat-checkbox [disabled]= "isPredicatedValueChecked && !taskFactor.isPredicatedValue" [checked]="taskFactor.isPredicatedValue" (change)="taskFactor.isPredicatedValue = !taskFactor.isPredicatedValue; isPredicatedValueChecked = !isPredicatedValueChecked">Прогнозировать значение?</mat-checkbox>
+        </div>
+        <div class="checkboxes col-xs-2 col-md-2 col-sm-2 col-2">
+            <button mat-button (click)="removeFactor(taskFactor)" [disabled]="taskFactors.length <= 1">-</button>
+        </div>
+    </div>
+   
+</form>
+<button mat-button (click)="addFactor()">Добавить фактор</button>
+
+<button mat-button (click)="createTask()">Сохранить</button>

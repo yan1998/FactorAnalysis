@@ -67,11 +67,15 @@ namespace DataAccess.Repositories.Implementations
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
             var taskFactors = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
+            foreach (var taskFactor in taskFactors)
+            {
+                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FactorId).ToList();
+            }
 
             var pagedForecastingTask = new PagedForecastingTask
             {
                 Name = taskName,
-                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration),
+                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration.OrderBy(x => x.Id)),
                 FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValues>>(taskFactors),
                 TotalCount = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).CountDocumentsAsync(x => true)
             };

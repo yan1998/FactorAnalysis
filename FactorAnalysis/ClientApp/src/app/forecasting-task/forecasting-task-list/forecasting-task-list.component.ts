@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forecasting-task-list',
@@ -10,7 +11,8 @@ export class ForecastingTaskListComponent implements OnInit {
 
   private taskEntitiesNames: string[];
 
-  constructor(private _forecastingTaskService: ForecastingTaskService) { }
+  constructor(private _forecastingTaskService: ForecastingTaskService,
+    private _router: Router) { }
 
   ngOnInit() {
     this._forecastingTaskService.getForecastingTaskEntitiesName()
@@ -21,4 +23,7 @@ export class ForecastingTaskListComponent implements OnInit {
       });
   }
 
+  goToCreation(): void {
+    this._router.navigate(['/forecasting-task/task-creation']);
+  }
 }

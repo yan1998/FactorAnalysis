@@ -7,6 +7,9 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CurrencyExchangePredictionModule } from './currency-exchange-prediction/currency-exchange-prediction.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ForecastingTaskModule } from './forecasting-task/forecasting-task.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
 
 
 @NgModule({
@@ -16,11 +19,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HomeComponent
   ],
   imports: [
+    CommonModule,
     CurrencyExchangePredictionModule,
+    ForecastingTaskModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatDialogModule
   ],
   bootstrap: [AppComponent]
 })

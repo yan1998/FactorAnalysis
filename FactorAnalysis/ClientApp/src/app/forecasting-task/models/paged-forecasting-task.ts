@@ -1,8 +1,8 @@
 export class PagedForecastingTask {
     name: string;
-    totalCountL: number;
+    totalCount: number;
     factorsDeclaration: ForecastingTaskFactorDeclaration[];
-    FactorsValues: ForecastingTaskFactorValues[];
+    factorsValues: ForecastingTaskFactorValues[];
 }
 
 export class ForecastingTaskFactorDeclaration {

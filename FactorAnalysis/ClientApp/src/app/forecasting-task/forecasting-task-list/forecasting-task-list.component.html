@@ -1,0 +1,5 @@
+<h2>Задачи прогнозирования</h2>
+<button mat-button (click)="goToCreation()">Создать задачу прогнозирования</button>
+<ul>
+    <li *ngFor="let taskEntitiesName of taskEntitiesNames"  [routerLink]="['/forecasting-task/display-task', taskEntitiesName]">{{ taskEntitiesName }}</li>
+</ul>

@@ -68,6 +68,8 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException("Page number should be greater than 0!");
             if (perPage <= 0)
                 throw new DomainErrorException("Per page amount should be greater than 0!");
+            if(string.IsNullOrWhiteSpace(entityName))
+                throw new DomainErrorException($"Forecasting task name must to be filled!");
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
