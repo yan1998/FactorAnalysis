@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Services.Abstractions;
-using DomainModel.ForecastingTasks;
+using CsvHelper;
+using FactorAnalysis.Helpers;
 using FactorAnalysis.Model.Requests;
 using FactorAnalysis.Model.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -97,6 +99,31 @@ namespace FactorAnalysis.Controllers
         {
             var response = await _forecastingTasksService.GetPagedForecastingTaskEntity(taskEntityName, pageNumber, perPage);
             return _mapper.Map<GetPagedForecastingTaskResponse>(response);
+        }
+
+        /// <summary>
+        /// Save csv file with factor values
+        /// </summary>
+        /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <returns></returns>
+        [HttpGet("SaveForecastingTaskValuesCsv/{taskEntityName}")]
+        public async Task<ContentResult> SaveForecastingTaskValuesCsv(string taskEntityName)
+        {
+            var response = await _forecastingTasksService.GetForecastingTaskEntityForCsv(taskEntityName);
+
+            ContentResult result = new ContentResult();
+            result.Content = response;
+            result.ContentType = "text/csv";
+
+            return result;
+        }
+
+
+        [HttpPost("UploadCsvFile/{taskEntityName}"), DisableRequestSizeLimit]
+        public Task UploadCsvFile(string taskEntityName)
+        {
+            string csv = StreamConversionHelper.ConvertStreamToString(Request.Form.Files[0].OpenReadStream());
+            return _forecastingTasksService.AddForecastingTaskFactorsViaCsv(taskEntityName, csv);
         }
     }
 }

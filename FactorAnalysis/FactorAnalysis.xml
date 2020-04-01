@@ -106,6 +106,13 @@
             <param name="perPage">Amount of record per page</param>
             <returns>Paged information</returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.SaveForecastingTaskValuesCsv(System.String)">
+            <summary>
+            Save csv file with factor values
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>
             Controller for interact with ML.NET

@@ -53,11 +53,17 @@ namespace DataAccess.Repositories.Implementations
         public async Task<DomainModel.ForecastingTasks.ForecastingTask> GetForecastingTaskEntity(string taskName)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).FindAsync(x => true);
+            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).FindSync(x => true).ToListAsync();
+
+            foreach (var taskFactor in taskFactors)
+            {
+                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FactorId).ToList();
+            }
+
             var domainObject = new DomainModel.ForecastingTasks.ForecastingTask
             {
                 Name = taskName,
-                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration),
+                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration.OrderBy(x => x.Id)),
                 FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValues>>(taskFactors)
             };
             return domainObject;
@@ -95,6 +101,12 @@ namespace DataAccess.Repositories.Implementations
         public Task DeleteForecastingTaskFactorsById(string taskName, string id)
         {
             return _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(id));
+        }
+
+        public async Task<List<ForecastingTaskFactorDeclaration>> GetForecastingTaskFactorDeclaration(string taskName)
+        {
+            var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
+            return _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration);
         }
     }
 }

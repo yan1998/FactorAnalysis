@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
+import { FileDownloaderService } from './services/file-downloader.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dore
     MatFormFieldModule
   ],
   providers: [
-    ForecastingTaskService
+    ForecastingTaskService,
+    FileDownloaderService
   ],
   entryComponents: [
     AddDorecastingTaskDataDialogComponent

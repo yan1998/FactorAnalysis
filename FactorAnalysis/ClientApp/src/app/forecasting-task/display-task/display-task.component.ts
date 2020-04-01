@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { AddDorecastingTaskDataDialogComponent } from '../dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
 import { ForecastingTaskFactorValueRequest } from '../models/create-forecasting-task-entity-request';
+import { FileDownloaderService } from '../services/file-downloader.service';
 
 @Component({
   selector: 'app-display-task',
@@ -24,8 +25,10 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   displayedColumns: string[];
   isLoadingResults: boolean;
   data: any;
+  isCsvUploading: boolean;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
+    private _fileDownloaderService: FileDownloaderService,
     private route: ActivatedRoute,
     private dialog: MatDialog) { }
 
@@ -106,6 +109,34 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.paginator.firstPage();
         }, error => console.error(error));
       }
+    });
+  }
+
+  importCsv() {
+    this._forecastingTaskService.saveForecastingTaskEntityCsv(this.name).subscribe(file => {
+      const blob = new Blob([file], { type: 'text/csv' });
+      this._fileDownloaderService.downloadBlob(blob, `${this.name}.csv`);
+    }, (error) => {
+      console.log(error);
+    });
+  }
+
+  uploadCsvFile(files: File[]) {
+    if (files.length === 0) {
+      return;
+    }
+
+    this.isCsvUploading = true;
+    const fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+
+    this._forecastingTaskService.uploadForecastingTaskValuesCsv(this.name, formData).subscribe(() => {
+      this.paginator.pageIndex = 1;
+      this.paginator.firstPage();
+      this.isCsvUploading = false;
+    }, error => {
+      console.log(error);
     });
   }
 

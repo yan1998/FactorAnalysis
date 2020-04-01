@@ -19,5 +19,7 @@ namespace DataAccess.Repositories.Abstractions
         Task AddForecastingTaskFactors(string taskName, List<ForecastingTaskFactorValue> values);
 
         Task DeleteForecastingTaskFactorsById(string taskName, string id);
+
+        Task<List<ForecastingTaskFactorDeclaration>> GetForecastingTaskFactorDeclaration(string taskName);
     }
 }

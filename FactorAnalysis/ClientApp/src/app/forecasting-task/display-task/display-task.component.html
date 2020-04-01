@@ -1,4 +1,9 @@
 <div class="example-table-container">
+    <button mat-button (click)="importCsv()">Эскпортировать в CSV</button>
+    
+    <button id="uploadXmlBtn" mat-stroked-button (click)="csvFileInput.click()" [disabled]="isCsvUploading">Upload CSV <mat-spinner [diameter]="20" *ngIf="isCsvUploading"></mat-spinner></button>
+    <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput (change)="uploadCsvFile(csvFileInput.files)">
+    
     <button mat-button (click)="addForecastingTaskData()">Добавить данные</button>
 
     <div class="example-loading-shade" *ngIf="isLoadingResults">

@@ -42,4 +42,14 @@ export class ForecastingTaskService {
     const href = this.serverUrl + `PagedForecastingTaskEntity/${taskEntityName}/${pageNumber}/${perPage}`;
     return this._httpClient.get<PagedForecastingTask>(href);
   }
+
+  saveForecastingTaskEntityCsv(taskEntityName: string): Observable<Blob> {
+    const href = this.serverUrl + `SaveForecastingTaskValuesCsv/${taskEntityName}`;
+    return this._httpClient.get(href, { responseType: 'blob' });
+  }
+
+  uploadForecastingTaskValuesCsv(taskEntityName: string, formData: FormData): Observable<void> {
+    const href = this.serverUrl + `UploadCsvFile/${taskEntityName}`;
+    return this._httpClient.post<void>(href, formData);
+  }
 }
