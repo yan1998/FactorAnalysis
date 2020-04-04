@@ -119,11 +119,28 @@ namespace FactorAnalysis.Controllers
         }
 
 
+        /// <summary>
+        /// Uploading a csv file with data
+        /// </summary>
+        /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <returns></returns>
         [HttpPost("UploadCsvFile/{taskEntityName}"), DisableRequestSizeLimit]
         public Task UploadCsvFile(string taskEntityName)
         {
             string csv = StreamConversionHelper.ConvertStreamToString(Request.Form.Files[0].OpenReadStream());
             return _forecastingTasksService.AddForecastingTaskFactorsViaCsv(taskEntityName, csv);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskEntityName">>Name of forecasting task</param>
+        /// <returns></returns>
+        [HttpPost("CreateTaskEntityModel/{taskEntityName}")]
+        public Task CreateTaskEntityModel(string taskEntityName)
+        {
+            return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName);
+        }
+
     }
 }

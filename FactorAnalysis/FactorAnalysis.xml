@@ -113,6 +113,20 @@
             <param name="taskEntityName">Name of forecasting task</param>
             <returns></returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.UploadCsvFile(System.String)">
+            <summary>
+            Uploading a csv file with data
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityModel(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="taskEntityName">>Name of forecasting task</param>
+            <returns></returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>
             Controller for interact with ML.NET

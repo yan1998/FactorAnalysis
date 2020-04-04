@@ -2,7 +2,9 @@
 using BusinessLogic.Services.Abstractions;
 using DataAccess.Repositories.Abstractions;
 using DomainModel.ForecastingTasks;
+using FactorAnalysisML.Model.ModelBuilders;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -124,7 +126,7 @@ namespace BusinessLogic.Services.Implementations
                         var value = factorsValue.FactorsValue.Single(x => x.FactorId == factorDeclaration.Id).Value;
                         tempStr += value.ToString() + ',';
                     }
-                    result += tempStr.Substring(0, tempStr.Length - 1);
+                    result += tempStr[0..^1];
                 }
 
                 return result;
@@ -171,6 +173,40 @@ namespace BusinessLogic.Services.Implementations
                     });
                 }
                 await _forecastingTasksRepository.AddForecastingTaskFactors(entityName, factorsValue);
+            }
+        }
+
+        public async Task CreateForecastingTaskMLModel(string entityName)
+        {
+            if (string.IsNullOrWhiteSpace(entityName))
+                throw new DomainErrorException($"Forecasting task name must to be filled!");
+
+            try
+            {
+                var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
+                var propertyNames = taskEntity.FactorsDeclaration.Select(x => x.Name).ToList();
+                var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
+                var dataList = new List<object>();
+                // var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.CreateObject().GetType()));
+
+                foreach (var factorsValue in taskEntity.FactorsValues)
+                {
+                    var myClassInstance = entity.CreateObject();
+                    foreach (var factorDeclaration in taskEntity.FactorsDeclaration)
+                    {
+                        var value = factorsValue.FactorsValue.Single(x => x.FactorId == factorDeclaration.Id).Value;
+                        entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
+                    }
+                    dataList.Add(myClassInstance);
+                }
+
+                var factors = taskEntity.FactorsDeclaration.Where(x => !x.IsPredicatedValue).Select(x => x.Name);
+                var predictedValue = taskEntity.FactorsDeclaration.Single(x => x.IsPredicatedValue).Name;
+                FactoryTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue);
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
