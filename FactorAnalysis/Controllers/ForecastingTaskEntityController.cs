@@ -132,9 +132,9 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Create model for concrete taskEntity
         /// </summary>
-        /// <param name="taskEntityName">>Name of forecasting task</param>
+        /// <param name="taskEntityName">Name of forecasting task</param>
         /// <returns></returns>
         [HttpPost("CreateTaskEntityModel/{taskEntityName}")]
         public Task CreateTaskEntityModel(string taskEntityName)
@@ -142,5 +142,17 @@ namespace FactorAnalysis.Controllers
             return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName);
         }
 
+        /// <summary>
+        /// Prediction method
+        /// </summary>
+        /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <param name="factorValues">List of factor values</param>
+        /// <returns></returns>
+        [HttpPost("PredictValue/{taskEntityName}")]
+        public Task<float> PredictValue(string taskEntityName, List<ForecastingTaskFactorValue> factorValues)
+        {
+            var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValue>>(factorValues);
+            return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
+        }
     }
 }

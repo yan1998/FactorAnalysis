@@ -20,7 +20,7 @@ namespace FactorAnalysisML.ConsoleApp
             CurrencyExchangeModelInput sampleData = CreateSingleDataSample(DATA_FILEPATH);
 
             // Make a single prediction on the sample data and print results
-            CurrencyExchangeModelOutput predictionResult = EURCurrencyExchangeConsumeModel.Predict(sampleData);
+            ModelOutput predictionResult = EURCurrencyExchangeConsumeModel.Predict(sampleData);
 
             Console.WriteLine("Using model to make single prediction -- Comparing actual ExchangeRateEUR with predicted ExchangeRateEUR from sample data...\n\n");
             Console.WriteLine($"Id: {sampleData.Id}");

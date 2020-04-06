@@ -3,7 +3,7 @@
 
 namespace FactorAnalysisML.Model.Models
 {
-    public class CurrencyExchangeModelOutput
+    public class ModelOutput
     {
         public float Score { get; set; }
     }

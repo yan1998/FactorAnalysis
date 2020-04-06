@@ -12,7 +12,7 @@ namespace FactorAnalysisML.Model
     {
         // For more info on consuming ML.NET models, visit https://aka.ms/model-builder-consume
         // Method for consuming model in your app
-        public static CurrencyExchangeModelOutput Predict(CurrencyExchangeModelInput input)
+        public static ModelOutput Predict(CurrencyExchangeModelInput input)
         {
 
             // Create new MLContext
@@ -20,17 +20,12 @@ namespace FactorAnalysisML.Model
 
             // Load model & create prediction engine
             var modelPath = AppDomain.CurrentDomain.BaseDirectory + "EURCurrencyExchangeMLModel.zip";
-            var mlModel = mlContext.Model.Load(modelPath, out var modelInputSchema);
-            var predEngine = mlContext.Model.CreatePredictionEngine<CurrencyExchangeModelInput, CurrencyExchangeModelOutput>(mlModel);
+            var mlModel = mlContext.Model.Load(modelPath, out _);
+            var predEngine = mlContext.Model.CreatePredictionEngine<CurrencyExchangeModelInput, ModelOutput>(mlModel);
 
             // Use model to make prediction on input data
             var result = predEngine.Predict(input);
             return result;
-        }
-
-        public static void Test()
-        { 
-            
         }
     }
 }

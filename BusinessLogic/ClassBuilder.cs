@@ -4,28 +4,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Threading;
 
 namespace BusinessLogic
 {
     public class ClassBuilder
     {
         private readonly AssemblyName _asemblyName;
-        private readonly Type _type;
+
+        public Type Type { get; private set; }
 
         public ClassBuilder(string сlassName, List<string> propertyNames, Type type)
         {
             _asemblyName = new AssemblyName(сlassName);
-
-            TypeBuilder dynamicClass = this.CreateClass();
-            this.CreateConstructor(dynamicClass);
-            for (int ind = 0; ind < propertyNames.Count(); ind++)
-                CreateProperty(dynamicClass, ind, propertyNames[ind], type);
-            _type = dynamicClass.CreateType();
+             CreateClass(propertyNames, type);
         }
 
         public object CreateObject()
         {
-            return Activator.CreateInstance(_type);
+            return Activator.CreateInstance(Type);
         }
 
         public void SetPropertyValue<T>(object obj, string propertyName, T value)
@@ -34,7 +31,7 @@ namespace BusinessLogic
             property.SetValue(obj, value);
         }
 
-        private TypeBuilder CreateClass()
+        private void CreateClass(List<string> propertyNames, Type type)
         {
             AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(this._asemblyName, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
@@ -46,7 +43,11 @@ namespace BusinessLogic
                                 TypeAttributes.BeforeFieldInit |
                                 TypeAttributes.AutoLayout,
                                 null);
-            return typeBuilder;
+
+            this.CreateConstructor(typeBuilder);
+            for (int ind = 0; ind < propertyNames.Count(); ind++)
+                CreateProperty(typeBuilder, ind, propertyNames[ind], type);
+            Type = typeBuilder.CreateType();
         }
         private void CreateConstructor(TypeBuilder typeBuilder)
         {

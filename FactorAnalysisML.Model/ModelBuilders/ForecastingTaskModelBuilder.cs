@@ -1,17 +1,16 @@
 ﻿using Microsoft.ML;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace FactorAnalysisML.Model.ModelBuilders
 {
-    public class FactoryTaskModelBuilder
+    public class ForecastingTaskModelBuilder
     {
         private static MLContext mlContext = new MLContext(seed: 1);
 
-        public static void CreateModel(IEnumerable<object> data, string entityName, IEnumerable<string> factorNames, string predicatedValueName)
+        public static void CreateModel(dynamic data, string entityName, IEnumerable<string> factorNames, string predicatedValueName)
         {
             IDataView trainingDataView = mlContext.Data.LoadFromEnumerable(data);
 

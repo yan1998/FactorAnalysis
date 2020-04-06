@@ -122,9 +122,17 @@
         </member>
         <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityModel(System.String)">
             <summary>
-            
+            Create model for concrete taskEntity
             </summary>
-            <param name="taskEntityName">>Name of forecasting task</param>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,System.Collections.Generic.List{FactorAnalysis.Model.Requests.ForecastingTaskFactorValue})">
+            <summary>
+            Prediction method
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="factorValues">List of factor values</param>
             <returns></returns>
         </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">

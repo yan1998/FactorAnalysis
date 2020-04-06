@@ -23,5 +23,7 @@ namespace BusinessLogic.Services.Abstractions
         Task AddForecastingTaskFactorsViaCsv(string entityName, string csv);
 
         Task CreateForecastingTaskMLModel(string entityName);
+
+        Task<float> PredictValue(string entityName, List<ForecastingTaskFactorValue> values);
     }
 }

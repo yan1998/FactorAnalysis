@@ -5,10 +5,10 @@
 
     <div class="row" *ngFor="let taskFactor of taskFactors">
         <mat-form-field class="col-xs-2 col-md-2 col-sm-2 col-2">
-            <input matInput placeholder="Название фактора" [(ngModel)]='taskFactor.name' [name]='taskFactor.name'>
+            <input matInput placeholder="Название фактора" [(ngModel)]='taskFactor.name' [name]='taskFactor.name'  [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
-            <input matInput placeholder="Описание фактора" [(ngModel)]="taskFactor.description"  [name]='taskFactor.description'>
+            <input matInput placeholder="Описание фактора" [(ngModel)]="taskFactor.description"  [name]='taskFactor.description'  [ngModelOptions]="{standalone: true}">
         </mat-form-field>
         <div class="checkboxes col-xs-3 col-md-3 col-sm-3 col-3">
             <mat-checkbox [disabled]= "isPredicatedValueChecked && !taskFactor.isPredicatedValue" [checked]="taskFactor.isPredicatedValue" (change)="taskFactor.isPredicatedValue = !taskFactor.isPredicatedValue; isPredicatedValueChecked = !isPredicatedValueChecked">Прогнозировать значение?</mat-checkbox>
