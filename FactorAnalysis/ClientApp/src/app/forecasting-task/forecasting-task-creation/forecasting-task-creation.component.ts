@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ForecastingTaskFactorDeclarationCreationRequest, CreateForecastingTaskEntityRequest } from '../models/create-forecasting-task-entity-request';
+import { ForecastingTaskFieldDeclarationCreationRequest, CreateForecastingTaskEntityRequest } from '../models/create-forecasting-task-entity-request';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class ForecastingTaskCreationComponent implements OnInit {
 
   taskName: string;
-  taskFactors: ForecastingTaskFactorDeclarationCreationRequest[];
+  taskFactors: ForecastingTaskFieldDeclarationCreationRequest[];
   isPredicatedValueChecked = false;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
@@ -33,7 +33,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
   }
 
   public addFactor(): void {
-    const newFactor: ForecastingTaskFactorDeclarationCreationRequest = {
+    const newFactor: ForecastingTaskFieldDeclarationCreationRequest = {
       description: '',
       name: '',
       isPredicatedValue: false
@@ -42,7 +42,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
     this.taskFactors.push(newFactor);
   }
 
-  public removeFactor(factor: ForecastingTaskFactorDeclarationCreationRequest): void {
+  public removeFactor(factor: ForecastingTaskFieldDeclarationCreationRequest): void {
     const index = this.taskFactors.indexOf(factor);
     if (index > -1) {
       this.taskFactors.splice(index, 1);
@@ -57,7 +57,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
 
     const request: CreateForecastingTaskEntityRequest = {
       taskEntityName: this.taskName,
-      taskFactorsDeclaration: this.taskFactors
+      taskFieldsDeclaration: this.taskFactors
     };
 
     this._forecastingTaskService.createForecatingTaskEntity(request).subscribe(x => {

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateForecastingTaskEntityRequest, ForecastingTaskFactorValueRequest } from '../models/create-forecasting-task-entity-request';
-import { PagedForecastingTask, ForecastingTaskFactorValue } from '../models/paged-forecasting-task';
+import { CreateForecastingTaskEntityRequest, ForecastingTaskFieldValueRequest } from '../models/create-forecasting-task-entity-request';
+import { PagedForecastingTask, ForecastingTaskFieldValue } from '../models/paged-forecasting-task';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class ForecastingTaskService {
     return this._httpClient.delete<void>(href);
   }
 
-  addForecstingTaskFactorsValue(taskEntityName: string, values: ForecastingTaskFactorValueRequest): Observable<void> {
+  addForecstingTaskFactorsValue(taskEntityName: string, values: ForecastingTaskFieldValueRequest): Observable<void> {
     const href = this.serverUrl + `ForecastingTaskEntity/${taskEntityName}`;
     return this._httpClient.post<void>(href, values);
   }

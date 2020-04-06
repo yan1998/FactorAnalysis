@@ -6,15 +6,15 @@ namespace DomainModel.ForecastingTasks
     {
         public string Name { get; set; }
 
-        public List<ForecastingTaskFactorDeclaration> FactorsDeclaration { get; set; }
+        public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFactorValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
     }
 
-    public class ForecastingTaskFactorValues
+    public class ForecastingTaskFieldValues
     {
         public string id { get; set; }
 
-        public List<ForecastingTaskFactorValue> FactorsValue { get; set; }
+        public List<ForecastingTaskFieldValue> FactorsValue { get; set; }
     }
 }

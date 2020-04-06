@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ForecastingTaskFactorValue } from '../../models/paged-forecasting-task';
+import { ForecastingTaskFieldValue } from '../../models/paged-forecasting-task';
 
 @Component({
   selector: 'app-add-dorecasting-task-data-dialog',
@@ -19,13 +19,13 @@ export class AddDorecastingTaskDataDialogComponent {
     }
 
     onSubmitClick(): void {
-      const result: ForecastingTaskFactorValue[] = [];
+      const result: ForecastingTaskFieldValue[] = [];
 
       // tslint:disable-next-line: forin
       for (const property in this.obj) {
         result.push({
           // tslint:disable-next-line: radix
-          factorId: parseInt(property),
+          fieldId: parseInt(property),
           // tslint:disable-next-line: radix
           value: parseInt(this.obj[property])
         });

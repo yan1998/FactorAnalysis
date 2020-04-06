@@ -1,24 +1,24 @@
 export class PagedForecastingTask {
     name: string;
     totalCount: number;
-    factorsDeclaration: ForecastingTaskFactorDeclaration[];
-    factorsValues: ForecastingTaskFactorValues[];
+    fieldsDeclaration: ForecastingTaskFieldDeclaration[];
+    fieldsValues: ForecastingTaskFieldValues[];
 }
 
-export class ForecastingTaskFactorDeclaration {
+export class ForecastingTaskFieldDeclaration {
     id: number;
     name: string;
     description: string;
     isPredicatedValues: boolean;
 }
 
-export class ForecastingTaskFactorValues {
+export class ForecastingTaskFieldValues {
     id: string;
-    factorsValue: ForecastingTaskFactorValue[];
+    fieldsValue: ForecastingTaskFieldValue[];
 }
 
 
-export class ForecastingTaskFactorValue {
-    factorId: number;
+export class ForecastingTaskFieldValue {
+    fieldId: number;
     value: number;
 }

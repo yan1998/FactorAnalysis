@@ -33,7 +33,7 @@ namespace DataAccess.Repositories.Implementations
             return allNames.Where(x => !x.StartsWith("__")).ToList();
         }
 
-        public async Task CreateForecastingTaskEntity(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration> declaration)
+        public async Task CreateForecastingTaskEntity(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)
         {
             var forecastingTask = _mapper.Map<Model.ForecastingTaskDeclaration>(declaration);
             forecastingTask.Name = taskName;
@@ -53,18 +53,18 @@ namespace DataAccess.Repositories.Implementations
         public async Task<DomainModel.ForecastingTasks.ForecastingTask> GetForecastingTaskEntity(string taskName)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).FindSync(x => true).ToListAsync();
+            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).FindSync(x => true).ToListAsync();
 
             foreach (var taskFactor in taskFactors)
             {
-                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FactorId).ToList();
+                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FieldId).ToList();
             }
 
             var domainObject = new DomainModel.ForecastingTasks.ForecastingTask
             {
                 Name = taskName,
-                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration.OrderBy(x => x.Id)),
-                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValues>>(taskFactors)
+                FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
+                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFactors)
             };
             return domainObject;
         }
@@ -72,41 +72,41 @@ namespace DataAccess.Repositories.Implementations
         public async Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string taskName, int pageNumber, int perPage)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
+            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
             foreach (var taskFactor in taskFactors)
             {
-                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FactorId).ToList();
+                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FieldId).ToList();
             }
 
             var pagedForecastingTask = new PagedForecastingTask
             {
                 Name = taskName,
-                FactorsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration.OrderBy(x => x.Id)),
-                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValues>>(taskFactors),
-                TotalCount = await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).CountDocumentsAsync(x => true)
+                FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
+                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFactors),
+                TotalCount = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).CountDocumentsAsync(x => true)
             };
             return pagedForecastingTask;
         }
 
-        public async Task AddForecastingTaskFactors(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFactorValue> values)
+        public async Task AddForecastingTaskFactors(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue> values)
         {
-            var dataRecord = new Model.ForecastingTaskFactorValues
+            var dataRecord = new Model.ForecastingTaskFieldValues
             {
-                FactorsValue = _mapper.Map<List<Model.ForecastingTaskFactorValue>>(values)
+                FactorsValue = _mapper.Map<List<Model.ForecastingTaskFieldValue>>(values)
             };
             
-            await _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).InsertOneAsync(dataRecord);
+            await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertOneAsync(dataRecord);
         }
 
         public Task DeleteForecastingTaskFactorsById(string taskName, string id)
         {
-            return _database.GetCollection<Model.ForecastingTaskFactorValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(id));
+            return _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(id));
         }
 
-        public async Task<List<ForecastingTaskFactorDeclaration>> GetForecastingTaskFactorDeclaration(string taskName)
+        public async Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldDeclaration(string taskName)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            return _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(taskDeclaration.FactorsDeclaration);
+            return _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration);
         }
     }
 }

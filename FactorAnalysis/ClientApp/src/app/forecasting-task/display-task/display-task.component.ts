@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
-import { PagedForecastingTask, ForecastingTaskFactorValue } from '../models/paged-forecasting-task';
+import { PagedForecastingTask, ForecastingTaskFieldValue } from '../models/paged-forecasting-task';
 import { MatPaginator } from '@angular/material/paginator';
 import { merge, of as observableOf } from 'rxjs';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { AddDorecastingTaskDataDialogComponent } from '../dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
-import { ForecastingTaskFactorValueRequest } from '../models/create-forecasting-task-entity-request';
+import { ForecastingTaskFieldValueRequest } from '../models/create-forecasting-task-entity-request';
 import { FileDownloaderService } from '../services/file-downloader.service';
 
 @Component({
@@ -36,8 +36,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     this.isLoadingResults = true;
     this.data = [];
     this.task = {
-      factorsDeclaration: [],
-      factorsValues: [],
+      fieldsDeclaration: [],
+      fieldsValues: [],
       name: '',
       totalCount: 0
     };
@@ -87,7 +87,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   addForecastingTaskData() {
     const factors = [];
-    this.task.factorsDeclaration.forEach(element => {
+    this.task.fieldsDeclaration.forEach(element => {
      factors.push({
        id: element.id,
        name: element.name
@@ -101,7 +101,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const request: ForecastingTaskFactorValueRequest = {
+        const request: ForecastingTaskFieldValueRequest = {
           values: result
         };
         this._forecastingTaskService.addForecstingTaskFactorsValue(this.name, request).subscribe(() => {
@@ -144,17 +144,17 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     this.displayedColumns = [];
     this.data = [];
 
-    this.task.factorsDeclaration.forEach(element => {
+    this.task.fieldsDeclaration.forEach(element => {
       this.displayedColumns.push(element.name);
     });
     this.displayedColumns.push('delete');
 
-    this.task.factorsValues.forEach(element => {
+    this.task.fieldsValues.forEach(element => {
       const obj = {
         id: element.id
       };
-      element.factorsValue.forEach(factor => {
-        obj[this.displayedColumns[factor.factorId]] = factor.value;
+      element.fieldsValue.forEach(field => {
+        obj[this.displayedColumns[field.fieldId]] = field.value;
       });
       this.data.push(obj);
     });

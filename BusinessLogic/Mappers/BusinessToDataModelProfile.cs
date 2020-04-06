@@ -10,14 +10,14 @@ namespace BusinessLogic.Mappers
         {
             CreateMap<DomainModel.ExchangeRateFactors.ExchangeRateFactors, ExchangeRateFactors>();
 
-            CreateMap<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>, ForecastingTaskDeclaration>()
-                .ForMember(x => x.FactorsDeclaration, opt => opt.MapFrom(y => y))
+            CreateMap<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>, ForecastingTaskDeclaration>()
+                .ForMember(x => x.FieldsDeclaration, opt => opt.MapFrom(y => y))
                 .ForMember(x => x.Name, opt => opt.Ignore())
                 .ForMember(x => x.Description, opt => opt.Ignore())
                 .ForMember(x => x._id, opt => opt.Ignore());
 
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration, ForecastingTaskFactorDeclaration>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFactorValue, ForecastingTaskFactorValue>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, ForecastingTaskFieldDeclaration>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValue, ForecastingTaskFieldValue>();
         }
     }
 }

@@ -61,9 +61,7 @@ namespace FactorAnalysisML.Model.ModelBuilders
             FileInfo _dataRoot = new FileInfo(AppDomain.CurrentDomain.BaseDirectory);
             string assemblyFolderPath = _dataRoot.Directory.FullName;
 
-            string fullPath = Path.Combine(assemblyFolderPath, relativePath);
-
-            return fullPath;
+            return Path.Combine(assemblyFolderPath, relativePath);
         }
     }
 }

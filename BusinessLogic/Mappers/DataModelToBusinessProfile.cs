@@ -8,9 +8,9 @@ namespace BusinessLogic.Mappers
         public DataModelToBusinessProfile()
         {
             CreateMap<ExchangeRateFactors, DomainModel.ExchangeRateFactors.ExchangeRateFactors>();
-            CreateMap<ForecastingTaskFactorDeclaration, DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>();
-            CreateMap<ForecastingTaskFactorValue, DomainModel.ForecastingTasks.ForecastingTaskFactorValue>();
-            CreateMap<ForecastingTaskFactorValues, DomainModel.ForecastingTasks.ForecastingTaskFactorValues>()
+            CreateMap<ForecastingTaskFieldDeclaration, DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>();
+            CreateMap<ForecastingTaskFieldValue, DomainModel.ForecastingTasks.ForecastingTaskFieldValue>();
+            CreateMap<ForecastingTaskFieldValues, DomainModel.ForecastingTasks.ForecastingTaskFieldValues>()
                 .ForMember(x => x.id, opt => opt.MapFrom(y => y._id.ToString()));
         }
     }

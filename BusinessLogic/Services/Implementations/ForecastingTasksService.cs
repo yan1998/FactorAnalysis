@@ -5,6 +5,7 @@ using DomainModel.ForecastingTasks;
 using FactorAnalysisML.Model;
 using FactorAnalysisML.Model.ModelBuilders;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace BusinessLogic.Services.Implementations
             return _forecastingTasksRepository.GetAllForecastingTaskEntitiesName();
         }
 
-        public async Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFactorDeclaration> declaration)
+        public async Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration)
         {
             if (declaration.Count(x => x.IsPredicatedValue) != 1)
                 throw new DomainErrorException($"Forecasting task must to have one predicated value!");
@@ -48,9 +49,15 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             await _forecastingTasksRepository.DeleteForecastingTaskEntity(entityName);
+
+            if (File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")))
+                File.Delete(GetAbsolutePath($"preparation_{entityName}MLModel.zip"));
+
+            if (File.Exists(GetAbsolutePath($"{entityName}MLModel.zip")))
+                File.Delete(GetAbsolutePath($"{entityName}MLModel.zip"));
         }
 
-        public async Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFactorValue> values)
+        public async Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFieldValue> values)
         {
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
@@ -86,13 +93,13 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                var result = string.Join(',', taskEntity.FactorsDeclaration.Select(x => x.Name));
+                var result = string.Join(',', taskEntity.FieldsDeclaration.Select(x => x.Name));
                 foreach (var factorsValue in taskEntity.FactorsValues)
                 {
                     var tempStr = "\r\n";
-                    foreach (var factorDeclaration in taskEntity.FactorsDeclaration)
+                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
-                        var value = factorsValue.FactorsValue.Single(x => x.FactorId == factorDeclaration.Id).Value;
+                        var value = factorsValue.FactorsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
                         tempStr += value.ToString() + ',';
                     }
                     result += tempStr[0..^1];
@@ -111,7 +118,7 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFactorDeclaration(entityName);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
             var rows = csv.Split("\r\n");
             var factorsOrder = new Dictionary<int, int>();
 
@@ -131,13 +138,13 @@ namespace BusinessLogic.Services.Implementations
             //Add factors values
             foreach (var row in rows.Skip(1))
             {
-                var factorsValue = new List<ForecastingTaskFactorValue>();
+                var factorsValue = new List<ForecastingTaskFieldValue>();
                 var columns = row.Split(',');
                 for (int i = 0; i < columns.Length; i++)
                 {
-                    factorsValue.Add(new ForecastingTaskFactorValue
+                    factorsValue.Add(new ForecastingTaskFieldValue
                     {
-                        FactorId = factorsOrder[i],
+                        FieldId = factorsOrder[i],
                         Value = float.Parse(columns[i])
                     });
                 }
@@ -153,22 +160,22 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                var propertyNames = taskEntity.FactorsDeclaration.Select(x => x.Name).ToList();
+                var propertyNames = taskEntity.FieldsDeclaration.Select(x => x.Name).ToList();
                 var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
                 foreach (var factorsValue in taskEntity.FactorsValues)
                 {
                     var myClassInstance = entity.CreateObject();
-                    foreach (var factorDeclaration in taskEntity.FactorsDeclaration)
+                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
-                        var value = factorsValue.FactorsValue.Single(x => x.FactorId == factorDeclaration.Id).Value;
+                        var value = factorsValue.FactorsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
                         entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
                     }
                     dataList.Add(myClassInstance);
                 }
 
-                var factors = taskEntity.FactorsDeclaration.Where(x => !x.IsPredicatedValue).Select(x => x.Name);
-                var predictedValue = taskEntity.FactorsDeclaration.Single(x => x.IsPredicatedValue).Name;
+                var factors = taskEntity.FieldsDeclaration.Where(x => !x.IsPredicatedValue).Select(x => x.Name);
+                var predictedValue = taskEntity.FieldsDeclaration.Single(x => x.IsPredicatedValue).Name;
                 ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue);
             }
             catch (Exception)
@@ -177,25 +184,25 @@ namespace BusinessLogic.Services.Implementations
             }
         }
 
-        public async Task<float> PredictValue(string entityName, List<ForecastingTaskFactorValue> values)
+        public async Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values)
         {
             // validation block
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFactorDeclaration(entityName);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
             var predictionValueId = taskEntityDeclaration.Single(x => x.IsPredicatedValue).Id;
-            if (values.Any(x => x.FactorId == predictionValueId))
-                throw new DomainErrorException($"FactorId {predictionValueId} is incorrect! This is the prediction value!");
+            if (values.Any(x => x.FieldId == predictionValueId))
+                throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
 
             var propertyNames = taskEntityDeclaration.Select(x => x.Name).ToList();
             var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
             var myClassInstance = entity.CreateObject();
             foreach (var value in values)
             {
-                if (!taskEntityDeclaration.Any(x => x.Id == value.FactorId))
-                    throw new DomainErrorException($"FactorId {value.FactorId} is incorrect!");
+                if (!taskEntityDeclaration.Any(x => x.Id == value.FieldId))
+                    throw new DomainErrorException($"FieldId {value.FieldId} is incorrect!");
 
-                var name = taskEntityDeclaration.Single(x => x.Id == value.FactorId).Name;
+                var name = taskEntityDeclaration.Single(x => x.Id == value.FieldId).Name;
                 entity.SetPropertyValue(myClassInstance, name, value.Value);
             }
 
@@ -208,6 +215,15 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException($"Forecasting task name must to be filled!");
             var existingEntityNames = await _forecastingTasksRepository.GetAllForecastingTaskEntitiesName();
             return existingEntityNames.Contains(entityName);
+        }
+
+
+        private static string GetAbsolutePath(string relativePath)
+        {
+            FileInfo _dataRoot = new FileInfo(AppDomain.CurrentDomain.BaseDirectory);
+            string assemblyFolderPath = _dataRoot.Directory.FullName;
+
+            return Path.Combine(assemblyFolderPath, relativePath);
         }
     }
 }

@@ -9,10 +9,10 @@ namespace FactorAnalysis.Model.Requests
     {
         public string TaskEntityName { get; set; }
 
-        public List<ForecastingTaskFactorDeclarationCreationRequest> TaskFactorsDeclaration { get; set; }
+        public List<ForecastingTaskFieldDeclarationCreationRequest> TaskFieldsDeclaration { get; set; }
     }
 
-    public class ForecastingTaskFactorDeclarationCreationRequest
+    public class ForecastingTaskFieldDeclarationCreationRequest
     {
         public string Name { get; set; }
         public string Description { get; set; }

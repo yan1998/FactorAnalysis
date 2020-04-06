@@ -6,14 +6,14 @@ namespace FactorAnalysis.Model.Responses
     {
         public string Name { get; set; }
 
-        public List<ForecastingTaskFactorDeclaration> FactorsDeclaration { get; set; }
+        public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFactorValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
 
         public long TotalCount { get; set; }
     }
 
-    public class ForecastingTaskFactorDeclaration
+    public class ForecastingTaskFieldDeclaration
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,10 +21,10 @@ namespace FactorAnalysis.Model.Responses
         public bool IsPredicatedValue { get; set; }
     }
 
-    public class ForecastingTaskFactorValues
+    public class ForecastingTaskFieldValues
     {
         public string id { get; set; }
 
-        public List<Requests.ForecastingTaskFactorValue> FactorsValue { get; set; }
+        public List<Requests.ForecastingTaskFieldValue> FactorsValue { get; set; }
     }
 }

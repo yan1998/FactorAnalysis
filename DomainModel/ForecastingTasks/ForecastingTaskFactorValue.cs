@@ -1,8 +1,8 @@
 ﻿namespace DomainModel.ForecastingTasks
 {
-    public class ForecastingTaskFactorValue
+    public class ForecastingTaskFieldValue
     {
-        public int FactorId { get; set; }
+        public int FieldId { get; set; }
         public float Value { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace DataAccess.Repositories.Abstractions
     {
         Task<List<string>> GetAllForecastingTaskEntitiesName();
 
-        Task CreateForecastingTaskEntity(string taskName, List<ForecastingTaskFactorDeclaration> declaration);
+        Task CreateForecastingTaskEntity(string taskName, List<ForecastingTaskFieldDeclaration> declaration);
 
         Task DeleteForecastingTaskEntity(string taskName);
 
@@ -16,10 +16,10 @@ namespace DataAccess.Repositories.Abstractions
 
         Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string taskName, int pageNumber, int perPage);
 
-        Task AddForecastingTaskFactors(string taskName, List<ForecastingTaskFactorValue> values);
+        Task AddForecastingTaskFactors(string taskName, List<ForecastingTaskFieldValue> values);
 
         Task DeleteForecastingTaskFactorsById(string taskName, string id);
 
-        Task<List<ForecastingTaskFactorDeclaration>> GetForecastingTaskFactorDeclaration(string taskName);
+        Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldDeclaration(string taskName);
     }
 }

@@ -8,11 +8,11 @@ namespace BusinessLogic.Services.Abstractions
     {
         Task<List<string>> GetAllForecastingTaskEntitiesName();
 
-        Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFactorDeclaration> declaration);
+        Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration);
 
         Task DeleteForecastingTaskEntity(string entityName);
 
-        Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFactorValue> values);
+        Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFieldValue> values);
 
         Task DeleteForecastingTaskFactorsById(string entityName, string id);
 
@@ -24,6 +24,6 @@ namespace BusinessLogic.Services.Abstractions
 
         Task CreateForecastingTaskMLModel(string entityName);
 
-        Task<float> PredictValue(string entityName, List<ForecastingTaskFactorValue> values);
+        Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values);
     }
 }

@@ -1,16 +1,16 @@
-import { ForecastingTaskFactorValue } from "./paged-forecasting-task";
+import { ForecastingTaskFieldValue } from "./paged-forecasting-task";
 
 export class CreateForecastingTaskEntityRequest {
     taskEntityName: string;
-    taskFactorsDeclaration: ForecastingTaskFactorDeclarationCreationRequest[];
+    taskFieldsDeclaration: ForecastingTaskFieldDeclarationCreationRequest[];
 }
 
-export class ForecastingTaskFactorDeclarationCreationRequest {
+export class ForecastingTaskFieldDeclarationCreationRequest {
     name: string;
     description: string;
     isPredicatedValue: boolean;
 }
 
-export class ForecastingTaskFactorValueRequest {
-    values: ForecastingTaskFactorValue[];
+export class ForecastingTaskFieldValueRequest {
+    values: ForecastingTaskFieldValue[];
 }

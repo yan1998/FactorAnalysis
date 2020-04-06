@@ -11,10 +11,10 @@ namespace DataAccess.Model
 
         public string Description { get; set; }
 
-        public List<ForecastingTaskFactorDeclaration> FactorsDeclaration { get; set; }
+        public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
     }
 
-    public class ForecastingTaskFactorDeclaration
+    public class ForecastingTaskFieldDeclaration
     {
         public int Id { get; set; }
         public string Name { get; set; }

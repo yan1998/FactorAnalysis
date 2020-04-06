@@ -11,7 +11,7 @@
     </div>
     
     <table mat-table [dataSource]="data" class="example-table">
-        <ng-container *ngFor="let column of task.factorsDeclaration" matColumnDef="{{column.name}}">
+        <ng-container *ngFor="let column of task.fieldsDeclaration" matColumnDef="{{column.name}}">
             <th mat-header-cell *matHeaderCellDef>{{column.name}}</th>
             <td mat-cell *matCellDef="let row">{{row[column.name]}}</td>
         </ng-container>

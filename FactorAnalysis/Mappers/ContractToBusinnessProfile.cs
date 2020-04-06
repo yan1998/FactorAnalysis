@@ -16,15 +16,15 @@ namespace FactorAnalysis.Mappers
                 .ForMember(x => x.ExchangeRateUSD, opt => opt.Ignore())
                 .ForMember(x => x.ExchangeRateEUR, opt => opt.Ignore());
 
-            CreateMap<ForecastingTaskFactorDeclarationCreationRequest, DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>()
+            CreateMap<ForecastingTaskFieldDeclarationCreationRequest, DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>()
                 .ForMember(x => x.Id, opt => opt.Ignore());
 
-            CreateMap<Model.Requests.ForecastingTaskFactorValue, DomainModel.ForecastingTasks.ForecastingTaskFactorValue>();
+            CreateMap<Model.Requests.ForecastingTaskFieldValue, DomainModel.ForecastingTasks.ForecastingTaskFieldValue>();
 
             CreateMap<PagedForecastingTask, GetPagedForecastingTaskResponse>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration, Model.Responses.ForecastingTaskFactorDeclaration>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFactorValues, Model.Responses.ForecastingTaskFactorValues>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFactorValue, Model.Requests.ForecastingTaskFactorValue>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, Model.Responses.ForecastingTaskFieldDeclaration>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValues, Model.Responses.ForecastingTaskFieldValues>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValue, Model.Requests.ForecastingTaskFieldValue>();
         }
     }
 }

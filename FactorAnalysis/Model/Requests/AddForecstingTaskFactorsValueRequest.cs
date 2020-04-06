@@ -4,12 +4,12 @@ namespace FactorAnalysis.Model.Requests
 {
     public class AddForecstingTaskFactorsValueRequest
     {
-        public List<ForecastingTaskFactorValue> Values { get; set; }
+        public List<ForecastingTaskFieldValue> Values { get; set; }
     }
 
-    public class ForecastingTaskFactorValue
+    public class ForecastingTaskFieldValue
     {
-        public int FactorId { get; set; }
+        public int FieldId { get; set; }
         public float Value { get; set; }
     }
 }

@@ -8,9 +8,9 @@ namespace DomainModel.ForecastingTasks
     {
         public string Name { get; set; }
 
-        public List<ForecastingTaskFactorDeclaration> FactorsDeclaration { get; set; }
+        public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFactorValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
 
         public long TotalCount { get; set; }
     }

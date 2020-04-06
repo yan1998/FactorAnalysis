@@ -47,7 +47,7 @@ namespace FactorAnalysis.Controllers
         [HttpPost("ForecastingTaskEntity")]
         public Task CreateForecastingTaskEntity([FromBody]CreateForecastingTaskEntityRequest request)
         {
-            var declaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorDeclaration>>(request.TaskFactorsDeclaration);
+            var declaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(request.TaskFieldsDeclaration);
             return _forecastingTasksService.CreateForecastingTaskEntity(request.TaskEntityName, declaration);
         }
 
@@ -83,7 +83,7 @@ namespace FactorAnalysis.Controllers
         [HttpPost("ForecastingTaskEntity/{taskEntityName}")]
         public Task AddForecstingTaskFactorsValue(string taskEntityName, [FromBody]AddForecstingTaskFactorsValueRequest request)
         {
-            var values = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValue>>(request.Values);
+            var values = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
             return _forecastingTasksService.AddForecastingTaskFactors(taskEntityName, values);
         }
 
@@ -149,9 +149,9 @@ namespace FactorAnalysis.Controllers
         /// <param name="factorValues">List of factor values</param>
         /// <returns></returns>
         [HttpPost("PredictValue/{taskEntityName}")]
-        public Task<float> PredictValue(string taskEntityName, List<ForecastingTaskFactorValue> factorValues)
+        public Task<float> PredictValue(string taskEntityName, List<ForecastingTaskFieldValue> factorValues)
         {
-            var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFactorValue>>(factorValues);
+            var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(factorValues);
             return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
         }
     }

@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ForecastingTaskListComponent implements OnInit {
 
-  private taskEntitiesNames: string[];
+  taskEntitiesNames: string[];
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router) { }
