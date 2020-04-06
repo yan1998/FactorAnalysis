@@ -1,4 +1,5 @@
-import { ForecastingTaskFieldValue } from "./paged-forecasting-task";
+import { ForecastingTaskFieldValue } from './paged-forecasting-task';
+import { FieldType } from './field-type.enum';
 
 export class CreateForecastingTaskEntityRequest {
     taskEntityName: string;
@@ -8,7 +9,7 @@ export class CreateForecastingTaskEntityRequest {
 export class ForecastingTaskFieldDeclarationCreationRequest {
     name: string;
     description: string;
-    isPredicatedValue: boolean;
+    type: FieldType;
 }
 
 export class ForecastingTaskFieldValueRequest {

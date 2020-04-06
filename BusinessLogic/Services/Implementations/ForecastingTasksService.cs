@@ -29,7 +29,7 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration)
         {
-            if (declaration.Count(x => x.IsPredicatedValue) != 1)
+            if (declaration.Count(x => x.Type == FieldType.PredictionField) != 1)
                 throw new DomainErrorException($"Forecasting task must to have one predicated value!");
 
             if (await DoesForecastingTaskEntityExists(entityName))
@@ -94,12 +94,12 @@ namespace BusinessLogic.Services.Implementations
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
                 var result = string.Join(',', taskEntity.FieldsDeclaration.Select(x => x.Name));
-                foreach (var factorsValue in taskEntity.FactorsValues)
+                foreach (var fieldsValue in taskEntity.FieldsValues)
                 {
                     var tempStr = "\r\n";
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
-                        var value = factorsValue.FactorsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
+                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
                         tempStr += value.ToString() + ',';
                     }
                     result += tempStr[0..^1];
@@ -163,19 +163,19 @@ namespace BusinessLogic.Services.Implementations
                 var propertyNames = taskEntity.FieldsDeclaration.Select(x => x.Name).ToList();
                 var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
-                foreach (var factorsValue in taskEntity.FactorsValues)
+                foreach (var fieldsValue in taskEntity.FieldsValues)
                 {
                     var myClassInstance = entity.CreateObject();
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
-                        var value = factorsValue.FactorsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
+                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
                         entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
                     }
                     dataList.Add(myClassInstance);
                 }
 
-                var factors = taskEntity.FieldsDeclaration.Where(x => !x.IsPredicatedValue).Select(x => x.Name);
-                var predictedValue = taskEntity.FieldsDeclaration.Single(x => x.IsPredicatedValue).Name;
+                var factors = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.PredictionField).Select(x => x.Name);
+                var predictedValue = taskEntity.FieldsDeclaration.Single(x => x.Type == FieldType.PredictionField).Name;
                 ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue);
             }
             catch (Exception)
@@ -190,7 +190,7 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
-            var predictionValueId = taskEntityDeclaration.Single(x => x.IsPredicatedValue).Id;
+            var predictionValueId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
             if (values.Any(x => x.FieldId == predictionValueId))
                 throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
 

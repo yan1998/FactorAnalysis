@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
 import { FileDownloaderService } from './services/file-downloader.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FileDownloaderService } from './services/file-downloader.service';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatSelectModule,
     MatInputModule,
     MatFormFieldModule
   ],

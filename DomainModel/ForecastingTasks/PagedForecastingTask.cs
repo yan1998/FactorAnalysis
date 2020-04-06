@@ -10,7 +10,7 @@ namespace DomainModel.ForecastingTasks
 
         public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
 
         public long TotalCount { get; set; }
     }

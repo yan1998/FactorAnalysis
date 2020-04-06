@@ -16,7 +16,9 @@ namespace BusinessLogic.Mappers
                 .ForMember(x => x.Description, opt => opt.Ignore())
                 .ForMember(x => x._id, opt => opt.Ignore());
 
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, ForecastingTaskFieldDeclaration>();
+            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, ForecastingTaskFieldDeclaration>()
+                .ForMember(x => x.Type, opt => opt.MapFrom(y => (short)y.Type));
+
             CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValue, ForecastingTaskFieldValue>();
         }
     }

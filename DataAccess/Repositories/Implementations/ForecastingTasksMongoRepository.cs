@@ -53,18 +53,18 @@ namespace DataAccess.Repositories.Implementations
         public async Task<DomainModel.ForecastingTasks.ForecastingTask> GetForecastingTaskEntity(string taskName)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).FindSync(x => true).ToListAsync();
+            var taskfields = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).FindSync(x => true).ToListAsync();
 
-            foreach (var taskFactor in taskFactors)
+            foreach (var taskField in taskfields)
             {
-                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FieldId).ToList();
+                taskField.FieldsValue = taskField.FieldsValue.OrderBy(x => x.FieldId).ToList();
             }
 
             var domainObject = new DomainModel.ForecastingTasks.ForecastingTask
             {
                 Name = taskName,
                 FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
-                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFactors)
+                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskfields)
             };
             return domainObject;
         }
@@ -72,17 +72,17 @@ namespace DataAccess.Repositories.Implementations
         public async Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string taskName, int pageNumber, int perPage)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFactors = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
-            foreach (var taskFactor in taskFactors)
+            var taskFields = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
+            foreach (var taskField in taskFields)
             {
-                taskFactor.FactorsValue = taskFactor.FactorsValue.OrderBy(x => x.FieldId).ToList();
+                taskField.FieldsValue = taskField.FieldsValue.OrderBy(x => x.FieldId).ToList();
             }
 
             var pagedForecastingTask = new PagedForecastingTask
             {
                 Name = taskName,
                 FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
-                FactorsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFactors),
+                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFields),
                 TotalCount = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).CountDocumentsAsync(x => true)
             };
             return pagedForecastingTask;
@@ -92,7 +92,7 @@ namespace DataAccess.Repositories.Implementations
         {
             var dataRecord = new Model.ForecastingTaskFieldValues
             {
-                FactorsValue = _mapper.Map<List<Model.ForecastingTaskFieldValue>>(values)
+                FieldsValue = _mapper.Map<List<Model.ForecastingTaskFieldValue>>(values)
             };
             
             await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertOneAsync(dataRecord);

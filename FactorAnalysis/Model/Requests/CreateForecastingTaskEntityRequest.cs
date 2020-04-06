@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace FactorAnalysis.Model.Requests
 {
@@ -16,6 +13,6 @@ namespace FactorAnalysis.Model.Requests
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsPredicatedValue { get; set; }
+        public FieldType Type { get; set; }
     }
 }

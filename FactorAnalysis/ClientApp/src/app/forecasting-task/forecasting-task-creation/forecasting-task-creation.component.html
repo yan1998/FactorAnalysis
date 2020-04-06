@@ -1,24 +1,32 @@
-<form class="example-form">
-    <mat-form-field>
-        <input matInput name="taskName" [(ngModel)]='taskName'  placeholder="Имя задачи">
-    </mat-form-field>
+<mat-form-field>
+    <input matInput name="taskName" [(ngModel)]='taskName' placeholder="Имя задачи">
+</mat-form-field>
 
-    <div class="row" *ngFor="let taskFactor of taskFactors">
-        <mat-form-field class="col-xs-2 col-md-2 col-sm-2 col-2">
-            <input matInput placeholder="Название фактора" [(ngModel)]='taskFactor.name' [name]='taskFactor.name'  [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
-        <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
-            <input matInput placeholder="Описание фактора" [(ngModel)]="taskFactor.description"  [name]='taskFactor.description'  [ngModelOptions]="{standalone: true}">
-        </mat-form-field>
+<div class="row" *ngFor="let taskField of taskFields">
+    <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
+        <input matInput placeholder="Название фактора" [(ngModel)]='taskField.name'>
+    </mat-form-field>
+    <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
+        <input matInput placeholder="Описание фактора" [(ngModel)]="taskField.description">
+    </mat-form-field>
+    <!-- 
         <div class="checkboxes col-xs-3 col-md-3 col-sm-3 col-3">
             <mat-checkbox [disabled]= "isPredicatedValueChecked && !taskFactor.isPredicatedValue" [checked]="taskFactor.isPredicatedValue" (change)="taskFactor.isPredicatedValue = !taskFactor.isPredicatedValue; isPredicatedValueChecked = !isPredicatedValueChecked">Прогнозировать значение?</mat-checkbox>
         </div>
-        <div class="checkboxes col-xs-2 col-md-2 col-sm-2 col-2">
-            <button mat-button (click)="removeFactor(taskFactor)" [disabled]="taskFactors.length <= 1">-</button>
-        </div>
-    </div>
-   
-</form>
-<button mat-button (click)="addFactor()">Добавить фактор</button>
+        -->
 
+    <mat-form-field class="col-xs-5 col-md-5 col-sm-5 col-5">
+        <mat-select [(ngModel)]="taskField.type">
+            <mat-option [value]="FieldType.InformationField">Ииформационное поле</mat-option>
+            <mat-option [value]="FieldType.Factor">Фактор</mat-option>
+            <mat-option [value]="FieldType.PredictionField">Прогнозируемое значение</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="checkboxes col-xs-1 col-md-1 col-sm-2 col-1">
+        <button mat-button (click)="removeField(taskField)" [disabled]="taskFields.length <= 1">-</button>
+    </div>
+</div>
+
+<button mat-button (click)="addField()">Добавить поле</button>
 <button mat-button (click)="createTask()">Сохранить</button>

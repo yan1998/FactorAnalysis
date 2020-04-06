@@ -6,7 +6,7 @@ namespace DataAccess.Model
     public class ForecastingTaskFieldValues
     {
         public ObjectId _id { get; set; }
-        public List<ForecastingTaskFieldValue> FactorsValue { get; set; }
+        public List<ForecastingTaskFieldValue> FieldsValue { get; set; }
     }
 
     public class ForecastingTaskFieldValue

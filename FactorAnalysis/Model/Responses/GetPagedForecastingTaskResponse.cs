@@ -8,7 +8,7 @@ namespace FactorAnalysis.Model.Responses
 
         public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
 
         public long TotalCount { get; set; }
     }
@@ -18,13 +18,13 @@ namespace FactorAnalysis.Model.Responses
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public bool IsPredicatedValue { get; set; }
+        public FieldType Type{ get; set; }
     }
 
     public class ForecastingTaskFieldValues
     {
         public string id { get; set; }
 
-        public List<Requests.ForecastingTaskFieldValue> FactorsValue { get; set; }
+        public List<Requests.ForecastingTaskFieldValue> FieldsValue { get; set; }
     }
 }

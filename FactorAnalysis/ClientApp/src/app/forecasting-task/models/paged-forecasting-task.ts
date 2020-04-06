@@ -1,3 +1,5 @@
+import { FieldType } from "./field-type.enum";
+
 export class PagedForecastingTask {
     name: string;
     totalCount: number;
@@ -9,7 +11,7 @@ export class ForecastingTaskFieldDeclaration {
     id: number;
     name: string;
     description: string;
-    isPredicatedValues: boolean;
+    type: FieldType;
 }
 
 export class ForecastingTaskFieldValues {

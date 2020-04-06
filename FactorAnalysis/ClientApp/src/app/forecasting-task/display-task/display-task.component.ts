@@ -88,10 +88,10 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   addForecastingTaskData() {
     const factors = [];
     this.task.fieldsDeclaration.forEach(element => {
-     factors.push({
-       id: element.id,
-       name: element.name
-     });
+      factors.push({
+        id: element.id,
+        name: element.name
+      });
     });
 
     const dialogRef = this.dialog.open(AddDorecastingTaskDataDialogComponent, {

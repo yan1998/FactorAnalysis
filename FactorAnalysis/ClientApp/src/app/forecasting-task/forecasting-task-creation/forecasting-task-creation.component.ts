@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ForecastingTaskFieldDeclarationCreationRequest, CreateForecastingTaskEntityRequest } from '../models/create-forecasting-task-entity-request';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
+import { FieldType } from '../models/field-type.enum';
 
 @Component({
   selector: 'app-forecasting-task-creation',
@@ -11,45 +12,42 @@ import { Router } from '@angular/router';
 export class ForecastingTaskCreationComponent implements OnInit {
 
   taskName: string;
-  taskFactors: ForecastingTaskFieldDeclarationCreationRequest[];
+  taskFields: ForecastingTaskFieldDeclarationCreationRequest[];
   isPredicatedValueChecked = false;
+  FieldType = FieldType;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router) { }
 
   ngOnInit() {
-    this.taskFactors = [
+    this.taskFields = [
       {
         name: 'Фактор 1',
         description: 'Описание к фактору 1',
-        isPredicatedValue: false
+        type: FieldType.InformationField
       },
       {
         name: 'Фактор 2',
         description: 'Описание к фактору 2',
-        isPredicatedValue: false
+        type: FieldType.Factor
       }
     ];
   }
 
-  public addFactor(): void {
-    const newFactor: ForecastingTaskFieldDeclarationCreationRequest = {
+  public addField(): void {
+    const newField: ForecastingTaskFieldDeclarationCreationRequest = {
       description: '',
       name: '',
-      isPredicatedValue: false
+      type: FieldType.InformationField
     };
 
-    this.taskFactors.push(newFactor);
+    this.taskFields.push(newField);
   }
 
-  public removeFactor(factor: ForecastingTaskFieldDeclarationCreationRequest): void {
-    const index = this.taskFactors.indexOf(factor);
+ public removeField(factor: ForecastingTaskFieldDeclarationCreationRequest): void {
+    const index = this.taskFields.indexOf(factor);
     if (index > -1) {
-      this.taskFactors.splice(index, 1);
-    }
-
-    if (factor.isPredicatedValue) {
-      this.isPredicatedValueChecked = false;
+      this.taskFields.splice(index, 1);
     }
   }
 
@@ -57,7 +55,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
 
     const request: CreateForecastingTaskEntityRequest = {
       taskEntityName: this.taskName,
-      taskFieldsDeclaration: this.taskFactors
+      taskFieldsDeclaration: this.taskFields
     };
 
     this._forecastingTaskService.createForecatingTaskEntity(request).subscribe(x => {

@@ -8,13 +8,13 @@ namespace DomainModel.ForecastingTasks
 
         public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFieldValues> FactorsValues { get; set; }
+        public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
     }
 
     public class ForecastingTaskFieldValues
     {
         public string id { get; set; }
 
-        public List<ForecastingTaskFieldValue> FactorsValue { get; set; }
+        public List<ForecastingTaskFieldValue> FieldsValue { get; set; }
     }
 }
