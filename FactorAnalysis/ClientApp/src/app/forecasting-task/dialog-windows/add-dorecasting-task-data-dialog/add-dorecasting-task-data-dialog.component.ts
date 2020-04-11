@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ForecastingTaskFieldValue } from '../../models/paged-forecasting-task';
+import { ForecastingTaskFieldValue } from '../../models/forecasting-task-field-value';
 
 @Component({
   selector: 'app-add-dorecasting-task-data-dialog',
@@ -26,8 +26,7 @@ export class AddDorecastingTaskDataDialogComponent {
         result.push({
           // tslint:disable-next-line: radix
           fieldId: parseInt(property),
-          // tslint:disable-next-line: radix
-          value: parseInt(this.obj[property])
+          value: this.obj[property]
         });
       }
 

@@ -1,10 +1,8 @@
 ﻿using Microsoft.ML.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Threading;
 
 namespace BusinessLogic
 {
@@ -14,10 +12,10 @@ namespace BusinessLogic
 
         public Type Type { get; private set; }
 
-        public ClassBuilder(string сlassName, List<string> propertyNames, Type type)
+        public ClassBuilder(string сlassName, Dictionary<string, Type> properties)
         {
             _asemblyName = new AssemblyName(сlassName);
-             CreateClass(propertyNames, type);
+             CreateClass(properties);
         }
 
         public object CreateObject()
@@ -31,7 +29,7 @@ namespace BusinessLogic
             property.SetValue(obj, value);
         }
 
-        private void CreateClass(List<string> propertyNames, Type type)
+        private void CreateClass(Dictionary<string, Type> properties)
         {
             AssemblyBuilder assemblyBuilder = AssemblyBuilder.DefineDynamicAssembly(this._asemblyName, AssemblyBuilderAccess.Run);
             ModuleBuilder moduleBuilder = assemblyBuilder.DefineDynamicModule("MainModule");
@@ -45,8 +43,13 @@ namespace BusinessLogic
                                 null);
 
             this.CreateConstructor(typeBuilder);
-            for (int ind = 0; ind < propertyNames.Count(); ind++)
-                CreateProperty(typeBuilder, ind, propertyNames[ind], type);
+
+            var ind = 0;
+            foreach (var property in properties)
+            {
+                CreateProperty(typeBuilder, ind++, property.Key, property.Value);
+            }
+
             Type = typeBuilder.CreateType();
         }
         private void CreateConstructor(TypeBuilder typeBuilder)

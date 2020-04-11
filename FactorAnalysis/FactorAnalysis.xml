@@ -120,9 +120,9 @@
             <param name="taskEntityName">Name of forecasting task</param>
             <returns></returns>
         </member>
-        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityModel(System.String)">
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityPredictionModel(System.String)">
             <summary>
-            Create model for concrete taskEntity
+            Create prediction model for concrete taskEntity
             </summary>
             <param name="taskEntityName">Name of forecasting task</param>
             <returns></returns>

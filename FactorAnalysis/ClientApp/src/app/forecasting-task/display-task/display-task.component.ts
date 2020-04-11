@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
-import { PagedForecastingTask, ForecastingTaskFieldValue } from '../models/paged-forecasting-task';
+import { PagedForecastingTask } from '../models/paged-forecasting-task';
 import { MatPaginator } from '@angular/material/paginator';
 import { merge, of as observableOf } from 'rxjs';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { AddDorecastingTaskDataDialogComponent } from '../dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
-import { ForecastingTaskFieldValueRequest } from '../models/create-forecasting-task-entity-request';
+import { ForecastingTaskFieldValueRequest } from '../models/requests/create-forecasting-task-entity-request';
 import { FileDownloaderService } from '../services/file-downloader.service';
 
 @Component({
@@ -26,6 +26,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   isLoadingResults: boolean;
   data: any;
   isCsvUploading: boolean;
+  isCsvDownloading: boolean;
+  isModelCreating: boolean;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _fileDownloaderService: FileDownloaderService,
@@ -107,17 +109,24 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         this._forecastingTaskService.addForecstingTaskFactorsValue(this.name, request).subscribe(() => {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
-        }, error => console.error(error));
+        }, error => {
+          console.error(error);
+          alert('error');
+        });
       }
     });
   }
 
-  importCsv() {
+  exportCsv() {
+    this.isCsvDownloading = true;
     this._forecastingTaskService.saveForecastingTaskEntityCsv(this.name).subscribe(file => {
       const blob = new Blob([file], { type: 'text/csv' });
       this._fileDownloaderService.downloadBlob(blob, `${this.name}.csv`);
+      this.isCsvDownloading = false;
     }, (error) => {
+      this.isCsvDownloading = false;
       console.log(error);
+      alert('error');
     });
   }
 
@@ -136,7 +145,21 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.paginator.firstPage();
       this.isCsvUploading = false;
     }, error => {
+      this.isCsvUploading = false;
       console.log(error);
+      alert('error');
+    });
+  }
+
+  createPredictionModel() {
+    this.isModelCreating = true;
+    this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name).subscribe(() => {
+      alert('done!');
+      this.isModelCreating = false;
+    }, error => {
+      console.log(error);
+      alert('error!');
+      this.isModelCreating = false;
     });
   }
 

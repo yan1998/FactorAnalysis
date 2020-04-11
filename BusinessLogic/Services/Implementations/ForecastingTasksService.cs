@@ -62,7 +62,21 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
-            await _forecastingTasksRepository.AddForecastingTaskFactors(entityName, values);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
+            if (taskEntityDeclaration.Count != values.Count())
+                throw new DomainErrorException($"Forecasting task with name {entityName} and the request have a different count of fields!");
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (!taskEntityDeclaration.Any(x => x.Id == values[i].FieldId))
+                    throw new DomainErrorException($"Column {values[i].FieldId} doesn't exist in forecasting task with name {entityName}!");
+
+                var fieldDeclaration = taskEntityDeclaration.Single(x => x.Id == values[i].FieldId);
+                if (fieldDeclaration.Type != FieldType.InformationField && !float.TryParse(values[i].Value, out _))
+                    throw new DomainErrorException($"Field {fieldDeclaration.Name} must to be filled with a number! But was filled with value: {values[i].Value}");
+            }
+
+            await _forecastingTasksRepository.AddForecastingTaskFields(entityName, values);
         }
 
         public async Task DeleteForecastingTaskFactorsById(string entityName, string id)
@@ -70,7 +84,7 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
-            await _forecastingTasksRepository.DeleteForecastingTaskFactorsById(entityName, id);
+            await _forecastingTasksRepository.DeleteForecastingTaskFieldsById(entityName, id);
         }
 
         public async Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string entityName, int pageNumber, int perPage)
@@ -100,7 +114,7 @@ namespace BusinessLogic.Services.Implementations
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
                         var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
-                        tempStr += value.ToString() + ',';
+                        tempStr += value + ',';
                     }
                     result += tempStr[0..^1];
                 }
@@ -120,7 +134,7 @@ namespace BusinessLogic.Services.Implementations
 
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
             var rows = csv.Split("\r\n");
-            var factorsOrder = new Dictionary<int, int>();
+            var fieldsOrder = new Dictionary<int, ForecastingTaskFieldDeclaration>();
 
             // Checking csv header
             var headerColumns = rows.First().Split(',');
@@ -132,24 +146,30 @@ namespace BusinessLogic.Services.Implementations
                 if (!taskEntityDeclaration.Any(x => x.Name == headerColumns[i]))
                     throw new DomainErrorException($"Column {headerColumns[i]} doesn't exist in forecasting task with name {entityName}!");
 
-                factorsOrder.Add(i, taskEntityDeclaration.Single(x => x.Name == headerColumns[i]).Id);
+                fieldsOrder.Add(i, taskEntityDeclaration.Single(x => x.Name == headerColumns[i]));
             }
 
-            //Add factors values
+            //Add fields values
+            var fieldsValues = new List<List<ForecastingTaskFieldValue>>();
             foreach (var row in rows.Skip(1))
             {
                 var factorsValue = new List<ForecastingTaskFieldValue>();
                 var columns = row.Split(',');
                 for (int i = 0; i < columns.Length; i++)
                 {
+                    if (fieldsOrder[i].Type != FieldType.InformationField && !float.TryParse(columns[i], out _))
+                        throw new DomainErrorException($"Field {fieldsOrder[i].Name} must to be filled with a number! But was filled with value: {columns[i]}");
+
                     factorsValue.Add(new ForecastingTaskFieldValue
                     {
-                        FieldId = factorsOrder[i],
-                        Value = float.Parse(columns[i])
+                        FieldId = fieldsOrder[i].Id,
+                        Value = columns[i]
                     });
                 }
-                await _forecastingTasksRepository.AddForecastingTaskFactors(entityName, factorsValue);
+                fieldsValues.Add(factorsValue);
             }
+
+            await _forecastingTasksRepository.AddBatchOfForecastingTaskFields(entityName, fieldsValues);
         }
 
         public async Task CreateForecastingTaskMLModel(string entityName)
@@ -160,21 +180,23 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                var propertyNames = taskEntity.FieldsDeclaration.Select(x => x.Name).ToList();
-                var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
+                var entity = new ClassBuilder(entityName, GetFieldsType(taskEntity.FieldsDeclaration));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
                 foreach (var fieldsValue in taskEntity.FieldsValues)
                 {
                     var myClassInstance = entity.CreateObject();
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
                     {
-                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
-                        entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
+                        var value= fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
+                        if (factorDeclaration.Type == FieldType.InformationField)
+                            entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
+                        else
+                            entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, float.Parse(value));
                     }
                     dataList.Add(myClassInstance);
                 }
 
-                var factors = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.PredictionField).Select(x => x.Name);
+                var factors = taskEntity.FieldsDeclaration.Where(x => x.Type == FieldType.Factor).Select(x => x.Name);
                 var predictedValue = taskEntity.FieldsDeclaration.Single(x => x.Type == FieldType.PredictionField).Name;
                 ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue);
             }
@@ -194,8 +216,7 @@ namespace BusinessLogic.Services.Implementations
             if (values.Any(x => x.FieldId == predictionValueId))
                 throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
 
-            var propertyNames = taskEntityDeclaration.Select(x => x.Name).ToList();
-            var entity = new ClassBuilder(entityName, propertyNames, typeof(float));
+            var entity = new ClassBuilder(entityName, GetFieldsType(taskEntityDeclaration));
             var myClassInstance = entity.CreateObject();
             foreach (var value in values)
             {
@@ -217,13 +238,23 @@ namespace BusinessLogic.Services.Implementations
             return existingEntityNames.Contains(entityName);
         }
 
-
-        private static string GetAbsolutePath(string relativePath)
+        private string GetAbsolutePath(string relativePath)
         {
             FileInfo _dataRoot = new FileInfo(AppDomain.CurrentDomain.BaseDirectory);
             string assemblyFolderPath = _dataRoot.Directory.FullName;
 
             return Path.Combine(assemblyFolderPath, relativePath);
+        }
+
+        private Dictionary<string, Type> GetFieldsType(List<ForecastingTaskFieldDeclaration> fieldsDeclaration)
+        {
+            var result = new Dictionary<string, Type>();
+            foreach (var fieldDeclaration in fieldsDeclaration)
+            {
+                var type = fieldDeclaration.Type == FieldType.InformationField ? typeof(string) : typeof(float); 
+                result.Add(fieldDeclaration.Name, type);
+            }
+            return result;
         }
     }
 }

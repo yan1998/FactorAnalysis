@@ -88,7 +88,7 @@ namespace DataAccess.Repositories.Implementations
             return pagedForecastingTask;
         }
 
-        public async Task AddForecastingTaskFactors(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue> values)
+        public async Task AddForecastingTaskFields(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue> values)
         {
             var dataRecord = new Model.ForecastingTaskFieldValues
             {
@@ -98,7 +98,21 @@ namespace DataAccess.Repositories.Implementations
             await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertOneAsync(dataRecord);
         }
 
-        public Task DeleteForecastingTaskFactorsById(string taskName, string id)
+        public async Task AddBatchOfForecastingTaskFields(string taskName, List<List<ForecastingTaskFieldValue>> values)
+        {
+            var dataRecords = new List<Model.ForecastingTaskFieldValues>();
+            values.ForEach(x =>
+            {
+                dataRecords.Add(new Model.ForecastingTaskFieldValues
+                {
+                    FieldsValue = _mapper.Map<List<Model.ForecastingTaskFieldValue>>(x)
+                });
+            });
+
+            await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertManyAsync(dataRecords);
+        }
+
+        public Task DeleteForecastingTaskFieldsById(string taskName, string id)
         {
             return _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(id));
         }

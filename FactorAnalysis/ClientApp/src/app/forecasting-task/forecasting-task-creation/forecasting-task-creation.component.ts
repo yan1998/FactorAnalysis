@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ForecastingTaskFieldDeclarationCreationRequest, CreateForecastingTaskEntityRequest } from '../models/create-forecasting-task-entity-request';
+import { CreateForecastingTaskEntityRequest } from '../models/requests/create-forecasting-task-entity-request';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
 import { FieldType } from '../models/field-type.enum';
+import { ForecastingTaskFieldDeclaration } from '../models/forecasting-task-field-declaration';
 
 @Component({
   selector: 'app-forecasting-task-creation',
@@ -12,7 +13,7 @@ import { FieldType } from '../models/field-type.enum';
 export class ForecastingTaskCreationComponent implements OnInit {
 
   taskName: string;
-  taskFields: ForecastingTaskFieldDeclarationCreationRequest[];
+  taskFields: ForecastingTaskFieldDeclaration[];
   isPredicatedValueChecked = false;
   FieldType = FieldType;
 
@@ -22,11 +23,13 @@ export class ForecastingTaskCreationComponent implements OnInit {
   ngOnInit() {
     this.taskFields = [
       {
+        id: 0,
         name: 'Фактор 1',
         description: 'Описание к фактору 1',
         type: FieldType.InformationField
       },
       {
+        id: 0,
         name: 'Фактор 2',
         description: 'Описание к фактору 2',
         type: FieldType.Factor
@@ -35,7 +38,8 @@ export class ForecastingTaskCreationComponent implements OnInit {
   }
 
   public addField(): void {
-    const newField: ForecastingTaskFieldDeclarationCreationRequest = {
+    const newField: ForecastingTaskFieldDeclaration = {
+      id: 0,
       description: '',
       name: '',
       type: FieldType.InformationField
@@ -44,7 +48,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
     this.taskFields.push(newField);
   }
 
- public removeField(factor: ForecastingTaskFieldDeclarationCreationRequest): void {
+ public removeField(factor: ForecastingTaskFieldDeclaration): void {
     const index = this.taskFields.indexOf(factor);
     if (index > -1) {
       this.taskFields.splice(index, 1);

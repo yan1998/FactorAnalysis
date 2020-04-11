@@ -4,6 +4,6 @@
     {
         public int FieldId { get; set; }
 
-        public float Value { get; set; }
+        public string Value { get; set; }
     }
 }

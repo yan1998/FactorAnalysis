@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateForecastingTaskEntityRequest, ForecastingTaskFieldValueRequest } from '../models/create-forecasting-task-entity-request';
-import { PagedForecastingTask, ForecastingTaskFieldValue } from '../models/paged-forecasting-task';
+import { CreateForecastingTaskEntityRequest, ForecastingTaskFieldValueRequest } from '../models/requests/create-forecasting-task-entity-request';
+import { PagedForecastingTask } from '../models/paged-forecasting-task';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +51,10 @@ export class ForecastingTaskService {
   uploadForecastingTaskValuesCsv(taskEntityName: string, formData: FormData): Observable<void> {
     const href = this.serverUrl + `UploadCsvFile/${taskEntityName}`;
     return this._httpClient.post<void>(href, formData);
+  }
+
+  сreateTaskEntityPredictionModel(taskEntityName: string): Observable<void> {
+    const href = this.serverUrl + `CreateTaskEntityPredictionModel/${taskEntityName}`;
+    return this._httpClient.post<void>(href, null);
   }
 }

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Services.Abstractions;
-using CsvHelper;
 using FactorAnalysis.Helpers;
 using FactorAnalysis.Model;
 using FactorAnalysis.Model.Requests;
@@ -133,12 +131,12 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Create model for concrete taskEntity
+        /// Create prediction model for concrete taskEntity
         /// </summary>
         /// <param name="taskEntityName">Name of forecasting task</param>
         /// <returns></returns>
-        [HttpPost("CreateTaskEntityModel/{taskEntityName}")]
-        public Task CreateTaskEntityModel(string taskEntityName)
+        [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}")]
+        public Task CreateTaskEntityPredictionModel(string taskEntityName)
         {
             return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName);
         }

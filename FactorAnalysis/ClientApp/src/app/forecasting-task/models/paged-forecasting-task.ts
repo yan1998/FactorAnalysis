@@ -1,4 +1,5 @@
-import { FieldType } from "./field-type.enum";
+import { ForecastingTaskFieldDeclaration } from './forecasting-task-field-declaration';
+import { ForecastingTaskFieldValue } from './forecasting-task-field-value';
 
 export class PagedForecastingTask {
     name: string;
@@ -7,20 +8,7 @@ export class PagedForecastingTask {
     fieldsValues: ForecastingTaskFieldValues[];
 }
 
-export class ForecastingTaskFieldDeclaration {
-    id: number;
-    name: string;
-    description: string;
-    type: FieldType;
-}
-
 export class ForecastingTaskFieldValues {
     id: string;
     fieldsValue: ForecastingTaskFieldValue[];
-}
-
-
-export class ForecastingTaskFieldValue {
-    fieldId: number;
-    value: number;
 }
