@@ -10,11 +10,4 @@ namespace DomainModel.ForecastingTasks
 
         public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
     }
-
-    public class ForecastingTaskFieldValues
-    {
-        public string id { get; set; }
-
-        public List<ForecastingTaskFieldValue> FieldsValue { get; set; }
-    }
 }

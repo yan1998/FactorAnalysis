@@ -12,19 +12,4 @@ namespace FactorAnalysis.Model.Responses
 
         public long TotalCount { get; set; }
     }
-
-    public class ForecastingTaskFieldDeclaration
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public FieldType Type{ get; set; }
-    }
-
-    public class ForecastingTaskFieldValues
-    {
-        public string id { get; set; }
-
-        public List<Requests.ForecastingTaskFieldValue> FieldsValue { get; set; }
-    }
 }

@@ -127,7 +127,7 @@
             <param name="taskEntityName">Name of forecasting task</param>
             <returns></returns>
         </member>
-        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,System.Collections.Generic.List{FactorAnalysis.Model.Requests.ForecastingTaskFieldValue})">
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,System.Collections.Generic.List{FactorAnalysis.Model.ForecastingTaskFieldValue})">
             <summary>
             Prediction method
             </summary>

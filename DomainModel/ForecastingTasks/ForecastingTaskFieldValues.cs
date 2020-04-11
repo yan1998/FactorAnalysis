@@ -1,11 +1,10 @@
-﻿using MongoDB.Bson;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DataAccess.Model
+namespace DomainModel.ForecastingTasks
 {
     public class ForecastingTaskFieldValues
     {
-        public ObjectId _id { get; set; }
+        public string Id { get; set; }
 
         public List<ForecastingTaskFieldValue> FieldsValue { get; set; }
     }

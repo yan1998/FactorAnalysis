@@ -15,7 +15,7 @@ namespace BusinessLogic.Mappers
             CreateMap<ForecastingTaskFieldValue, DomainModel.ForecastingTasks.ForecastingTaskFieldValue>();
 
             CreateMap<ForecastingTaskFieldValues, DomainModel.ForecastingTasks.ForecastingTaskFieldValues>()
-                .ForMember(x => x.id, opt => opt.MapFrom(y => y._id.ToString()));
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y._id.ToString()));
         }
     }
 }

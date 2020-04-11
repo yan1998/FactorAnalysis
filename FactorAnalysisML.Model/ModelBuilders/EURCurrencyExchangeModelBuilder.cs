@@ -44,11 +44,9 @@ namespace FactorAnalysisML.Model.ModelBuilders
         private static IEstimator<ITransformer> BuildTrainingPipeline(MLContext mlContext)
         { 
             var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", new[] { "CreditRate", "GDPIndicator", "ImportIndicator", "ExportIndicator", "InflationIndex" });
-
-            var trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: "ExchangeRateEUR", featureColumnName: "Features");
-            var trainingPipeline = dataProcessPipeline.Append(trainer);
-
-            return trainingPipeline;
+            IEstimator<ITransformer> trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: "ExchangeRateEUR", featureColumnName: "Features");
+            //trainer = mlContext.Regression.Trainers.FastForest(labelColumnName: "ExchangeRateEUR", featureColumnName: "Features");
+            return dataProcessPipeline.Append(trainer);
         }
 
         private static void SaveModel(MLContext mlContext, ITransformer mlModel, DataViewSchema modelSchema, ITransformer dataPrepModel, DataViewSchema prepDataSchema)

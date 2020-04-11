@@ -5,6 +5,7 @@ using AutoMapper;
 using BusinessLogic.Services.Abstractions;
 using CsvHelper;
 using FactorAnalysis.Helpers;
+using FactorAnalysis.Model;
 using FactorAnalysis.Model.Requests;
 using FactorAnalysis.Model.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -149,7 +150,7 @@ namespace FactorAnalysis.Controllers
         /// <param name="factorValues">List of factor values</param>
         /// <returns></returns>
         [HttpPost("PredictValue/{taskEntityName}")]
-        public Task<float> PredictValue(string taskEntityName, List<ForecastingTaskFieldValue> factorValues)
+        public Task<float> PredictValue(string taskEntityName, [FromBody]List<ForecastingTaskFieldValue> factorValues)
         {
             var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(factorValues);
             return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
