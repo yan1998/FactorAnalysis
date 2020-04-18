@@ -14,7 +14,6 @@ namespace FactorAnalysisML.Model
         // Method for consuming model in your app
         public static ModelOutput Predict(CurrencyExchangeModelInput input)
         {
-
             // Create new MLContext
             var mlContext = new MLContext();
 

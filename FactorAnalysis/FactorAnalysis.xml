@@ -120,20 +120,21 @@
             <param name="taskEntityName">Name of forecasting task</param>
             <returns></returns>
         </member>
-        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityPredictionModel(System.String)">
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityPredictionModel(System.String,DomainModel.ForecastingTasks.LearningAlgorithm)">
             <summary>
             Create prediction model for concrete taskEntity
             </summary>
             <param name="taskEntityName">Name of forecasting task</param>
+            <param name="learningAlgorithm">Name of learning algorithm</param>
             <returns></returns>
         </member>
-        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,System.Collections.Generic.List{FactorAnalysis.Model.ForecastingTaskFieldValue})">
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,FactorAnalysis.Model.Requests.PredictValueRequest)">
             <summary>
             Prediction method
             </summary>
             <param name="taskEntityName">Name of forecasting task</param>
-            <param name="factorValues">List of factor values</param>
-            <returns></returns>
+            <param name="request">List of factor values</param>
+            <returns>Prediction value</returns>
         </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>

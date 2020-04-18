@@ -1,4 +1,5 @@
-﻿using Microsoft.ML;
+﻿using DomainModel.ForecastingTasks;
+using Microsoft.ML;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,11 +11,11 @@ namespace FactorAnalysisML.Model.ModelBuilders
     {
         private static MLContext mlContext = new MLContext(seed: 1);
 
-        public static void CreateModel(dynamic data, string entityName, IEnumerable<string> factorNames, string predicatedValueName)
+        public static void CreateModel(dynamic data, string entityName, IEnumerable<string> factorNames, string predicatedValueName, LearningAlgorithm algorithm)
         {
             IDataView trainingDataView = mlContext.Data.LoadFromEnumerable(data);
 
-            IEstimator<ITransformer> trainingPipeline = BuildTrainingPipeline(mlContext, factorNames, predicatedValueName);
+            IEstimator<ITransformer> trainingPipeline = BuildTrainingPipeline(mlContext, factorNames, predicatedValueName, algorithm);
 
             ITransformer dataPrepTransformer = trainingPipeline
                 .Fit(trainingDataView);
@@ -26,21 +27,39 @@ namespace FactorAnalysisML.Model.ModelBuilders
             SaveModel(mlContext, trainedModel, transformedData.Schema, dataPrepTransformer, trainingDataView.Schema, entityName);
         }
 
-        //public static void RetrainModel(IEnumerable<CurrencyExchangeModelInput> newData)
-        //{
-        //    DataViewSchema dataPrepPipelineSchema, modelSchema;
-
-        //    ITransformer dataPrepPipeline = mlContext.Model.Load(GetAbsolutePath(preparationModelPath), out dataPrepPipelineSchema);
-        //    ITransformer trainedModel = mlContext.Model.Load(GetAbsolutePath(modelPath), out modelSchema);
-
-        //    LinearRegressionModelParameters originalModelParameters =
-        //        ((RegressionPredictionTransformer<object>)trainedModel).Model as LinearRegressionModelParameters;
-        //}
-
-        private static IEstimator<ITransformer> BuildTrainingPipeline(MLContext mlContext, IEnumerable<string> factorNames, string predicatedValueNam)
+        private static IEstimator<ITransformer> BuildTrainingPipeline(MLContext mlContext, IEnumerable<string> factorNames, string predicatedValueName, LearningAlgorithm algorithm)
         {
             var dataProcessPipeline = mlContext.Transforms.Concatenate("Features", factorNames.ToArray());
-            IEstimator<ITransformer> trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: predicatedValueNam, featureColumnName: "Features");
+            IEstimator<ITransformer> trainer;
+            switch (algorithm)
+            {
+                case LearningAlgorithm.FastForest:
+                    trainer = mlContext.Regression.Trainers.FastForest(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.FastTree:
+                    trainer = mlContext.Regression.Trainers.FastTree(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.FastTreeTweedie:
+                    trainer = mlContext.Regression.Trainers.FastTreeTweedie(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.Gam:
+                    trainer = mlContext.Regression.Trainers.Gam(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.LbfgsPoissonRegression:
+                    trainer = mlContext.Regression.Trainers.LbfgsPoissonRegression(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.LightGbm:
+                    trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.OnlineGradientDescent:
+                    trainer = mlContext.Regression.Trainers.OnlineGradientDescent(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                case LearningAlgorithm.Sdca:
+                    trainer = mlContext.Regression.Trainers.Sdca(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                    break;
+                default:
+                    throw new Exception($"Algorithm {algorithm} was not implemented!");
+            }
             return dataProcessPipeline.Append(trainer);
         }
 

@@ -5,7 +5,3 @@ export class CreateForecastingTaskEntityRequest {
     taskEntityName: string;
     taskFieldsDeclaration: ForecastingTaskFieldDeclaration[];
 }
-
-export class ForecastingTaskFieldValueRequest {
-    values: ForecastingTaskFieldValue[];
-}

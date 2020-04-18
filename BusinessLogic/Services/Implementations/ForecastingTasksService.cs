@@ -172,7 +172,7 @@ namespace BusinessLogic.Services.Implementations
             await _forecastingTasksRepository.AddBatchOfForecastingTaskFields(entityName, fieldsValues);
         }
 
-        public async Task CreateForecastingTaskMLModel(string entityName)
+        public async Task CreateForecastingTaskMLModel(string entityName, LearningAlgorithm algorithm)
         {
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
@@ -180,25 +180,23 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                var entity = new ClassBuilder(entityName, GetFieldsType(taskEntity.FieldsDeclaration));
+                var nonInformationFields = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
+                var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
                 foreach (var fieldsValue in taskEntity.FieldsValues)
                 {
                     var myClassInstance = entity.CreateObject();
-                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
+                    foreach (var fieldDeclaration in nonInformationFields)
                     {
-                        var value= fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
-                        if (factorDeclaration.Type == FieldType.InformationField)
-                            entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, value);
-                        else
-                            entity.SetPropertyValue(myClassInstance, factorDeclaration.Name, float.Parse(value));
+                        var value= fieldsValue.FieldsValue.Single(x => x.FieldId == fieldDeclaration.Id).Value;
+                        entity.SetPropertyValue(myClassInstance, fieldDeclaration.Name, float.Parse(value));
                     }
                     dataList.Add(myClassInstance);
                 }
 
-                var factors = taskEntity.FieldsDeclaration.Where(x => x.Type == FieldType.Factor).Select(x => x.Name);
-                var predictedValue = taskEntity.FieldsDeclaration.Single(x => x.Type == FieldType.PredictionField).Name;
-                ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue);
+                var factors = nonInformationFields.Where(x => x.Type == FieldType.Factor).Select(x => x.Name);
+                var predictedValue = nonInformationFields.Single(x => x.Type == FieldType.PredictionField).Name;
+                ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue, algorithm);
             }
             catch (Exception)
             {
@@ -208,23 +206,26 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values)
         {
+            if(values.Count == 0)
+                throw new DomainErrorException($"Factor list is empty!");
             // validation block
             if (!await DoesForecastingTaskEntityExists(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
+            var nonInformationFields = taskEntityDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
             var predictionValueId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
             if (values.Any(x => x.FieldId == predictionValueId))
                 throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
 
-            var entity = new ClassBuilder(entityName, GetFieldsType(taskEntityDeclaration));
+            var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
             var myClassInstance = entity.CreateObject();
             foreach (var value in values)
             {
-                if (!taskEntityDeclaration.Any(x => x.Id == value.FieldId))
+                if (!nonInformationFields.Any(x => x.Id == value.FieldId))
                     throw new DomainErrorException($"FieldId {value.FieldId} is incorrect!");
 
-                var name = taskEntityDeclaration.Single(x => x.Id == value.FieldId).Name;
-                entity.SetPropertyValue(myClassInstance, name, value.Value);
+                var name = nonInformationFields.Single(x => x.Id == value.FieldId).Name;
+                entity.SetPropertyValue(myClassInstance, name, float.Parse(value.Value));
             }
 
             return ForecastingTaskConsumeModel.Predict(myClassInstance, entityName, entity.Type);

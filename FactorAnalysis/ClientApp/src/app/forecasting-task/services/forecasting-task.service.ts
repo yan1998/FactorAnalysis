@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CreateForecastingTaskEntityRequest, ForecastingTaskFieldValueRequest } from '../models/requests/create-forecasting-task-entity-request';
+import { CreateForecastingTaskEntityRequest } from '../models/requests/create-forecasting-task-entity-request';
 import { PagedForecastingTask } from '../models/paged-forecasting-task';
+import { LearningAlgorithm } from '../models/learning-algorithm.enum';
+import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
+import { PredictValueRequest } from '../models/requests/predict-value-request';
 
 @Injectable({
   providedIn: 'root'
@@ -53,8 +56,13 @@ export class ForecastingTaskService {
     return this._httpClient.post<void>(href, formData);
   }
 
-  сreateTaskEntityPredictionModel(taskEntityName: string): Observable<void> {
-    const href = this.serverUrl + `CreateTaskEntityPredictionModel/${taskEntityName}`;
+  сreateTaskEntityPredictionModel(taskEntityName: string, learningAlgorithm: LearningAlgorithm): Observable<void> {
+    const href = this.serverUrl + `CreateTaskEntityPredictionModel/${taskEntityName}/${learningAlgorithm}`;
     return this._httpClient.post<void>(href, null);
+  }
+
+  predictValue(taskEntityName: string, values: PredictValueRequest): Observable<number> {
+    const href = this.serverUrl + `PredictValue/${taskEntityName}`;
+    return this._httpClient.post<number>(href, values);
   }
 }

@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Services.Abstractions;
+using DomainModel.ForecastingTasks;
 using FactorAnalysis.Helpers;
-using FactorAnalysis.Model;
 using FactorAnalysis.Model.Requests;
 using FactorAnalysis.Model.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -134,23 +135,25 @@ namespace FactorAnalysis.Controllers
         /// Create prediction model for concrete taskEntity
         /// </summary>
         /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <param name="learningAlgorithm">Name of learning algorithm</param>
         /// <returns></returns>
-        [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}")]
-        public Task CreateTaskEntityPredictionModel(string taskEntityName)
+        [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}/{learningAlgorithm}")]
+        public Task CreateTaskEntityPredictionModel(string taskEntityName, LearningAlgorithm learningAlgorithm)
         {
-            return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName);
+            return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
         }
 
         /// <summary>
         /// Prediction method
         /// </summary>
         /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <param name="factorValues">List of factor values</param>
-        /// <returns></returns>
+        /// <param name="request">List of factor values</param>
+        /// <returns>Prediction value</returns>
         [HttpPost("PredictValue/{taskEntityName}")]
-        public Task<float> PredictValue(string taskEntityName, [FromBody]List<ForecastingTaskFieldValue> factorValues)
+        public Task<float> PredictValue(string taskEntityName, [FromBody]PredictValueRequest request)
         {
-            var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(factorValues);
+            Thread.Sleep(10000);
+            var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
             return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
         }
     }

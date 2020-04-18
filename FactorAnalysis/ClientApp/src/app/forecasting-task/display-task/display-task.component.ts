@@ -8,8 +8,12 @@ import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { AddDorecastingTaskDataDialogComponent } from '../dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
-import { ForecastingTaskFieldValueRequest } from '../models/requests/create-forecasting-task-entity-request';
 import { FileDownloaderService } from '../services/file-downloader.service';
+import { LearningAlgorithm } from '../models/learning-algorithm.enum';
+import { PredictValueDialogComponent } from '../dialog-windows/predict-value-dialog/predict-value-dialog.component';
+import { FieldType } from '../models/field-type.enum';
+import { PredictValueRequest } from '../models/requests/predict-value-request';
+import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
 
 @Component({
   selector: 'app-display-task',
@@ -28,6 +32,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   isCsvUploading: boolean;
   isCsvDownloading: boolean;
   isModelCreating: boolean;
+  isDataAdding: boolean;
+  isValuePredicating: boolean;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _fileDownloaderService: FileDownloaderService,
@@ -82,7 +88,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         this._forecastingTaskService.deleteForecastingTaskEntityValues(this.name, id).subscribe(() => {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
-        }, error => console.error(error));
+        }, error => console.log(error));
       }
     });
   }
@@ -103,14 +109,17 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.isDataAdding = true;
         const request: ForecastingTaskFieldValueRequest = {
           values: result
         };
         this._forecastingTaskService.addForecstingTaskFactorsValue(this.name, request).subscribe(() => {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
+          this.isDataAdding = false;
         }, error => {
-          console.error(error);
+          this.isDataAdding = false;
+          console.log(error);
           alert('error');
         });
       }
@@ -153,13 +162,37 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   createPredictionModel() {
     this.isModelCreating = true;
-    this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name).subscribe(() => {
+    this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name, LearningAlgorithm.LightGbm).subscribe(() => {
       alert('done!');
       this.isModelCreating = false;
     }, error => {
+      this.isModelCreating = false;
       console.log(error);
       alert('error!');
-      this.isModelCreating = false;
+    });
+  }
+
+  predictValue() {
+    const dialogRef = this.dialog.open(PredictValueDialogComponent, {
+      width: '300px',
+      data: this.task.fieldsDeclaration.filter(x => x.type === FieldType.Factor)
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isValuePredicating = true;
+        const request: PredictValueRequest = {
+          values: result
+        };
+        this._forecastingTaskService.predictValue(this.name, request).subscribe((value) => {
+          this.isValuePredicating = false;
+          alert(value);
+        }, error => {
+          this.isValuePredicating = false;
+          console.log(error);
+          alert('error');
+        });
+      }
     });
   }
 

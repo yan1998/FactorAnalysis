@@ -6,7 +6,7 @@ import { ForecastingTaskRoutingModule } from './forecasting-task-routing.module'
 import { ForecastingTaskService } from './services/forecasting-task.service';
 import { ForecastingTaskCreationComponent } from './forecasting-task-creation/forecasting-task-creation.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DisplayTaskComponent } from './display-task/display-task.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
@@ -18,6 +18,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
 import { FileDownloaderService } from './services/file-downloader.service';
 import { MatSelectModule } from '@angular/material/select';
+import { PredictValueDialogComponent } from './dialog-windows/predict-value-dialog/predict-value-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,11 +26,13 @@ import { MatSelectModule } from '@angular/material/select';
     ForecastingTaskListComponent,
     ForecastingTaskCreationComponent,
     DisplayTaskComponent,
-    AddDorecastingTaskDataDialogComponent
+    AddDorecastingTaskDataDialogComponent,
+    PredictValueDialogComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     ForecastingTaskRoutingModule,
     MatCheckboxModule,
     MatButtonModule,
@@ -46,7 +49,8 @@ import { MatSelectModule } from '@angular/material/select';
     FileDownloaderService
   ],
   entryComponents: [
-    AddDorecastingTaskDataDialogComponent
+    AddDorecastingTaskDataDialogComponent,
+    PredictValueDialogComponent
   ]
 })
 export class ForecastingTaskModule { }

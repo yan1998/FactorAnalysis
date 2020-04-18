@@ -10,11 +10,19 @@
 <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
     (change)="uploadCsvFile(csvFileInput.files)">
 
-<button mat-stroked-button (click)="addForecastingTaskData()">Добавить данные</button>
+<button mat-stroked-button (click)="addForecastingTaskData()">
+    <span>Добавить данные</span>
+    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isDataAdding"></mat-spinner> 
+</button>
 
-<button  mat-stroked-button  [disabled]="isModelCreating"(click)="createPredictionModel()">
+<button  mat-stroked-button [disabled]="isModelCreating"(click)="createPredictionModel()">
     <span>Обучить модель</span>
     <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isModelCreating"></mat-spinner> 
+</button>
+
+<button  mat-stroked-button [disabled]="isModelCreating" (click)="predictValue()">
+    <span>Спрогнозировать значение</span>
+    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
 </button>
 
 <div class="example-container mat-elevation-z8">
