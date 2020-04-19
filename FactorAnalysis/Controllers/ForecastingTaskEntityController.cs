@@ -52,6 +52,17 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
+        /// Update name and description for Task Entity
+        /// </summary>
+        /// <param name="request">old and new names for task entity. And new description</param>
+        /// <returns></returns>
+        [HttpPut("ForecastingTaskEntity")]
+        public Task UpdateForecastingTaskEntity([FromBody]UpdateForecastingTaskEntityRequest request)
+        {
+            return _forecastingTasksService.RenameForecastingTaskEntity(request.OldTaskName, request.NewTaskName, request.Description);
+        }
+
+        /// <summary>
         /// Delete forecasting task from database
         /// </summary>
         /// <param name="taskEntityName">Name of forecasting task</param>

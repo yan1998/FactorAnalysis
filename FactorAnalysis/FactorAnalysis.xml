@@ -74,6 +74,13 @@
             <param name="request">Creation request</param>
             <returns></returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.UpdateForecastingTaskEntity(FactorAnalysis.Model.Requests.UpdateForecastingTaskEntityRequest)">
+            <summary>
+            Update name and description for Task Entity
+            </summary>
+            <param name="request">old and new names for task entity. And new description</param>
+            <returns></returns>
+        </member>
         <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.DeleteForecastingTaskEntity(System.String)">
             <summary>
             Delete forecasting task from database

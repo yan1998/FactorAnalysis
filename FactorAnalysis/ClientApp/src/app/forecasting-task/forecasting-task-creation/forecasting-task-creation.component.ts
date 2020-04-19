@@ -16,6 +16,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
   taskFields: ForecastingTaskFieldDeclaration[];
   isPredicatedValueChecked = false;
   FieldType = FieldType;
+  isTaskCreating: boolean;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router) { }
@@ -24,15 +25,21 @@ export class ForecastingTaskCreationComponent implements OnInit {
     this.taskFields = [
       {
         id: 0,
-        name: 'Фактор 1',
-        description: 'Описание к фактору 1',
-        type: FieldType.InformationField
+        name: 'Поле 1',
+        description: 'Описание к полю 1',
+        type: FieldType.PredictionField
       },
       {
         id: 0,
-        name: 'Фактор 2',
-        description: 'Описание к фактору 2',
+        name: 'Поле 2',
+        description: 'Описание к полю 2',
         type: FieldType.Factor
+      },
+      {
+        id: 0,
+        name: 'Поле 3',
+        description: 'Описание к полю 3',
+        type: FieldType.InformationField
       }
     ];
   }
@@ -56,6 +63,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
   }
 
   public createTask(): void {
+    this.isTaskCreating = true;
 
     const request: CreateForecastingTaskEntityRequest = {
       taskEntityName: this.taskName,
@@ -63,9 +71,23 @@ export class ForecastingTaskCreationComponent implements OnInit {
     };
 
     this._forecastingTaskService.createForecatingTaskEntity(request).subscribe(x => {
+      this.isTaskCreating = false;
       this._router.navigate(['/forecasting-task/list']);
     }, error => {
+      this.isTaskCreating = false;
       console.log(error);
+      alert('Error!');
     });
+  }
+
+  doesPredictionFieldSelected(): boolean {
+    return this.taskFields.some(x => x.type === FieldType.PredictionField);
+  }
+
+  isValid(): boolean {
+    return this.doesPredictionFieldSelected()
+      && this.taskFields.some(x => x.type === FieldType.Factor)
+      && !this.taskFields.some(x => x.name === '')
+      && (this.taskName && this.taskName !== '');
   }
 }

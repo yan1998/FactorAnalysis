@@ -1,3 +1,10 @@
 .checkboxes {
     padding-top: 20px;
 }
+
+.btnSpinners {
+    float: right;
+    margin-top: 7px;
+    margin-left: 10px;
+}
+  

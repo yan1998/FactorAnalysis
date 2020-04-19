@@ -29,11 +29,7 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration)
         {
-            if (declaration.Count(x => x.Type == FieldType.PredictionField) != 1)
-                throw new DomainErrorException($"Forecasting task must to have one predicated value!");
-
-            if (await DoesForecastingTaskEntityExists(entityName))
-                throw new DomainErrorException($"Forecasting task with name {entityName} already exists!");
+            await this.CreateForecastingTaskEntityValidation(entityName, declaration);
 
             int i = 0;
             foreach (var declarationItem in declaration)
@@ -43,6 +39,19 @@ namespace BusinessLogic.Services.Implementations
             await _forecastingTasksRepository.CreateForecastingTaskEntity(entityName, declaration);
         }
 
+        public async Task RenameForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
+        {
+            if (!await DoesForecastingTaskEntityExists(oldTaskName))
+                throw new DomainErrorException($"Forecasting task with name {oldTaskName} doesn't exist!");
+
+            if (await DoesForecastingTaskEntityExists(newTaskName))
+                throw new DomainErrorException($"Forecasting task with name {newTaskName} already exist!");
+
+            await _forecastingTasksRepository.EditForecastingTaskEntity(oldTaskName, newTaskName, newTaskDescription);
+
+            RemoveMLModelFiles(oldTaskName);
+        }
+
         public async Task DeleteForecastingTaskEntity(string entityName)
         {
             if (!await DoesForecastingTaskEntityExists(entityName))
@@ -50,12 +59,8 @@ namespace BusinessLogic.Services.Implementations
 
             await _forecastingTasksRepository.DeleteForecastingTaskEntity(entityName);
 
-            if (File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")))
-                File.Delete(GetAbsolutePath($"preparation_{entityName}MLModel.zip"));
-
-            if (File.Exists(GetAbsolutePath($"{entityName}MLModel.zip")))
-                File.Delete(GetAbsolutePath($"{entityName}MLModel.zip"));
-        }
+            RemoveMLModelFiles(entityName);
+        } 
 
         public async Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFieldValue> values)
         {
@@ -247,6 +252,15 @@ namespace BusinessLogic.Services.Implementations
             return Path.Combine(assemblyFolderPath, relativePath);
         }
 
+        private void RemoveMLModelFiles(string entityName)
+        {
+            if (File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")))
+                File.Delete(GetAbsolutePath($"preparation_{entityName}MLModel.zip"));
+
+            if (File.Exists(GetAbsolutePath($"{entityName}MLModel.zip")))
+                File.Delete(GetAbsolutePath($"{entityName}MLModel.zip"));
+        }
+
         private Dictionary<string, Type> GetFieldsType(List<ForecastingTaskFieldDeclaration> fieldsDeclaration)
         {
             var result = new Dictionary<string, Type>();
@@ -256,6 +270,24 @@ namespace BusinessLogic.Services.Implementations
                 result.Add(fieldDeclaration.Name, type);
             }
             return result;
+        }
+
+        private async Task CreateForecastingTaskEntityValidation(string entityName, List<ForecastingTaskFieldDeclaration> declaration)
+        {
+            if (declaration.Count(x => x.Type == FieldType.PredictionField) != 1)
+                throw new DomainErrorException($"Forecasting task must to have one predicated value!");
+
+            if (declaration.Count(x => x.Type == FieldType.Factor) == 0)
+                throw new DomainErrorException($"Forecasting task must to have at least 1 factor!");
+
+            if (declaration.Any(x => string.IsNullOrEmpty(x.Name)))
+                throw new DomainErrorException($"All fields 'name' must to be filled!");
+
+            if (declaration.Select(x => x.Name.ToLower()).Distinct().Count() != declaration.Count)
+                throw new DomainErrorException($"All fields 'name' must to be unique!");
+
+            if (await DoesForecastingTaskEntityExists(entityName))
+                throw new DomainErrorException($"Forecasting task with name {entityName} already exists!");
         }
     }
 }

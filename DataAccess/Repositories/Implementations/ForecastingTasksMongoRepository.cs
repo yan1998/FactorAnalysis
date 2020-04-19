@@ -41,6 +41,15 @@ namespace DataAccess.Repositories.Implementations
             await _database.CreateCollectionAsync(taskName);
         }
 
+        public async Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
+        {
+            var arrayFilter = Builders<Model.ForecastingTaskDeclaration>.Filter.Eq("Name", oldTaskName);
+            var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName).Set("Description", newTaskDescription);
+
+            await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").UpdateOneAsync(arrayFilter, arrayUpdate);
+            await _database.RenameCollectionAsync(oldTaskName, newTaskName);
+        }
+
         public async Task DeleteForecastingTaskEntity(string taskName)
         {
             if (taskName.StartsWith("__"))

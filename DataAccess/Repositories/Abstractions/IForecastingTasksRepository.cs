@@ -10,6 +10,8 @@ namespace DataAccess.Repositories.Abstractions
 
         Task CreateForecastingTaskEntity(string taskName, List<ForecastingTaskFieldDeclaration> declaration);
 
+        Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription);
+
         Task DeleteForecastingTaskEntity(string taskName);
 
         Task<ForecastingTask> GetForecastingTaskEntity(string taskName);
