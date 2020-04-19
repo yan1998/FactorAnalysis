@@ -22,21 +22,21 @@ namespace BusinessLogic.Services.Implementations
             _forecastingTasksRepository = forecastingTasksRepository;
         }
 
-        public Task<List<string>> GetAllForecastingTaskEntitiesName()
+        public Task<List<ShortForecastingTaskInfo>> GetAllForecastingTaskEntities()
         {
-            return _forecastingTasksRepository.GetAllForecastingTaskEntitiesName();
+            return _forecastingTasksRepository.GetAllForecastingTaskEntities();
         }
 
-        public async Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration)
+        public async Task CreateForecastingTaskEntity(string entityName, string description, List<ForecastingTaskFieldDeclaration> declaration)
         {
-            await this.CreateForecastingTaskEntityValidation(entityName, declaration);
+            await CreateForecastingTaskEntityValidation(entityName, declaration);
 
             int i = 0;
             foreach (var declarationItem in declaration)
             {
                 declarationItem.Id = i++;
             }
-            await _forecastingTasksRepository.CreateForecastingTaskEntity(entityName, declaration);
+            await _forecastingTasksRepository.CreateForecastingTaskEntity(entityName, description, declaration);
         }
 
         public async Task RenameForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
@@ -240,8 +240,8 @@ namespace BusinessLogic.Services.Implementations
         {
             if (string.IsNullOrWhiteSpace(entityName))
                 throw new DomainErrorException($"Forecasting task name must to be filled!");
-            var existingEntityNames = await _forecastingTasksRepository.GetAllForecastingTaskEntitiesName();
-            return existingEntityNames.Contains(entityName);
+            var existingEntityNames = await _forecastingTasksRepository.GetAllForecastingTaskEntities();
+            return existingEntityNames.Any(x => x.Name.ToLower() == entityName.ToLower());
         }
 
         private string GetAbsolutePath(string relativePath)

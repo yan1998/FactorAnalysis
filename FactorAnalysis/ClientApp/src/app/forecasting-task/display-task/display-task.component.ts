@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
-import { PagedForecastingTask } from '../models/paged-forecasting-task';
+import { PagedForecastingTaskResponse } from '../models/responses/paged-forecasting-task-response';
 import { MatPaginator } from '@angular/material/paginator';
 import { merge, of as observableOf } from 'rxjs';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   name: string;
-  task: PagedForecastingTask;
+  task: PagedForecastingTaskResponse;
   resultsLength: number;
   displayedColumns: string[];
   isLoadingResults: boolean;
@@ -70,7 +70,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         return observableOf([]);
       })
     ).subscribe(task => {
-      this.task = task as PagedForecastingTask;
+      this.task = task as PagedForecastingTaskResponse;
       this.resultsLength = this.task.totalCount;
       this.createArray();
       this.isLoadingResults = false;

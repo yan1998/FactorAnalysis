@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FactorAnalysis.Model.Requests
 {
     public class CreateForecastingTaskEntityRequest
     {
-        public string TaskEntityName { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-        public List<ForecastingTaskFieldDeclarationCreationRequest> TaskFieldsDeclaration { get; set; }
+        public string Description { get; set; }
+
+        public List<ForecastingTaskFieldDeclarationCreationRequest> FieldsDeclaration { get; set; }
     }
 
     public class ForecastingTaskFieldDeclarationCreationRequest

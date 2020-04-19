@@ -3,6 +3,7 @@ import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 
 @Component({
   selector: 'app-forecasting-task-list',
@@ -11,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ForecastingTaskListComponent implements OnInit {
 
-  taskEntitiesNames: string[];
+  taskEntities: GetForecastingTaskEntitiesResponse[];
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router,
@@ -36,15 +37,15 @@ export class ForecastingTaskListComponent implements OnInit {
       if (result) {
         this._forecastingTaskService.deleteForecastingTaskEntity(name).subscribe(() => {
           this.retrieveData();
-        }, error => console.error(error));
+        }, error => console.log(error));
       }
     });
   }
 
   private retrieveData() {
-    this._forecastingTaskService.getForecastingTaskEntitiesName()
+    this._forecastingTaskService.getForecastingTaskEntities()
       .subscribe(data => {
-        this.taskEntitiesNames = data;
+        this.taskEntities = data;
       }, error => {
         console.log(error);
       });

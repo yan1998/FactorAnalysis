@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CreateForecastingTaskEntityRequest } from '../models/requests/create-forecasting-task-entity-request';
-import { PagedForecastingTask } from '../models/paged-forecasting-task';
+import { PagedForecastingTaskResponse } from '../models/responses/paged-forecasting-task-response';
 import { LearningAlgorithm } from '../models/learning-algorithm.enum';
 import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
 import { PredictValueRequest } from '../models/requests/predict-value-request';
+import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +17,9 @@ export class ForecastingTaskService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  getForecastingTaskEntitiesName(): Observable<string[]> {
-    const href = this.serverUrl + `ForecastingTaskEntitiesNames`;
-    return this._httpClient.get<string[]>(href);
+  getForecastingTaskEntities(): Observable<GetForecastingTaskEntitiesResponse[]> {
+    const href = this.serverUrl + `ForecastingTaskEntities`;
+    return this._httpClient.get<GetForecastingTaskEntitiesResponse[]>(href);
   }
 
   createForecatingTaskEntity(creationRequest: CreateForecastingTaskEntityRequest): Observable<void> {
@@ -41,9 +42,9 @@ export class ForecastingTaskService {
     return this._httpClient.post<void>(href, values);
   }
 
-  getPagedForecastingTask(taskEntityName: string, pageNumber: number, perPage: number): Observable<PagedForecastingTask> {
+  getPagedForecastingTask(taskEntityName: string, pageNumber: number, perPage: number): Observable<PagedForecastingTaskResponse> {
     const href = this.serverUrl + `PagedForecastingTaskEntity/${taskEntityName}/${pageNumber}/${perPage}`;
-    return this._httpClient.get<PagedForecastingTask>(href);
+    return this._httpClient.get<PagedForecastingTaskResponse>(href);
   }
 
   saveForecastingTaskEntityCsv(taskEntityName: string): Observable<Blob> {

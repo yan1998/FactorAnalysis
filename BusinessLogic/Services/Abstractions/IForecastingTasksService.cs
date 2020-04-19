@@ -6,9 +6,9 @@ namespace BusinessLogic.Services.Abstractions
 {
     public interface IForecastingTasksService
     {
-        Task<List<string>> GetAllForecastingTaskEntitiesName();
+        Task<List<ShortForecastingTaskInfo>> GetAllForecastingTaskEntities();
 
-        Task CreateForecastingTaskEntity(string entityName, List<ForecastingTaskFieldDeclaration> declaration);
+        Task CreateForecastingTaskEntity(string entityName, string description, List<ForecastingTaskFieldDeclaration> declaration);
 
         Task RenameForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription);
 

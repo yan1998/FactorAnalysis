@@ -27,16 +27,17 @@ namespace DataAccess.Repositories.Implementations
             _mapper = mapper;
         }
 
-        public async Task<List<string>> GetAllForecastingTaskEntitiesName()
+        public async Task<List<ShortForecastingTaskInfo>> GetAllForecastingTaskEntities()
         {
-            var allNames = await _database.ListCollectionNames().ToListAsync();
-            return allNames.Where(x => !x.StartsWith("__")).ToList();
+            var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindAsync(x => true);
+            return _mapper.Map<List<ShortForecastingTaskInfo>>(taskDeclaration.ToList());
         }
 
-        public async Task CreateForecastingTaskEntity(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)
+        public async Task CreateForecastingTaskEntity(string taskName, string description, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)
         {
             var forecastingTask = _mapper.Map<Model.ForecastingTaskDeclaration>(declaration);
             forecastingTask.Name = taskName;
+            forecastingTask.Description = description;
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").InsertOneAsync(forecastingTask);
             await _database.CreateCollectionAsync(taskName);
         }

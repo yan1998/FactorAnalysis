@@ -9,6 +9,8 @@ namespace BusinessLogic.Mappers
         {
             CreateMap<ExchangeRateFactors, DomainModel.ExchangeRateFactors.ExchangeRateFactors>();
 
+            CreateMap<ForecastingTaskDeclaration, DomainModel.ForecastingTasks.ShortForecastingTaskInfo>();
+
             CreateMap<ForecastingTaskFieldDeclaration, DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>()
                 .ForMember(x => x.Type, opt => opt.MapFrom(y => (DomainModel.ForecastingTasks.FieldType)y.Type));
 

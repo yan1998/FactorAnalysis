@@ -13,6 +13,7 @@ import { ForecastingTaskFieldDeclaration } from '../models/forecasting-task-fiel
 export class ForecastingTaskCreationComponent implements OnInit {
 
   taskName: string;
+  taskDescription: string;
   taskFields: ForecastingTaskFieldDeclaration[];
   isPredicatedValueChecked = false;
   FieldType = FieldType;
@@ -66,8 +67,9 @@ export class ForecastingTaskCreationComponent implements OnInit {
     this.isTaskCreating = true;
 
     const request: CreateForecastingTaskEntityRequest = {
-      taskEntityName: this.taskName,
-      taskFieldsDeclaration: this.taskFields
+      name: this.taskName,
+      description: this.taskDescription,
+      fieldsDeclaration: this.taskFields
     };
 
     this._forecastingTaskService.createForecatingTaskEntity(request).subscribe(x => {

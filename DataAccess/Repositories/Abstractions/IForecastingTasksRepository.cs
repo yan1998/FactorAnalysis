@@ -6,9 +6,9 @@ namespace DataAccess.Repositories.Abstractions
 {
     public interface IForecastingTasksRepository
     {
-        Task<List<string>> GetAllForecastingTaskEntitiesName();
+        Task<List<ShortForecastingTaskInfo>> GetAllForecastingTaskEntities();
 
-        Task CreateForecastingTaskEntity(string taskName, List<ForecastingTaskFieldDeclaration> declaration);
+        Task CreateForecastingTaskEntity(string taskName, string description, List<ForecastingTaskFieldDeclaration> declaration);
 
         Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription);
 

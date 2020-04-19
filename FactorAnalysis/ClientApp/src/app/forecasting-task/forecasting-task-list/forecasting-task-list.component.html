@@ -1,8 +1,8 @@
 <h2>Задачи прогнозирования</h2>
 <button mat-button (click)="goToCreation()">Создать задачу прогнозирования</button>
 <ul>
-    <li *ngFor="let taskEntitiesName of taskEntitiesNames">
-        <p [routerLink]="['/forecasting-task/display-task', taskEntitiesName]">{{ taskEntitiesName }} </p>
-        <button mat-button (click)="deleteTaskEntity(taskEntitiesName)">Удалить</button>
+    <li *ngFor="let taskEntity of taskEntities">
+        <p [routerLink]="['/forecasting-task/display-task', taskEntity.name]">{{ taskEntity.name }} </p>
+        <button mat-button (click)="deleteTaskEntity(taskEntity.name)">Удалить</button>
     </li>
 </ul>

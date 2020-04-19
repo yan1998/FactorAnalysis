@@ -32,6 +32,7 @@ namespace FactorAnalysis.Extensions
         public static void AddContractMappings(this IMapperConfigurationExpression mapperConfigurationExpression)
         {
             mapperConfigurationExpression.AddProfile<ContractToBusinnessProfile>();
+            mapperConfigurationExpression.AddProfile<BusinnessToContractProfile>();
         }
     }
 }

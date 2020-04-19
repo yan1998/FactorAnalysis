@@ -1,7 +1,7 @@
-import { ForecastingTaskFieldDeclaration } from './forecasting-task-field-declaration';
-import { ForecastingTaskFieldValue } from './forecasting-task-field-value';
+import { ForecastingTaskFieldDeclaration } from '../forecasting-task-field-declaration';
+import { ForecastingTaskFieldValue } from '../forecasting-task-field-value';
 
-export class PagedForecastingTask {
+export class PagedForecastingTaskResponse {
     name: string;
     totalCount: number;
     fieldsDeclaration: ForecastingTaskFieldDeclaration[];

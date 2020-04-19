@@ -1,6 +1,10 @@
 <mat-form-field>
     <input matInput name="taskName" [(ngModel)]='taskName' placeholder="Имя задачи">
 </mat-form-field>
+<br>
+<mat-form-field>
+    <textarea matInput placeholder="Описание" [(ngModel)]='taskDescription'></textarea>
+</mat-form-field>
 
 <div class="row" *ngFor="let taskField of taskFields">
     <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
