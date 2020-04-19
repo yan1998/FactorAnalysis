@@ -5,7 +5,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { ExchangeRateFactorsService } from '../services/exchange-rate-factors.service';
 import { ExchangeRateFactors } from '../models/exchange-rate-factors';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { ExchangeRateFactorsDialogComponent } from '../dialog-windows/exchange-rate-factors-dialog/exchange-rate-factors-dialog.component';
 
 @Component({

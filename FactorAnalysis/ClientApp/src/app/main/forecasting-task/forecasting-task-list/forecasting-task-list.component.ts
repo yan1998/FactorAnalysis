@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
-import { ConfirmationDialogComponent } from 'src/app/dialog-windows/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 

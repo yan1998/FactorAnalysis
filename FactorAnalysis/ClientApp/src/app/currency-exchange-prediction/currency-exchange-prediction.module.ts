@@ -21,7 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ConfirmationDialogComponent } from '../dialog-windows/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 
 
 @NgModule({
