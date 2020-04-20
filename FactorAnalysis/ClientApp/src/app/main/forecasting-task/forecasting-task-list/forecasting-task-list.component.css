@@ -1,0 +1,76 @@
+h2 {
+    font-family: GimbalEgypExtd-hea;
+}
+
+h4 {
+    font-family: GimbalEgypHeaItal;
+}
+
+#forecastingTasks {
+    margin-top: 30px;
+}
+
+mat-spinner {
+    margin:0 auto;
+}
+
+#createTaskBtn {
+    text-align: right;
+}
+
+.forecastingTaskImage {
+    width: 100%;
+}
+
+.taskName {
+    text-align: center;
+}
+
+.taskDescription {
+    text-align: justify;
+    font-family: GimbalEgypItal;
+}
+
+.actions  {
+    text-align: right;
+    margin-top: 50px;
+}
+
+::ng-deep .tooltipRed {
+    background: #b71c1c;
+}
+  
+mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+hr {
+    border: 1px solid #bd9a9a;
+}
+
+@media(max-width: 991px) {
+    .actions  {
+        margin-top: 40px;
+    }
+
+    mat-icon {
+        font-size: 30px;
+        width: 30px;
+        height: 30px;
+    }
+}
+
+
+@media(max-width: 767px) {
+    .forecastingTaskImage {
+        margin-top: 30px;
+    }
+
+    mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+    }
+}

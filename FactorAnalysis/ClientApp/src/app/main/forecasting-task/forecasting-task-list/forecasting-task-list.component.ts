@@ -12,6 +12,7 @@ import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-fore
 })
 export class ForecastingTaskListComponent implements OnInit {
 
+  isDataLoading: boolean;
   taskEntities: GetForecastingTaskEntitiesResponse[];
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
@@ -27,7 +28,6 @@ export class ForecastingTaskListComponent implements OnInit {
   }
 
   deleteTaskEntity(name: string): void {
-
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '300px',
       data: 'Вы действительно хотите удалить задачу?'
@@ -43,10 +43,13 @@ export class ForecastingTaskListComponent implements OnInit {
   }
 
   private retrieveData() {
+    this.isDataLoading = true;
     this._forecastingTaskService.getForecastingTaskEntities()
       .subscribe(data => {
+        this.isDataLoading = false;
         this.taskEntities = data;
       }, error => {
+        this.isDataLoading = false;
         console.log(error);
       });
   }

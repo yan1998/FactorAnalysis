@@ -19,6 +19,8 @@ import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dore
 import { FileDownloaderService } from './services/file-downloader.service';
 import { MatSelectModule } from '@angular/material/select';
 import { PredictValueDialogComponent } from './dialog-windows/predict-value-dialog/predict-value-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,9 @@ import { PredictValueDialogComponent } from './dialog-windows/predict-value-dial
     MatDialogModule,
     MatSelectModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatIconModule,
+    MatTooltipModule
   ],
   providers: [
     ForecastingTaskService,

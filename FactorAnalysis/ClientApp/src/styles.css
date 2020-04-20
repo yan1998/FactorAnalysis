@@ -10,6 +10,11 @@
   src: url(../../wwwroot/fonts/GimbalEgypExtd-Ital.otf) format("truetype");
 }
 
+@font-face {
+  font-family: "GimbalEgypExtd-hea";
+  src: url(../../wwwroot/fonts/GimbalEgypExtd-Hea.otf) format("truetype");
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
