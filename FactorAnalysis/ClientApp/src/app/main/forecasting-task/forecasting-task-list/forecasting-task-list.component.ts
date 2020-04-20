@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
+import { UpdateForecastingTaskEntityDialogComponent } from '../dialog-windows/update-forecasting-task-entity-dialog/update-forecasting-task-entity-dialog.component';
 
 @Component({
   selector: 'app-forecasting-task-list',
@@ -27,6 +28,28 @@ export class ForecastingTaskListComponent implements OnInit {
     this._router.navigate(['/forecasting-task/task-creation']);
   }
 
+  editTaskEntity(taskEntity: GetForecastingTaskEntitiesResponse): void {
+    const dialogRef = this.dialog.open(UpdateForecastingTaskEntityDialogComponent, {
+      width: '300px',
+      data: {
+        oldTaskName: taskEntity.name,
+        oldTasDescription: taskEntity.description
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isDataLoading = true;
+        this._forecastingTaskService.updateForecastingTaskEntity(result).subscribe(() => {
+          this.retrieveData();
+        }, error => {
+          this.isDataLoading = false;
+          console.log(error);
+        });
+      }
+    });
+  }
+
   deleteTaskEntity(name: string): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '300px',
@@ -35,9 +58,13 @@ export class ForecastingTaskListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.isDataLoading = true;
         this._forecastingTaskService.deleteForecastingTaskEntity(name).subscribe(() => {
           this.retrieveData();
-        }, error => console.log(error));
+        }, error => {
+          this.isDataLoading = false;
+          console.log(error);
+        });
       }
     });
   }

@@ -15,12 +15,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AddDorecastingTaskDataDialogComponent } from './dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
+import { AddForecastingTaskDataDialogComponent } from './dialog-windows/add-forecasting-task-data-dialog/add-forecasting-task-data-dialog.component';
 import { FileDownloaderService } from './services/file-downloader.service';
 import { MatSelectModule } from '@angular/material/select';
 import { PredictValueDialogComponent } from './dialog-windows/predict-value-dialog/predict-value-dialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UpdateForecastingTaskEntityDialogComponent } from './dialog-windows/update-forecasting-task-entity-dialog/update-forecasting-task-entity-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,8 +29,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     ForecastingTaskListComponent,
     ForecastingTaskCreationComponent,
     DisplayTaskComponent,
-    AddDorecastingTaskDataDialogComponent,
-    PredictValueDialogComponent
+    AddForecastingTaskDataDialogComponent,
+    PredictValueDialogComponent,
+    UpdateForecastingTaskEntityDialogComponent
   ],
   imports: [
     CommonModule,
@@ -53,8 +55,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FileDownloaderService
   ],
   entryComponents: [
-    AddDorecastingTaskDataDialogComponent,
-    PredictValueDialogComponent
+    AddForecastingTaskDataDialogComponent,
+    PredictValueDialogComponent,
+    UpdateForecastingTaskEntityDialogComponent
   ]
 })
 export class ForecastingTaskModule { }

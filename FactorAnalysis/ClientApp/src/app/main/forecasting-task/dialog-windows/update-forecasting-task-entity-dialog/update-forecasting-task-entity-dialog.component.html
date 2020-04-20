@@ -1,0 +1,18 @@
+<form [formGroup]="updateForm">
+    <mat-form-field>
+        <input matInput placeholder="Новое название" formControlName="newName" required>
+    </mat-form-field>
+
+    <mat-form-field>
+        <textarea matInput placeholder="Описание" formControlName="newDescription"></textarea>
+    </mat-form-field>
+</form>
+
+<div class="row">
+    <div class="col-md-6">
+        <button type="submit" [disabled]="!updateForm.valid" (click)="onSubmitClick()" mat-raised-button color="primary">Сохранить</button>
+    </div>
+    <div class="col-md-6">
+        <button style="width: 100%" mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
+    </div>
+</div>

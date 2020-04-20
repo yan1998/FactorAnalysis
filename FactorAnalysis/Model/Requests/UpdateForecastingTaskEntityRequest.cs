@@ -10,7 +10,6 @@ namespace FactorAnalysis.Model.Requests
         [Required]
         public string NewTaskName { get; set; }
 
-        [Required]
         public string Description { get; set; }
     }
 }

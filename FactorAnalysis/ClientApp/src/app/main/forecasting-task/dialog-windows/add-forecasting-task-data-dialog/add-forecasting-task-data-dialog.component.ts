@@ -3,15 +3,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ForecastingTaskFieldValue } from '../../models/forecasting-task-field-value';
 
 @Component({
-  selector: 'app-add-dorecasting-task-data-dialog',
-  templateUrl: './add-dorecasting-task-data-dialog.component.html',
-  styleUrls: ['./add-dorecasting-task-data-dialog.component.css']
+  selector: 'app-add-forecasting-task-data-dialog',
+  templateUrl: './add-forecasting-task-data-dialog.component.html',
+  styleUrls: ['./add-forecasting-task-data-dialog.component.css']
 })
-export class AddDorecastingTaskDataDialogComponent {
+export class AddForecastingTaskDataDialogComponent {
 
   obj: any = {};
 
-  constructor(public dialogRef: MatDialogRef<AddDorecastingTaskDataDialogComponent>,
+  constructor(public dialogRef: MatDialogRef<AddForecastingTaskDataDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: string) {}
 
     onCloseClick(): void {

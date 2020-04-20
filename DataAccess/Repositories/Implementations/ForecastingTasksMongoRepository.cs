@@ -48,7 +48,8 @@ namespace DataAccess.Repositories.Implementations
             var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName).Set("Description", newTaskDescription);
 
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").UpdateOneAsync(arrayFilter, arrayUpdate);
-            await _database.RenameCollectionAsync(oldTaskName, newTaskName);
+            if(oldTaskName != newTaskName)
+                await _database.RenameCollectionAsync(oldTaskName, newTaskName);
         }
 
         public async Task DeleteForecastingTaskEntity(string taskName)

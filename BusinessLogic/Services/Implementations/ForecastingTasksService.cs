@@ -44,12 +44,13 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExists(oldTaskName))
                 throw new DomainErrorException($"Forecasting task with name {oldTaskName} doesn't exist!");
 
-            if (await DoesForecastingTaskEntityExists(newTaskName))
+            if (oldTaskName != newTaskName && await DoesForecastingTaskEntityExists(newTaskName))
                 throw new DomainErrorException($"Forecasting task with name {newTaskName} already exist!");
 
             await _forecastingTasksRepository.EditForecastingTaskEntity(oldTaskName, newTaskName, newTaskDescription);
 
-            RemoveMLModelFiles(oldTaskName);
+            if (oldTaskName != newTaskName)
+                RemoveMLModelFiles(oldTaskName);
         }
 
         public async Task DeleteForecastingTaskEntity(string entityName)

@@ -7,7 +7,7 @@ import { merge, of as observableOf } from 'rxjs';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
-import { AddDorecastingTaskDataDialogComponent } from '../dialog-windows/add-dorecasting-task-data-dialog/add-dorecasting-task-data-dialog.component';
+import { AddForecastingTaskDataDialogComponent } from '../dialog-windows/add-forecasting-task-data-dialog/add-forecasting-task-data-dialog.component';
 import { FileDownloaderService } from '../services/file-downloader.service';
 import { LearningAlgorithm } from '../models/learning-algorithm.enum';
 import { PredictValueDialogComponent } from '../dialog-windows/predict-value-dialog/predict-value-dialog.component';
@@ -102,7 +102,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       });
     });
 
-    const dialogRef = this.dialog.open(AddDorecastingTaskDataDialogComponent, {
+    const dialogRef = this.dialog.open(AddForecastingTaskDataDialogComponent, {
       width: '300px',
       data: factors
     });

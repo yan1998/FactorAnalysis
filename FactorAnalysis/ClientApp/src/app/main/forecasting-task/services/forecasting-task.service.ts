@@ -7,6 +7,7 @@ import { LearningAlgorithm } from '../models/learning-algorithm.enum';
 import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
 import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
+import { UpdateForecastingTaskEntityRequest } from '../models/requests/update-forecasting-task-entity-request';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,11 @@ export class ForecastingTaskService {
   createForecatingTaskEntity(creationRequest: CreateForecastingTaskEntityRequest): Observable<void> {
     const href = this.serverUrl + `ForecastingTaskEntity`;
     return this._httpClient.post<void>(href, creationRequest);
+  }
+
+  updateForecastingTaskEntity(updateRequest: UpdateForecastingTaskEntityRequest): Observable<void> {
+    const href = this.serverUrl + `ForecastingTaskEntity`;
+    return this._httpClient.put<void>(href, updateRequest);
   }
 
   deleteForecastingTaskEntity(entityName: string): Observable<void> {
