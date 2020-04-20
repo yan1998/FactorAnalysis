@@ -1,5 +1,15 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+@font-face {
+  font-family: "GimbalEgypHeaItal";
+  src: url(../../wwwroot/fonts/GimbalEgyp-HeaItal.otf) format("truetype");
+}
+
+@font-face {
+  font-family: "GimbalEgypItal";
+  src: url(../../wwwroot/fonts/GimbalEgypExtd-Ital.otf) format("truetype");
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
@@ -16,4 +26,4 @@ code {
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #e1e4e6 !important; }
