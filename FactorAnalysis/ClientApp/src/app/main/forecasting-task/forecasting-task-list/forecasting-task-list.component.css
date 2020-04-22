@@ -1,9 +1,5 @@
-h2 {
-    font-family: GimbalEgypExtd-hea;
-}
-
-h4 {
-    font-family: GimbalEgypHeaItal;
+#searchIcon {
+    cursor: pointer;
 }
 
 #forecastingTasks {
@@ -38,7 +34,7 @@ mat-spinner {
 
 ::ng-deep .tooltipRed {
     background: #b71c1c;
-}
+  }
   
 mat-icon {
     font-size: 40px;
@@ -46,16 +42,12 @@ mat-icon {
     height: 40px;
 }
 
-hr {
-    border: 1px solid #bd9a9a;
-}
-
 @media(max-width: 991px) {
     .actions  {
         margin-top: 40px;
     }
 
-    mat-icon {
+    .matIconActions {
         font-size: 30px;
         width: 30px;
         height: 30px;
@@ -68,7 +60,7 @@ hr {
         margin-top: 30px;
     }
 
-    mat-icon {
+    .matIconActions {
         font-size: 20px;
         width: 20px;
         height: 20px;

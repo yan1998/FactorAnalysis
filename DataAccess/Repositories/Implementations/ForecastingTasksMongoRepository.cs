@@ -30,7 +30,7 @@ namespace DataAccess.Repositories.Implementations
         public async Task<List<ShortForecastingTaskInfo>> GetAllForecastingTaskEntities()
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindAsync(x => true);
-            return _mapper.Map<List<ShortForecastingTaskInfo>>(taskDeclaration.ToList());
+            return _mapper.Map<List<ShortForecastingTaskInfo>>(taskDeclaration.ToList().OrderBy(x => x.Name));
         }
 
         public async Task CreateForecastingTaskEntity(string taskName, string description, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)

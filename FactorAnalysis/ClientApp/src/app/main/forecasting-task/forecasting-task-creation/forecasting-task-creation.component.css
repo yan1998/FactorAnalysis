@@ -1,10 +1,35 @@
-.checkboxes {
-    padding-top: 20px;
+#saveTaskBtn {
+    margin-top: 5px;
 }
 
-.btnSpinners {
+#btnSpinner {
     float: right;
     margin-top: 7px;
     margin-left: 10px;
 }
+
+#removefield, #addField, #saveTask {
+    text-align: center;
+}
+
+h4 {
+    margin-top: 20px;    
+}
+
+#removefieldBtn {
+    margin-top: 15px;
+}
+
+mat-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+}
+
+::ng-deep .tooltipRed {
+    background: #b71c1c;
+  }
   
+#taskFields {
+    margin-top: 15px;
+}

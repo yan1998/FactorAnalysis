@@ -1,18 +1,22 @@
 <form [formGroup]="updateForm">
-    <mat-form-field>
-        <input matInput placeholder="Новое название" formControlName="newName" required>
-    </mat-form-field>
+    <div class="row">
+        <mat-form-field class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <input matInput placeholder="Новое название" formControlName="newName" maxlength="50" required>
+        </mat-form-field>
+    </div>
 
-    <mat-form-field>
-        <textarea matInput placeholder="Описание" formControlName="newDescription"></textarea>
-    </mat-form-field>
+    <div class="row">
+        <mat-form-field class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <textarea matInput placeholder="Описание" formControlName="newDescription" maxlength="200"></textarea>
+        </mat-form-field>
+    </div>
 </form>
 
 <div class="row">
-    <div class="col-md-6">
-        <button type="submit" [disabled]="!updateForm.valid" (click)="onSubmitClick()" mat-raised-button color="primary">Сохранить</button>
+    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+        <button mat-raised-button color="primary" [disabled]="!updateForm.valid" (click)="onSubmitClick()">Сохранить</button>
     </div>
-    <div class="col-md-6">
-        <button style="width: 100%" mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
+    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+        <button mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
     </div>
 </div>

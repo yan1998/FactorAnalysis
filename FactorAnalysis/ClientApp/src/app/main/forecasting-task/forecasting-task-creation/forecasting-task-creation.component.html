@@ -1,35 +1,68 @@
-<mat-form-field>
-    <input matInput name="taskName" [(ngModel)]='taskName' placeholder="Имя задачи">
-</mat-form-field>
-<br>
-<mat-form-field>
-    <textarea matInput placeholder="Описание" [(ngModel)]='taskDescription'></textarea>
-</mat-form-field>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/home']">На главную</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/list']">Задачи прогнозирования</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Создание задачи</li>
+    </ol>
+</nav>
 
-<div class="row" *ngFor="let taskField of taskFields">
-    <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
-        <input matInput placeholder="Название поля" [(ngModel)]='taskField.name'>
-    </mat-form-field>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <h2>Создание задачи прогнозирования</h2>
+        </div>
+    </div>
 
-    <mat-form-field class="col-xs-3 col-md-3 col-sm-3 col-3">
-        <input matInput placeholder="Описание поля" [(ngModel)]="taskField.description">
-    </mat-form-field>
-    
-    <mat-form-field class="col-xs-4 col-md-4 col-sm-4 col-4">
-        <mat-select [(ngModel)]="taskField.type">
-            <mat-option [value]="FieldType.InformationField">Ииформационное поле</mat-option>
-            <mat-option [value]="FieldType.Factor">Фактор</mat-option>
-            <mat-option [value]="FieldType.PredictionField" [disabled]="doesPredictionFieldSelected()">Прогнозируемое значение</mat-option>
-        </mat-select>
-    </mat-form-field>
+    <div class="row">
+        <mat-form-field class="col-12 col-sm-3 col-md-3 col-lg-3 col-xs-3">
+            <input matInput placeholder="Имя задачи" maxlength="50" [(ngModel)]="taskName">
+        </mat-form-field>
 
-    <div class="checkboxes col-xs-2 col-md-2 col-sm-2 col-2">
-        <button mat-button (click)="removeField(taskField)" [disabled]="taskFields.length <= 1">Удалить</button>
+        <mat-form-field class="col-12 col-sm-3 col-md-3 col-lg-3 col-xs-3">
+            <input matInput placeholder="Описание" maxlength="200" [(ngModel)]="taskDescription">
+        </mat-form-field>
+
+        <div id="saveTask" class="col-12 col-sm-2 col-md-2 col-lg-2 col-xs-2">
+            <button mat-raised-button id="saveTaskBtn" color="primary" [disabled]="!isValid() || isTaskCreating" (click)="createTask()">
+                <span>Создать задачу</span>
+                <mat-spinner id="btnSpinner" [diameter]="20" *ngIf="isTaskCreating"></mat-spinner>
+            </button>
+        </div>
+    </div>
+
+    <h4>Поля задачи:</h4>
+
+    <div id="taskFields" *ngFor="let taskField of taskFields">
+        <div class="row">
+            <mat-form-field class="col-12 col-sm-3 col-md-3 col-lg-3 col-xs-3">
+                <input matInput placeholder="Название поля" [(ngModel)]='taskField.name'>
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                <input matInput placeholder="Описание поля" [(ngModel)]="taskField.description">
+            </mat-form-field>
+
+            <mat-form-field class="col-12 col-sm-4 col-md-4 col-lg-4 col-xs-4">
+                <mat-select [(ngModel)]="taskField.type">
+                    <mat-option [value]="FieldType.InformationField">Ииформационное поле</mat-option>
+                    <mat-option [value]="FieldType.Factor">Фактор</mat-option>
+                    <mat-option [value]="FieldType.PredictionField" [disabled]="doesPredictionFieldSelected()">
+                        Прогнозируемое значение</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div id="removefield" class="col-12 col-sm-1 col-md-1 col-lg-1 col-xs-1">
+                <button mat-button id="removefieldBtn" color="warn" matTooltip="Удалить поле" matTooltipClass="tooltipRed" [disabled]="taskFields.length <= 1" (click)="removeField(taskField)">
+                    <mat-icon>delete_forever</mat-icon>
+                 </button>
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <div id="addField">
+        <button mat-button color="primary" matTooltip="Добавить поле" (click)="addField()">
+            <mat-icon>add</mat-icon>
+        </button>
     </div>
 </div>
-
-<button mat-button (click)="addField()">Добавить поле</button>
-<button mat-raised-button color="primary"(click)="createTask()" [disabled]="!isValid() || isTaskCreating">
-    <span>Создать задачу</span>
-    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isTaskCreating"></mat-spinner> 
-</button>

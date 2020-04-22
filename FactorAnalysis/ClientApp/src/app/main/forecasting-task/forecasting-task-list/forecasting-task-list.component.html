@@ -6,7 +6,7 @@
 </nav>
 
 <div class="container">
-    <div class="row ">
+    <div class="row">
         <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xs-10">
             <h2>Задачи прогнозирования</h2>
         </div>
@@ -17,9 +17,17 @@
         </div>
     </div>
 
+    <div class="row" *ngIf="!isDataLoading">
+        <mat-form-field  class="col-12 col-sm-6 col-md-6 col-lg-4 col-xs-4">
+            <input matInput maxlength="50" placeholder="Поиск" [(ngModel)]="searchField">
+            <mat-icon matSuffix id="searchIcon" (click)="search()">search</mat-icon>
+        </mat-form-field>
+    </div>
+
     <mat-spinner [diameter]="50" *ngIf="isDataLoading"></mat-spinner> 
+
     <div id="forecastingTasks" *ngIf="!isDataLoading">
-        <div class="forecastingTask" *ngFor="let taskEntity of taskEntities">
+        <div class="forecastingTask" *ngFor="let taskEntity of filteredTaskEntities">
             <div class="row">
                 <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xs-2">
                     <a [routerLink]="['/forecasting-task/display-task', taskEntity.name]"><img class="forecastingTaskImage" src="images/tasks/1.png" /></a>
@@ -33,11 +41,11 @@
                 <div class="actions col-3 col-sm-3 col-md-3 col-lg-3 col-xs-2">
                     <button mat-button color="primary" matTooltip="Редактировать задачу" title="Редактировать"
                         (click)="editTaskEntity(taskEntity)">
-                        <mat-icon>edit</mat-icon>
+                        <mat-icon class="matIconActions">edit</mat-icon>
                     </button>
                     <button mat-button color="warn" matTooltip="Удалить задачу" matTooltipClass="tooltipRed"
                         (click)="deleteTaskEntity(taskEntity.name)">
-                        <mat-icon>delete_forever</mat-icon>
+                        <mat-icon class="matIconActions">delete_forever</mat-icon>
                     </button>
                 </div>
             </div>

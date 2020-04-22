@@ -32,3 +32,19 @@ code {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; background-color: #e1e4e6 !important; }
+
+h2 {
+  font-family: GimbalEgypExtd-hea;
+}
+
+h4 {
+  font-family: GimbalEgypHeaItal;
+}
+
+hr {
+  border: 1px solid #bd9a9a;
+}
+
+mat-dialog-container {
+  background-color: #9cda9f !important;
+}

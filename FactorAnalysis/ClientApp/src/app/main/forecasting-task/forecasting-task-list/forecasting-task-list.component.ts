@@ -14,7 +14,9 @@ import { UpdateForecastingTaskEntityDialogComponent } from '../dialog-windows/up
 export class ForecastingTaskListComponent implements OnInit {
 
   isDataLoading: boolean;
+  searchField: string;
   taskEntities: GetForecastingTaskEntitiesResponse[];
+  filteredTaskEntities: GetForecastingTaskEntitiesResponse[];
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router,
@@ -26,6 +28,10 @@ export class ForecastingTaskListComponent implements OnInit {
 
   goToCreation(): void {
     this._router.navigate(['/forecasting-task/task-creation']);
+  }
+
+  search(): void {
+    this.filteredTaskEntities = this.taskEntities.filter(x => x.name.toLowerCase().includes(this.searchField.toLowerCase()));
   }
 
   editTaskEntity(taskEntity: GetForecastingTaskEntitiesResponse): void {
@@ -74,6 +80,7 @@ export class ForecastingTaskListComponent implements OnInit {
     this._forecastingTaskService.getForecastingTaskEntities()
       .subscribe(data => {
         this.isDataLoading = false;
+        this.filteredTaskEntities = data;
         this.taskEntities = data;
       }, error => {
         this.isDataLoading = false;
