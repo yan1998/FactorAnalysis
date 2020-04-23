@@ -54,7 +54,6 @@ mat-icon {
     }
 }
 
-
 @media(max-width: 767px) {
     .forecastingTaskImage {
         margin-top: 30px;

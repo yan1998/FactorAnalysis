@@ -4,6 +4,7 @@ import { ForecastingTaskService } from '../services/forecasting-task.service';
 import { Router } from '@angular/router';
 import { FieldType } from '../models/field-type.enum';
 import { ForecastingTaskFieldDeclaration } from '../models/forecasting-task-field-declaration';
+import { GuiNotificatorService } from '../services/gui-notificator.service';
 
 @Component({
   selector: 'app-forecasting-task-creation',
@@ -20,7 +21,8 @@ export class ForecastingTaskCreationComponent implements OnInit {
   isTaskCreating: boolean;
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
-    private _router: Router) { }
+    private _router: Router,
+    private _toastr: GuiNotificatorService) { }
 
   ngOnInit() {
     this.taskFields = [
@@ -74,11 +76,11 @@ export class ForecastingTaskCreationComponent implements OnInit {
 
     this._forecastingTaskService.createForecatingTaskEntity(request).subscribe(x => {
       this.isTaskCreating = false;
+      this._toastr.showSuccess('Задача прогнозирования была успешно создана!');
       this._router.navigate(['/forecasting-task/list']);
     }, error => {
       this.isTaskCreating = false;
-      console.log(error);
-      alert('Error!');
+      this._toastr.showError(error);
     });
   }
 

@@ -4,23 +4,11 @@
   margin-left: 10px;
 }
 
-.example-container {
-  position: relative;
-  min-height: 500px;
+.tableContainer {
   margin-top: 15px;
 }
   
-.example-table-container {
-  position: relative;
-  max-height: 400px;
-  overflow: auto;
- }
-  
-table {
-  width: 100%;
-}
-  
-.example-loading-shade {
+.loadingShade {
   position: absolute;
   top: 0;
   left: 0;
@@ -32,10 +20,30 @@ table {
   align-items: center;
   justify-content: center;
 }
-  
+
+table, mat-paginator {
+  width: 100%;
+  background-color: #c7f1a7;
+}
+
+.tableHeader {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: GimbalEgypItal;
+  cursor: help;
+}
+
+::ng-deep .tooltipRed {
+  background: #b71c1c;
+}
+
 .example-rate-limit-reached {
   color: #980000;
   max-width: 360px;
   text-align: center;
 }
   
+mat-paginator {
+  font-size: 14px;
+  font-family: GimbalEgypItal;
+}

@@ -14,6 +14,7 @@ import { PredictValueDialogComponent } from '../dialog-windows/predict-value-dia
 import { FieldType } from '../models/field-type.enum';
 import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
+import { GuiNotificatorService } from '../services/gui-notificator.service';
 
 @Component({
   selector: 'app-display-task',
@@ -38,7 +39,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _fileDownloaderService: FileDownloaderService,
     private route: ActivatedRoute,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private _toastr: GuiNotificatorService) { }
 
   ngOnInit() {
     this.isLoadingResults = true;
@@ -88,7 +90,9 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         this._forecastingTaskService.deleteForecastingTaskEntityValues(this.name, id).subscribe(() => {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
-        }, error => console.log(error));
+        }, error => {
+          this._toastr.showError(error);
+        });
       }
     });
   }
@@ -119,8 +123,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.isDataAdding = false;
         }, error => {
           this.isDataAdding = false;
-          console.log(error);
-          alert('error');
+          this._toastr.showError(error);
         });
       }
     });
@@ -134,8 +137,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.isCsvDownloading = false;
     }, (error) => {
       this.isCsvDownloading = false;
-      console.log(error);
-      alert('error');
+      this._toastr.showError(error);
     });
   }
 
@@ -155,20 +157,18 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.isCsvUploading = false;
     }, error => {
       this.isCsvUploading = false;
-      console.log(error);
-      alert('error');
+      this._toastr.showError(error);
     });
   }
 
   createPredictionModel() {
     this.isModelCreating = true;
     this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name, LearningAlgorithm.LightGbm).subscribe(() => {
-      alert('done!');
+      this._toastr.showSuccess('Обучение прошло успешно');
       this.isModelCreating = false;
     }, error => {
       this.isModelCreating = false;
-      console.log(error);
-      alert('error!');
+      this._toastr.showError(error);
     });
   }
 
@@ -186,11 +186,10 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         };
         this._forecastingTaskService.predictValue(this.name, request).subscribe((value) => {
           this.isValuePredicating = false;
-          alert(value);
+          this._toastr.showInfo('Прогнозируемое значение = ' + value);
         }, error => {
           this.isValuePredicating = false;
-          console.log(error);
-          alert('error');
+          this._toastr.showError(error);
         });
       }
     });

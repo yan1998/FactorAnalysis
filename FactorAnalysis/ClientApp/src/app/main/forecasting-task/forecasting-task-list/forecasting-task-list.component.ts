@@ -5,6 +5,7 @@ import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirm
 import { MatDialog } from '@angular/material/dialog';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 import { UpdateForecastingTaskEntityDialogComponent } from '../dialog-windows/update-forecasting-task-entity-dialog/update-forecasting-task-entity-dialog.component';
+import { GuiNotificatorService } from '../services/gui-notificator.service';
 
 @Component({
   selector: 'app-forecasting-task-list',
@@ -20,7 +21,8 @@ export class ForecastingTaskListComponent implements OnInit {
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _router: Router,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private _toastr: GuiNotificatorService) { }
 
   ngOnInit() {
     this.retrieveData();
@@ -50,7 +52,7 @@ export class ForecastingTaskListComponent implements OnInit {
           this.retrieveData();
         }, error => {
           this.isDataLoading = false;
-          console.log(error);
+          this._toastr.showError(error);
         });
       }
     });
@@ -69,7 +71,7 @@ export class ForecastingTaskListComponent implements OnInit {
           this.retrieveData();
         }, error => {
           this.isDataLoading = false;
-          console.log(error);
+          this._toastr.showError(error);
         });
       }
     });
@@ -84,7 +86,7 @@ export class ForecastingTaskListComponent implements OnInit {
         this.taskEntities = data;
       }, error => {
         this.isDataLoading = false;
-        console.log(error);
+        this._toastr.showError(error);
       });
   }
 }

@@ -22,6 +22,8 @@ import { PredictValueDialogComponent } from './dialog-windows/predict-value-dial
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UpdateForecastingTaskEntityDialogComponent } from './dialog-windows/update-forecasting-task-entity-dialog/update-forecasting-task-entity-dialog.component';
+import { GuiNotificatorService } from './services/gui-notificator.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -48,11 +50,17 @@ import { UpdateForecastingTaskEntityDialogComponent } from './dialog-windows/upd
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      maxOpened: 3
+    })
   ],
   providers: [
     ForecastingTaskService,
-    FileDownloaderService
+    FileDownloaderService,
+    GuiNotificatorService
   ],
   entryComponents: [
     AddForecastingTaskDataDialogComponent,
