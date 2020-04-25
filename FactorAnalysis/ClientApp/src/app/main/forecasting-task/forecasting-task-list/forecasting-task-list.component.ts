@@ -28,11 +28,11 @@ export class ForecastingTaskListComponent implements OnInit {
     this.retrieveData();
   }
 
-  goToCreation(): void {
+  goToCreation() {
     this._router.navigate(['/forecasting-task/task-creation']);
   }
 
-  search(): void {
+  search() {
     this.filteredTaskEntities = this.taskEntities.filter(x => x.name.toLowerCase().includes(this.searchField.toLowerCase()));
   }
 
@@ -50,6 +50,7 @@ export class ForecastingTaskListComponent implements OnInit {
         this.isDataLoading = true;
         this._forecastingTaskService.updateForecastingTaskEntity(result).subscribe(() => {
           this.retrieveData();
+          this._toastr.showSuccess('Задача была успешно отредактирована!');
         }, error => {
           this.isDataLoading = false;
           this._toastr.showError(error);
@@ -58,7 +59,7 @@ export class ForecastingTaskListComponent implements OnInit {
     });
   }
 
-  deleteTaskEntity(name: string): void {
+  deleteTaskEntity(name: string) {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '300px',
       data: 'Вы действительно хотите удалить задачу?'
@@ -69,6 +70,7 @@ export class ForecastingTaskListComponent implements OnInit {
         this.isDataLoading = true;
         this._forecastingTaskService.deleteForecastingTaskEntity(name).subscribe(() => {
           this.retrieveData();
+          this._toastr.showSuccess('Задача была успешно удалена!');
         }, error => {
           this.isDataLoading = false;
           this._toastr.showError(error);

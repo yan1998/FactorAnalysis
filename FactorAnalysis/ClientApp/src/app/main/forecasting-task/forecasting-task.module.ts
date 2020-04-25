@@ -24,6 +24,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UpdateForecastingTaskEntityDialogComponent } from './dialog-windows/update-forecasting-task-entity-dialog/update-forecasting-task-entity-dialog.component';
 import { GuiNotificatorService } from './services/gui-notificator.service';
 import { ToastrModule } from 'ngx-toastr';
+import { CreateTaskEntityPredictionModelDialogComponent } from './dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ToastrModule } from 'ngx-toastr';
     DisplayTaskComponent,
     AddForecastingTaskDataDialogComponent,
     PredictValueDialogComponent,
-    UpdateForecastingTaskEntityDialogComponent
+    UpdateForecastingTaskEntityDialogComponent,
+    CreateTaskEntityPredictionModelDialogComponent
   ],
   imports: [
     CommonModule,
@@ -65,7 +67,8 @@ import { ToastrModule } from 'ngx-toastr';
   entryComponents: [
     AddForecastingTaskDataDialogComponent,
     PredictValueDialogComponent,
-    UpdateForecastingTaskEntityDialogComponent
+    UpdateForecastingTaskEntityDialogComponent,
+    CreateTaskEntityPredictionModelDialogComponent
   ]
 })
 export class ForecastingTaskModule { }

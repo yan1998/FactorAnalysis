@@ -9,12 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/main/dialog-windows/confirmation-dialog/confirmation-dialog.component';
 import { AddForecastingTaskDataDialogComponent } from '../dialog-windows/add-forecasting-task-data-dialog/add-forecasting-task-data-dialog.component';
 import { FileDownloaderService } from '../services/file-downloader.service';
-import { LearningAlgorithm } from '../models/learning-algorithm.enum';
 import { PredictValueDialogComponent } from '../dialog-windows/predict-value-dialog/predict-value-dialog.component';
 import { FieldType } from '../models/field-type.enum';
 import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
 import { GuiNotificatorService } from '../services/gui-notificator.service';
+import { CreateTaskEntityPredictionModelDialogComponent } from '../dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
 
 @Component({
   selector: 'app-display-task',
@@ -90,6 +90,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         this._forecastingTaskService.deleteForecastingTaskEntityValues(this.name, id).subscribe(() => {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
+          this._toastr.showSuccess('Запись была успешно удалена!');
         }, error => {
           this._toastr.showError(error);
         });
@@ -121,6 +122,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.paginator.pageIndex = 1;
           this.paginator.firstPage();
           this.isDataAdding = false;
+          this._toastr.showSuccess('Запись была успешно добавлена!');
         }, error => {
           this.isDataAdding = false;
           this._toastr.showError(error);
@@ -162,13 +164,21 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   }
 
   createPredictionModel() {
-    this.isModelCreating = true;
-    this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name, LearningAlgorithm.LightGbm).subscribe(() => {
-      this._toastr.showSuccess('Обучение прошло успешно');
-      this.isModelCreating = false;
-    }, error => {
-      this.isModelCreating = false;
-      this._toastr.showError(error);
+    const dialogRef = this.dialog.open(CreateTaskEntityPredictionModelDialogComponent, {
+      width: '300px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.isModelCreating = true;
+        this._forecastingTaskService.сreateTaskEntityPredictionModel(this.name, result).subscribe(() => {
+          this._toastr.showSuccess('Обучение прошло успешно');
+          this.isModelCreating = false;
+        }, error => {
+          this.isModelCreating = false;
+          this._toastr.showError(error);
+        });
+      }
     });
   }
 
