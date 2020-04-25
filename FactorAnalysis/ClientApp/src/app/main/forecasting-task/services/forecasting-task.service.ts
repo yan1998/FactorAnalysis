@@ -8,6 +8,7 @@ import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting
 import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 import { UpdateForecastingTaskEntityRequest } from '../models/requests/update-forecasting-task-entity-request';
+import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
 
 @Injectable({
   providedIn: 'root'
@@ -48,9 +49,9 @@ export class ForecastingTaskService {
     return this._httpClient.post<void>(href, values);
   }
 
-  getPagedForecastingTask(taskEntityName: string, pageNumber: number, perPage: number): Observable<PagedForecastingTaskResponse> {
-    const href = this.serverUrl + `PagedForecastingTaskEntity/${taskEntityName}/${pageNumber}/${perPage}`;
-    return this._httpClient.get<PagedForecastingTaskResponse>(href);
+  getPagedForecastingTask(request: GetPagedForecastingTaskRequest): Observable<PagedForecastingTaskResponse> {
+    const href = this.serverUrl + `PagedForecastingTaskEntity`;
+    return this._httpClient.post<PagedForecastingTaskResponse>(href, request);
   }
 
   saveForecastingTaskEntityCsv(taskEntityName: string): Observable<Blob> {

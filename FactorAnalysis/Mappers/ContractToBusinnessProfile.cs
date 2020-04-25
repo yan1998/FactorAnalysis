@@ -21,10 +21,8 @@ namespace FactorAnalysis.Mappers
 
             CreateMap<Model.ForecastingTaskFieldValue, DomainModel.ForecastingTasks.ForecastingTaskFieldValue>();
 
-            CreateMap<PagedForecastingTask, GetPagedForecastingTaskResponse>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, Model.ForecastingTaskFieldDeclaration>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValues, Model.ForecastingTaskFieldValues>();
-            CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValue, Model.ForecastingTaskFieldValue>();
+            CreateMap<GetPagedForecastingTaskRequest, DomainModel.ForecastingTasks.SearchForecastingTaskRecords>()
+                .ForMember(x => x.Filters , opt => opt.MapFrom(y => y.ForecastingTaskFieldValues));
         }
     }
 }

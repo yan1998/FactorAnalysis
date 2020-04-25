@@ -13,38 +13,111 @@
         </div>
     </div>
 
-    <button mat-stroked-button [disabled]="isCsvDownloading" (click)="exportCsv()">
-        <span>Эскпортировать в CSV</span>
-        <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvDownloading"></mat-spinner> 
-    </button>
+    <mat-spinner [diameter]="50" *ngIf="isLoadingResults"></mat-spinner> 
 
-    <button id="uploadXmlBtn" mat-stroked-button [disabled]="isCsvUploading" (click)="csvFileInput.click()">
-        <span>Upload CSV</span>
-        <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvUploading"></mat-spinner>
-    </button>
-    <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
-        (change)="uploadCsvFile(csvFileInput.files)">
+    <div class="row" *ngIf="!isLoadingResults">
+        <mat-accordion class="col-12 col-sm-12 col-md-12 col-lg-6 col-xs-6">
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Работа с файлами
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Импорт/Экспорт
+                        <mat-icon>file_copy</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <button mat-stroked-button [disabled]="isCsvDownloading" (click)="exportCsv()">
+                    <span>Эскпорт CSV</span>
+                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvDownloading"></mat-spinner> 
+                </button>
+            
+                <button id="uploadXmlBtn" mat-stroked-button [disabled]="isCsvUploading" (click)="csvFileInput.click()">
+                    <span>Импорт CSV</span>
+                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvUploading"></mat-spinner>
+                </button>
+
+                <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
+                (change)="uploadCsvFile(csvFileInput.files)">
+            </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Обработка данных
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Обучение и прогнозирование
+                        <mat-icon>storage</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <button  mat-stroked-button [disabled]="isModelCreating"(click)="createPredictionModel()">
+                    <span>Обучить модель</span>
+                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isModelCreating"></mat-spinner> 
+                </button>
+            
+                <button  mat-stroked-button [disabled]="isValuePredicating" (click)="predictValue()">
+                    <span>Спрогнозировать значение</span>
+                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
+                </button>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Поиск
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        Поиск по полям 
+                        <mat-icon>search</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="row" *ngFor="let filter of searchFilters">
+                    <mat-form-field class="col-12 col-sm-5 col-md-5 col-lg-5 col-xs-5">
+                        <input matInput placeholder="Искомое значение" [(ngModel)]="filter.value">
+                    </mat-form-field>
+                    <mat-form-field class="col-12 col-sm-5 col-md-5 col-lg-5 col-xs-5">
+                        <mat-select [(ngModel)]="filter.fieldId" placeholder="Выберите поле">
+                            <mat-option *ngFor="let fieldDeclaration of task.fieldsDeclaration" [value]="fieldDeclaration.id">{{fieldDeclaration.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div class="removefilter col-12 col-sm-1 col-md-1 col-lg-1 col-xs-1">
+                        <button mat-button class="removefilterBtn" color="warn" matTooltip="Удалить фильтр" matTooltipClass="tooltipRed" [disabled]="searchFilters.length <= 1" (click)="removeFilter(filter)">
+                            <mat-icon>delete_forever</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div id="addFilter">
+                    <button mat-button color="primary" matTooltip="Добавить фильтр" (click)="addFilter()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+                <div class="row">
+                    <div id="search" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-button color="primary" matTooltip="Искать" [disabled]="isSearchDisabled()" (click)="search()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </div>
+                    <div id="resetFilter" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-button color="warn" matTooltip="Сбросить фильтра" matTooltipClass="tooltipRed" (click)="resetFilters()">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 
     <button mat-stroked-button [disabled]="isDataAdding" (click)="addForecastingTaskData()">
         <span>Добавить данные</span>
         <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isDataAdding"></mat-spinner> 
     </button>
 
-    <button  mat-stroked-button [disabled]="isModelCreating"(click)="createPredictionModel()">
-        <span>Обучить модель</span>
-        <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isModelCreating"></mat-spinner> 
-    </button>
-
-    <button  mat-stroked-button [disabled]="isValuePredicating" (click)="predictValue()">
-        <span>Спрогнозировать значение</span>
-        <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
-    </button>
-
     <div class="tableContainer mat-elevation-z8">
-        <div class="loadingShade" *ngIf="isLoadingResults">
-            <mat-spinner></mat-spinner>
-        </div>
-        <div>
+        <div [hidden]="isLoadingResults">
             <table mat-table [dataSource]="data">
                 <ng-container *ngFor="let column of task.fieldsDeclaration" matColumnDef="{{column.name}}">
                     <th mat-header-cell class="tableHeader" matTooltip="{{column.description}}" *matHeaderCellDef>{{column.name}}</th>

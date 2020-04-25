@@ -36,16 +36,16 @@ namespace DataAccess.Repositories.Implementations
         public async Task CreateForecastingTaskEntity(string taskName, string description, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)
         {
             var forecastingTask = _mapper.Map<Model.ForecastingTaskDeclaration>(declaration);
-            forecastingTask.Name = taskName;
-            forecastingTask.Description = description;
+            forecastingTask.Name = taskName.Trim();
+            forecastingTask.Description = description.Trim();
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").InsertOneAsync(forecastingTask);
             await _database.CreateCollectionAsync(taskName);
         }
 
         public async Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
         {
-            var arrayFilter = Builders<Model.ForecastingTaskDeclaration>.Filter.Eq("Name", oldTaskName);
-            var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName).Set("Description", newTaskDescription);
+            var arrayFilter = Builders<Model.ForecastingTaskDeclaration>.Filter.Eq("Name", oldTaskName.Trim());
+            var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName.Trim()).Set("Description", newTaskDescription.Trim());
 
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").UpdateOneAsync(arrayFilter, arrayUpdate);
             if(oldTaskName != newTaskName)
@@ -80,21 +80,35 @@ namespace DataAccess.Repositories.Implementations
             return domainObject;
         }
 
-        public async Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string taskName, int pageNumber, int perPage)
+        public async Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest)
         {
-            var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
-            var taskFields = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).Find(x => true).Skip((pageNumber - 1) * perPage).Limit(perPage).ToListAsync();
-            foreach (var taskField in taskFields)
+            var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").Find(x => x.Name == searchRequest.TaskEntityName).SingleAsync();
+            var taskFields = await _database.GetCollection<Model.ForecastingTaskFieldValues>(searchRequest.TaskEntityName).Find(x => true).ToListAsync();
+
+            var filteredRecords = new List<Model.ForecastingTaskFieldValues>();
+            if (searchRequest.Filters?.Count != 0)
             {
-                taskField.FieldsValue = taskField.FieldsValue.OrderBy(x => x.FieldId).ToList();
+                foreach (var filter in searchRequest.Filters.Distinct())
+                {
+                    filteredRecords.AddRange(taskFields.Where(x => x.FieldsValue.Any(x => x.FieldId == filter.FieldId && x.Value.ToLower() == filter.Value.Trim().ToLower())));
+                }
+            }
+            else
+            {
+                filteredRecords = taskFields;
+            }
+            
+            foreach (var taskRecord in filteredRecords)
+            {
+                taskRecord.FieldsValue = taskRecord.FieldsValue.OrderBy(x => x.FieldId).ToList();
             }
 
             var pagedForecastingTask = new PagedForecastingTask
             {
-                Name = taskName,
+                Name = searchRequest.TaskEntityName,
                 FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
-                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskFields),
-                TotalCount = await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).CountDocumentsAsync(x => true)
+                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(filteredRecords.Skip((searchRequest.PageNumber - 1) * searchRequest.PerPage).Take(searchRequest.PerPage)),
+                TotalCount = filteredRecords.Count
             };
             return pagedForecastingTask;
         }

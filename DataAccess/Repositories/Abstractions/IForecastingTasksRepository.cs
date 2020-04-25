@@ -16,7 +16,7 @@ namespace DataAccess.Repositories.Abstractions
 
         Task<ForecastingTask> GetForecastingTaskEntity(string taskName);
 
-        Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string taskName, int pageNumber, int perPage);
+        Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest);
 
         Task AddForecastingTaskFields(string taskName, List<ForecastingTaskFieldValue> values);
 

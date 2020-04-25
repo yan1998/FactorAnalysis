@@ -18,7 +18,7 @@ namespace BusinessLogic.Services.Abstractions
 
         Task DeleteForecastingTaskFactorsById(string entityName, string id);
 
-        Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string entityName, int pageNumber, int perPage);
+        Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest);
 
         Task<string> GetForecastingTaskEntityForCsv(string entityName);
 

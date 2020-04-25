@@ -25,6 +25,7 @@ import { UpdateForecastingTaskEntityDialogComponent } from './dialog-windows/upd
 import { GuiNotificatorService } from './services/gui-notificator.service';
 import { ToastrModule } from 'ngx-toastr';
 import { CreateTaskEntityPredictionModelDialogComponent } from './dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { CreateTaskEntityPredictionModelDialogComponent } from './dialog-windows
     MatFormFieldModule,
     MatIconModule,
     MatTooltipModule,
+    MatExpansionModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',

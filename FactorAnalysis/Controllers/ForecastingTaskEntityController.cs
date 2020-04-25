@@ -102,14 +102,12 @@ namespace FactorAnalysis.Controllers
         /// <summary>
         /// Get paged ForecastingTask factors value
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <param name="pageNumber">Number of page</param>
-        /// <param name="perPage">Amount of record per page</param>
+        /// <param name="request">Search request</param>
         /// <returns>Paged information</returns>
-        [HttpGet("PagedForecastingTaskEntity/{taskEntityName}/{pageNumber}/{perPage}")]
-        public async Task<GetPagedForecastingTaskResponse> GetPagedForecastingTask(string taskEntityName, int pageNumber, int perPage)
+        [HttpPost("PagedForecastingTaskEntity")]
+        public async Task<GetPagedForecastingTaskResponse> GetPagedForecastingTask(GetPagedForecastingTaskRequest request)
         {
-            var response = await _forecastingTasksService.GetPagedForecastingTaskEntity(taskEntityName, pageNumber, perPage);
+            var response = await _forecastingTasksService.SearchForecastingTaskRecords(_mapper.Map<SearchForecastingTaskRecords>(request));
             return _mapper.Map<GetPagedForecastingTaskResponse>(response);
         }
 

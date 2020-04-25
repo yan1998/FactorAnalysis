@@ -93,16 +93,16 @@ namespace BusinessLogic.Services.Implementations
             await _forecastingTasksRepository.DeleteForecastingTaskFieldsById(entityName, id);
         }
 
-        public async Task<PagedForecastingTask> GetPagedForecastingTaskEntity(string entityName, int pageNumber, int perPage)
+        public async Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest)
         {
-            if (pageNumber <= 0)
+            if (searchRequest.PageNumber <= 0)
                 throw new DomainErrorException("Page number should be greater than 0!");
-            if (perPage <= 0)
+            if (searchRequest.PerPage <= 0)
                 throw new DomainErrorException("Per page amount should be greater than 0!");
-            if (!await DoesForecastingTaskEntityExists(entityName))
-                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
+            if (!await DoesForecastingTaskEntityExists(searchRequest.TaskEntityName))
+                throw new DomainErrorException($"Forecasting task with name {searchRequest.TaskEntityName} doesn't exist!");
 
-            return await _forecastingTasksRepository.GetPagedForecastingTaskEntity(entityName, pageNumber, perPage);
+            return await _forecastingTasksRepository.SearchForecastingTaskRecords(searchRequest);
         }
 
         public async Task<string> GetForecastingTaskEntityForCsv(string entityName)

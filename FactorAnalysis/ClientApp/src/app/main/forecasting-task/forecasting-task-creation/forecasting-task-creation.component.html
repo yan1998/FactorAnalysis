@@ -51,10 +51,10 @@
                 </mat-select>
             </mat-form-field>
 
-            <div id="removefield" class="col-12 col-sm-1 col-md-1 col-lg-1 col-xs-1">
-                <button mat-button id="removefieldBtn" color="warn" matTooltip="Удалить поле" matTooltipClass="tooltipRed" [disabled]="taskFields.length <= 1" (click)="removeField(taskField)">
+            <div class="removefield col-12 col-sm-1 col-md-1 col-lg-1 col-xs-1">
+                <button mat-button class="removefieldBtn" color="warn" matTooltip="Удалить поле" matTooltipClass="tooltipRed" [disabled]="taskFields.length <= 1" (click)="removeField(taskField)">
                     <mat-icon>delete_forever</mat-icon>
-                 </button>
+                </button>
             </div>
         </div>
         <hr />

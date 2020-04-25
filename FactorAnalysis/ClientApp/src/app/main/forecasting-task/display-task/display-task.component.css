@@ -1,24 +1,34 @@
+mat-spinner {
+  margin: 0 auto;
+}
+
+mat-panel-title,
+mat-panel-description {
+  flex-basis: 0;
+}
+
+mat-panel-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .btnSpinners {
   float: right;
   margin-top: 7px;
   margin-left: 10px;
 }
 
+.removefilter, #addFilter , #search, #resetFilter {
+  text-align: center;
+}
+
+.removefilterBtn {
+  margin-top: 10px;
+}
+
 .tableContainer {
   margin-top: 15px;
-}
-  
-.loadingShade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 56px;
-  right: 0;
-  background: rgba(0, 0, 0, 0.15);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 table, mat-paginator {

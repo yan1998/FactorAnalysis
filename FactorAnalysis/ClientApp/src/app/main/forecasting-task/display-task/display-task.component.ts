@@ -15,6 +15,8 @@ import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { ForecastingTaskFieldValueRequest } from '../models/requests/forecasting-task-field-value-request';
 import { GuiNotificatorService } from '../services/gui-notificator.service';
 import { CreateTaskEntityPredictionModelDialogComponent } from '../dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
+import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
+import { ForecastingTaskFieldValue } from '../models/forecasting-task-field-value';
 
 @Component({
   selector: 'app-display-task',
@@ -35,6 +37,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   isModelCreating: boolean;
   isDataAdding: boolean;
   isValuePredicating: boolean;
+  searchFilters: ForecastingTaskFieldValue[];
+  searchFiltersRequest: ForecastingTaskFieldValue[];
 
   constructor(private _forecastingTaskService: ForecastingTaskService,
     private _fileDownloaderService: FileDownloaderService,
@@ -51,6 +55,14 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       name: '',
       totalCount: 0
     };
+
+    this.searchFilters = [
+      {
+        fieldId: null,
+        value: null
+      }
+    ];
+
     this.displayedColumns = [];
     this.route.params.subscribe(params => {
       this.name = params['name'];
@@ -62,7 +74,13 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       startWith({}),
       switchMap(() => {
         this.isLoadingResults = true;
-        return this._forecastingTaskService.getPagedForecastingTask(this.name, this.paginator.pageIndex + 1, this.paginator.pageSize);
+        const request: GetPagedForecastingTaskRequest = {
+          taskEntityName: this.name,
+          pageNumber: this.paginator.pageIndex + 1,
+          perPage: this.paginator.pageSize,
+          forecastingTaskFieldValues: this.searchFiltersRequest
+        };
+        return this._forecastingTaskService.getPagedForecastingTask(request);
       }),
       map(data => {
         return data;
@@ -203,6 +221,41 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         });
       }
     });
+  }
+
+  addFilter() {
+    this.searchFilters.push({
+      fieldId: null,
+      value: null
+    });
+  }
+
+  removeFilter(filter) {
+    const index = this.searchFilters.indexOf(filter);
+    if (index > -1) {
+      this.searchFilters.splice(index, 1);
+    }
+  }
+
+  search() {
+    this.searchFiltersRequest = this.searchFilters;
+    this.paginator.pageIndex = 1;
+    this.paginator.firstPage();
+  }
+
+  resetFilters() {
+    this.searchFilters = [{
+        fieldId: null,
+        value: null
+    }];
+
+    this.searchFiltersRequest = [];
+    this.paginator.pageIndex = 1;
+    this.paginator.firstPage();
+  }
+
+  isSearchDisabled(): boolean {
+    return this.searchFilters.some(x => x.fieldId == null || x.value == null);
   }
 
   private createArray() {

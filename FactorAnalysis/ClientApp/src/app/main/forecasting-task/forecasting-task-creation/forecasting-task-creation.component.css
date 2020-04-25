@@ -8,7 +8,7 @@
     margin-left: 10px;
 }
 
-#removefield, #addField, #saveTask {
+.removefield, #addField, #saveTask {
     text-align: center;
 }
 
@@ -16,7 +16,7 @@ h4 {
     margin-top: 20px;    
 }
 
-#removefieldBtn {
+.removefieldBtn {
     margin-top: 15px;
 }
 
