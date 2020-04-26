@@ -29,30 +29,30 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task CreateForecastingTaskEntity(string entityName, string description, List<ForecastingTaskFieldDeclaration> declaration)
         {
-            entityName = entityName.Trim();
-            description = description.Trim();
+            entityName = entityName?.Trim();
+            description = description?.Trim();
             await CreateForecastingTaskEntityValidation(entityName, declaration);
 
             int i = 0;
             foreach (var declarationItem in declaration)
             {
                 declarationItem.Id = i++;
-                declarationItem.Name = declarationItem.Name.Trim();
-                declarationItem.Description = declarationItem.Description.Trim();
+                declarationItem.Name = declarationItem.Name?.Trim();
+                declarationItem.Description = declarationItem.Description?.Trim();
             }
             await _forecastingTasksRepository.CreateForecastingTaskEntity(entityName, description, declaration);
         }
 
         public async Task RenameForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
         {
-            oldTaskName = oldTaskName.Trim();
-            newTaskName = newTaskName.Trim();
-            newTaskDescription = newTaskDescription.Trim();
+            oldTaskName = oldTaskName?.Trim();
+            newTaskName = newTaskName?.Trim();
+            newTaskDescription = newTaskDescription?.Trim();
 
-            if (!await DoesForecastingTaskEntityExists(oldTaskName))
+            if (!await DoesForecastingTaskEntityExist(oldTaskName))
                 throw new DomainErrorException($"Forecasting task with name {oldTaskName} doesn't exist!");
 
-            if (oldTaskName != newTaskName && await DoesForecastingTaskEntityExists(newTaskName))
+            if (oldTaskName != newTaskName && await DoesForecastingTaskEntityExist(newTaskName))
                 throw new DomainErrorException($"Forecasting task with name {newTaskName} already exist!");
 
             await _forecastingTasksRepository.EditForecastingTaskEntity(oldTaskName, newTaskName, newTaskDescription);
@@ -63,8 +63,8 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task DeleteForecastingTaskEntity(string entityName)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             await _forecastingTasksRepository.DeleteForecastingTaskEntity(entityName);
@@ -74,8 +74,8 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFieldValue> values)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
@@ -87,7 +87,7 @@ namespace BusinessLogic.Services.Implementations
                 if (!taskEntityDeclaration.Any(x => x.Id == values[i].FieldId))
                     throw new DomainErrorException($"Column {values[i].FieldId} doesn't exist in forecasting task with name {entityName}!");
 
-                values[i].Value = values[i].Value.Trim();
+                values[i].Value = values[i].Value?.Trim();
                 var fieldDeclaration = taskEntityDeclaration.Single(x => x.Id == values[i].FieldId);
                 if (fieldDeclaration.Type != FieldType.InformationField && !float.TryParse(values[i].Value, out _))
                     throw new DomainErrorException($"Field {fieldDeclaration.Name} must to be filled with a number! But was filled with value: {values[i].Value}");
@@ -98,8 +98,8 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task DeleteForecastingTaskFactorsById(string entityName, string id)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             await _forecastingTasksRepository.DeleteForecastingTaskFieldsById(entityName, id);
@@ -107,25 +107,25 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest)
         {
-            searchRequest.TaskEntityName = searchRequest.TaskEntityName.Trim();
+            searchRequest.TaskEntityName = searchRequest.TaskEntityName?.Trim();
             if (searchRequest.PageNumber <= 0)
                 throw new DomainErrorException("Page number should be greater than 0!");
             if (searchRequest.PerPage <= 0)
                 throw new DomainErrorException("Per page amount should be greater than 0!");
-            if (!await DoesForecastingTaskEntityExists(searchRequest.TaskEntityName))
+            if (!await DoesForecastingTaskEntityExist(searchRequest.TaskEntityName))
                 throw new DomainErrorException($"Forecasting task with name {searchRequest.TaskEntityName} doesn't exist!");
 
             foreach (var filter in searchRequest.Filters)
             {
-                filter.Value = filter.Value.Trim();
+                filter.Value = filter.Value?.Trim();
             }
             return await _forecastingTasksRepository.SearchForecastingTaskRecords(searchRequest);
         }
 
         public async Task<string> GetForecastingTaskEntityForCsv(string entityName)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             try
@@ -153,8 +153,8 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task AddForecastingTaskFactorsViaCsv(string entityName, string csv)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
@@ -182,7 +182,7 @@ namespace BusinessLogic.Services.Implementations
                 var columns = row.Split(',');
                 for (int i = 0; i < columns.Length; i++)
                 {
-                    columns[i] = columns[i].Trim();
+                    columns[i] = columns[i]?.Trim();
                     if (fieldsOrder[i].Type != FieldType.InformationField && !float.TryParse(columns[i], out _))
                         throw new DomainErrorException($"Field {fieldsOrder[i].Name} must to be filled with a number! But was filled with value: {columns[i]}");
 
@@ -200,8 +200,8 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task CreateForecastingTaskMLModel(string entityName, LearningAlgorithm algorithm)
         {
-            entityName = entityName.Trim();
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             try
@@ -233,10 +233,12 @@ namespace BusinessLogic.Services.Implementations
 
         public async Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values)
         {
-            entityName = entityName.Trim();
+            entityName = entityName?.Trim();
             if (values.Count == 0)
                 throw new DomainErrorException($"Factor list is empty!");
-            if (!await DoesForecastingTaskEntityExists(entityName))
+            if (!DoMLModelFilesExist(entityName))
+                throw new DomainErrorException("You didn't train the model! Please, do!");
+            if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
             var nonInformationFields = taskEntityDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
@@ -248,7 +250,7 @@ namespace BusinessLogic.Services.Implementations
             var myClassInstance = entity.CreateObject();
             foreach (var value in values)
             {
-                value.Value = value.Value.Trim();
+                value.Value = value.Value?.Trim();
                 if (!nonInformationFields.Any(x => x.Id == value.FieldId))
                     throw new DomainErrorException($"FieldId {value.FieldId} is incorrect!");
 
@@ -259,7 +261,7 @@ namespace BusinessLogic.Services.Implementations
             return ForecastingTaskConsumeModel.Predict(myClassInstance, entityName, entity.Type);
         }
 
-        private async Task<bool> DoesForecastingTaskEntityExists(string entityName)
+        private async Task<bool> DoesForecastingTaskEntityExist(string entityName)
         {
             if (string.IsNullOrWhiteSpace(entityName))
                 throw new DomainErrorException($"Forecasting task name must to be filled!");
@@ -275,6 +277,12 @@ namespace BusinessLogic.Services.Implementations
             return Path.Combine(assemblyFolderPath, relativePath);
         }
 
+
+        private bool DoMLModelFilesExist(string entityName)
+        {
+            return File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")) && File.Exists(GetAbsolutePath($"{entityName}MLModel.zip"));
+        }
+        
         private void RemoveMLModelFiles(string entityName)
         {
             if (File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")))
@@ -309,7 +317,7 @@ namespace BusinessLogic.Services.Implementations
             if (declaration.Select(x => x.Name.ToLower()).Distinct().Count() != declaration.Count)
                 throw new DomainErrorException($"All fields 'name' must to be unique!");
 
-            if (await DoesForecastingTaskEntityExists(entityName))
+            if (await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} already exists!");
         }
     }

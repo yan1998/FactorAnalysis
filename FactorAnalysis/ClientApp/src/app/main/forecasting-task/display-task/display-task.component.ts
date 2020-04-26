@@ -121,7 +121,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     this.task.fieldsDeclaration.forEach(element => {
       factors.push({
         id: element.id,
-        name: element.name
+        name: element.name,
+        type: element.type
       });
     });
 
@@ -202,7 +203,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   predictValue() {
     const dialogRef = this.dialog.open(PredictValueDialogComponent, {
-      width: '300px',
+      width: '400px',
       data: this.task.fieldsDeclaration.filter(x => x.type === FieldType.Factor)
     });
 
@@ -256,7 +257,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   }
 
   isSearchDisabled(): boolean {
-    return this.searchFilters.some(x => x.fieldId == null || x.value == null);
+    return this.searchFilters.some(x => x.fieldId == null || x.value == null || x.value.trim() === '' );
   }
 
   private createArray() {

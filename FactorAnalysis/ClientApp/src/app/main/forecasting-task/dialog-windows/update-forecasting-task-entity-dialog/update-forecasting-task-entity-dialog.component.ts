@@ -36,4 +36,8 @@ export class UpdateForecastingTaskEntityDialogComponent implements OnInit {
 
     this.dialogRef.close(result);
   }
+
+  isValid(): boolean {
+    return this.updateForm.get('newName').value.trim() !== '';
+  }
 }

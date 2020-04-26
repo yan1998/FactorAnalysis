@@ -91,7 +91,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
   isValid(): boolean {
     return this.doesPredictionFieldSelected()
       && this.taskFields.some(x => x.type === FieldType.Factor)
-      && !this.taskFields.some(x => x.name === '')
-      && (this.taskName && this.taskName !== '');
+      && !this.taskFields.some(x => x.name.trim() === '')
+      && (this.taskName && this.taskName.trim() !== '');
   }
 }

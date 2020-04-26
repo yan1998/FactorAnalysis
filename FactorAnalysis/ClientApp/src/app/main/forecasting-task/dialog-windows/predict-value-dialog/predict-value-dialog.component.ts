@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ForecastingTaskFieldValue } from '../../models/forecasting-task-field-value';
+import { ForecastingTaskFieldDeclaration } from '../../models/forecasting-task-field-declaration';
 
 @Component({
   selector: 'app-predict-value-dialog',
@@ -12,7 +13,7 @@ export class PredictValueDialogComponent implements OnInit {
   obj: any = {};
 
   constructor(public dialogRef: MatDialogRef<PredictValueDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string) { }
+    @Inject(MAT_DIALOG_DATA) public data: ForecastingTaskFieldDeclaration[]) { }
 
   ngOnInit() {
   }
@@ -22,19 +23,24 @@ export class PredictValueDialogComponent implements OnInit {
   }
 
   onSubmitClick(): void {
-  {
     const result: ForecastingTaskFieldValue[] = [];
-
-      // tslint:disable-next-line: forin
-      for (const property in this.obj) {
+    for (let i in this.data) {
+      if (this.data[i]) {
         result.push({
-          // tslint:disable-next-line: radix
-          fieldId: parseInt(property),
-          value: this.obj[property].toString()
+          fieldId: this.data[i].id,
+          value: this.obj[this.data[i].id].toString()
         });
       }
-
-      this.dialogRef.close(result);
     }
+    this.dialogRef.close(result);
+  }
+
+  isSubmitBtnDisabled(): boolean {
+    for (let i in this.data) {
+      if (!this.obj[this.data[i].id]) {
+        return true;
+      }
+    }
+    return false;
   }
 }
