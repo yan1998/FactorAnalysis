@@ -2,7 +2,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a [routerLink]="['/home']">На главную</a></li>
         <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/list']">Задачи прогнозирования</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ task.name }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ name }}</li>
     </ol>
 </nav>
 
@@ -13,9 +13,7 @@
         </div>
     </div>
 
-    <mat-spinner [diameter]="50" *ngIf="isLoadingResults"></mat-spinner> 
-
-    <div class="row" *ngIf="!isLoadingResults">
+    <div class="row" *ngIf="!isLoadingDeclaration">
         <mat-accordion class="col-12 col-sm-12 col-md-12 col-lg-6 col-xs-6">
             <mat-expansion-panel hideToggle>
                 <mat-expansion-panel-header>
@@ -81,7 +79,7 @@
                     </mat-form-field>
                     <mat-form-field class="col-12 col-sm-5 col-md-5 col-lg-5 col-xs-5">
                         <mat-select [(ngModel)]="filter.fieldId" placeholder="Выберите поле">
-                            <mat-option *ngFor="let fieldDeclaration of task.fieldsDeclaration" [value]="fieldDeclaration.id">{{fieldDeclaration.name}}</mat-option>
+                            <mat-option *ngFor="let fieldDeclaration of taskDeclaration" [value]="fieldDeclaration.id">{{fieldDeclaration.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <div class="removefilter col-12 col-sm-1 col-md-1 col-lg-1 col-xs-1">
@@ -116,10 +114,12 @@
         <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isDataAdding"></mat-spinner> 
     </button>
 
+    <mat-spinner [diameter]="50" *ngIf="isLoadingResults || isLoadingDeclaration"></mat-spinner> 
+    
     <div class="tableContainer mat-elevation-z8">
         <div [hidden]="isLoadingResults">
             <table mat-table [dataSource]="data">
-                <ng-container *ngFor="let column of task.fieldsDeclaration" matColumnDef="{{column.name}}">
+                <ng-container *ngFor="let column of taskDeclaration" matColumnDef="{{column.name}}">
                     <th mat-header-cell class="tableHeader" matTooltip="{{column.description}}" *matHeaderCellDef>{{column.name}}</th>
                     <td mat-cell *matCellDef="let row">{{row[column.name]}}</td>
                 </ng-container>

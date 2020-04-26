@@ -24,6 +24,6 @@ namespace DataAccess.Repositories.Abstractions
 
         Task DeleteForecastingTaskFieldsById(string taskName, string id);
 
-        Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldDeclaration(string taskName);
+        Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldsDeclaration(string taskName);
     }
 }

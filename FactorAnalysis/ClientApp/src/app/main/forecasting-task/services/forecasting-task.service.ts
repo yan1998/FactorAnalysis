@@ -9,6 +9,7 @@ import { PredictValueRequest } from '../models/requests/predict-value-request';
 import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-forecasting-task-entities-response';
 import { UpdateForecastingTaskEntityRequest } from '../models/requests/update-forecasting-task-entity-request';
 import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
+import { GetForecastingTaskDeclarationResponse } from '../models/responses/get-forecasting-task-declaration-response';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,11 @@ export class ForecastingTaskService {
   addForecstingTaskFactorsValue(taskEntityName: string, values: ForecastingTaskFieldValueRequest): Observable<void> {
     const href = this.serverUrl + `ForecastingTaskEntity/${taskEntityName}`;
     return this._httpClient.post<void>(href, values);
+  }
+
+  getForecastingTaskDeclaration(taskEntityName: string): Observable<GetForecastingTaskDeclarationResponse> {
+    const href = this.serverUrl + `TaskDeclaration/${taskEntityName}`;
+    return this._httpClient.get<GetForecastingTaskDeclarationResponse>(href);
   }
 
   getPagedForecastingTask(request: GetPagedForecastingTaskRequest): Observable<PagedForecastingTaskResponse> {

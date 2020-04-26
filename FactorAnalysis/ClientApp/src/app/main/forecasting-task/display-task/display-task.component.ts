@@ -17,6 +17,7 @@ import { GuiNotificatorService } from '../services/gui-notificator.service';
 import { CreateTaskEntityPredictionModelDialogComponent } from '../dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
 import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
 import { ForecastingTaskFieldValue } from '../models/forecasting-task-field-value';
+import { ForecastingTaskFieldDeclaration } from '../models/forecasting-task-field-declaration';
 
 @Component({
   selector: 'app-display-task',
@@ -27,10 +28,12 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   name: string;
-  task: PagedForecastingTaskResponse;
+  taskRecords: PagedForecastingTaskResponse;
+  taskDeclaration: ForecastingTaskFieldDeclaration[];
   resultsLength: number;
   displayedColumns: string[];
   isLoadingResults: boolean;
+  isLoadingDeclaration: boolean;
   data: any;
   isCsvUploading: boolean;
   isCsvDownloading: boolean;
@@ -48,9 +51,9 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.isLoadingResults = true;
+    this.isLoadingDeclaration = true;
     this.data = [];
-    this.task = {
-      fieldsDeclaration: [],
+    this.taskRecords = {
       fieldsValues: [],
       name: '',
       totalCount: 0
@@ -66,6 +69,14 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     this.displayedColumns = [];
     this.route.params.subscribe(params => {
       this.name = params['name'];
+    });
+
+    this._forecastingTaskService.getForecastingTaskDeclaration(this.name).subscribe((response) => {
+      this.taskDeclaration = response.fieldsDeclaration;
+      this.isLoadingDeclaration = false;
+    }, error => {
+      this._toastr.showError(error.error);
+      this.isLoadingDeclaration = false;
     });
   }
 
@@ -89,9 +100,9 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         this.isLoadingResults = false;
         return observableOf([]);
       })
-    ).subscribe(task => {
-      this.task = task as PagedForecastingTaskResponse;
-      this.resultsLength = this.task.totalCount;
+    ).subscribe(taskRecords => {
+      this.taskRecords = taskRecords as PagedForecastingTaskResponse;
+      this.resultsLength = this.taskRecords.totalCount;
       this.createArray();
       this.isLoadingResults = false;
     });
@@ -118,7 +129,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   addForecastingTaskData() {
     const factors = [];
-    this.task.fieldsDeclaration.forEach(element => {
+    this.taskDeclaration.forEach(element => {
       factors.push({
         id: element.id,
         name: element.name,
@@ -204,7 +215,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   predictValue() {
     const dialogRef = this.dialog.open(PredictValueDialogComponent, {
       width: '400px',
-      data: this.task.fieldsDeclaration.filter(x => x.type === FieldType.Factor)
+      data: this.taskDeclaration.filter(x => x.type === FieldType.Factor)
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -240,7 +251,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   }
 
   search() {
-    this.searchFiltersRequest = this.searchFilters;
+    this.searchFiltersRequest = [];
+    this.searchFiltersRequest = this.searchFiltersRequest.concat(this.searchFilters);
     this.paginator.pageIndex = 1;
     this.paginator.firstPage();
   }
@@ -264,12 +276,12 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     this.displayedColumns = [];
     this.data = [];
 
-    this.task.fieldsDeclaration.forEach(element => {
+    this.taskDeclaration.forEach(element => {
       this.displayedColumns.push(element.name);
     });
     this.displayedColumns.push('delete');
 
-    this.task.fieldsValues.forEach(element => {
+    this.taskRecords.fieldsValues.forEach(element => {
       const obj = {
         id: element.id
       };

@@ -4,7 +4,6 @@ import { ForecastingTaskFieldValue } from '../forecasting-task-field-value';
 export class PagedForecastingTaskResponse {
     name: string;
     totalCount: number;
-    fieldsDeclaration: ForecastingTaskFieldDeclaration[];
     fieldsValues: ForecastingTaskFieldValues[];
 }
 

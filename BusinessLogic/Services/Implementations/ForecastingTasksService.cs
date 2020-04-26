@@ -78,7 +78,7 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
             if (taskEntityDeclaration.Count != values.Select(x => x.FieldId).Distinct().Count())
                 throw new DomainErrorException($"Forecasting task with name {entityName} and the request have a different count of fields!");
 
@@ -103,6 +103,15 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             await _forecastingTasksRepository.DeleteForecastingTaskFieldsById(entityName, id);
+        }
+
+        public async Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskEntityDeclaration(string entityName)
+        {
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
+                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
+
+            return await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
         }
 
         public async Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest)
@@ -157,7 +166,7 @@ namespace BusinessLogic.Services.Implementations
             if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
             var rows = csv.Split("\r\n");
             var fieldsOrder = new Dictionary<int, ForecastingTaskFieldDeclaration>();
 
@@ -240,7 +249,7 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException("You didn't train the model! Please, do!");
             if (!await DoesForecastingTaskEntityExist(entityName))
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldDeclaration(entityName);
+            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
             var nonInformationFields = taskEntityDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
             var predictionValueId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
             if (values.Any(x => x.FieldId == predictionValueId))

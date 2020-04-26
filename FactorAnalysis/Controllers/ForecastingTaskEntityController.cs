@@ -100,6 +100,19 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
+        /// Gets forecasting task entity field declaration
+        /// </summary>
+        /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <returns>List of task fields</returns>
+        [HttpGet("TaskDeclaration/{taskEntityName}")]
+        public async Task<GetForecastingTaskDeclarationResponse> GetForecastingTaskDeclaration(string taskEntityName)
+        {
+            var taskDeclaration = await _forecastingTasksService.GetForecastingTaskEntityDeclaration(taskEntityName);
+            var response = new GetForecastingTaskDeclarationResponse { FieldsDeclaration = _mapper.Map<List<Model.ForecastingTaskFieldDeclaration>>(taskDeclaration)};
+            return response;
+        }
+
+        /// <summary>
         /// Get paged ForecastingTask factors value
         /// </summary>
         /// <param name="request">Search request</param>
@@ -127,7 +140,6 @@ namespace FactorAnalysis.Controllers
 
             return result;
         }
-
 
         /// <summary>
         /// Uploading a csv file with data
