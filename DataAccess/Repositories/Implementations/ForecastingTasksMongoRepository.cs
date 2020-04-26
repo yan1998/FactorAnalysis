@@ -36,16 +36,16 @@ namespace DataAccess.Repositories.Implementations
         public async Task CreateForecastingTaskEntity(string taskName, string description, List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration> declaration)
         {
             var forecastingTask = _mapper.Map<Model.ForecastingTaskDeclaration>(declaration);
-            forecastingTask.Name = taskName.Trim();
-            forecastingTask.Description = description.Trim();
+            forecastingTask.Name = taskName;
+            forecastingTask.Description = description;
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").InsertOneAsync(forecastingTask);
             await _database.CreateCollectionAsync(taskName);
         }
 
         public async Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription)
         {
-            var arrayFilter = Builders<Model.ForecastingTaskDeclaration>.Filter.Eq("Name", oldTaskName.Trim());
-            var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName.Trim()).Set("Description", newTaskDescription.Trim());
+            var arrayFilter = Builders<Model.ForecastingTaskDeclaration>.Filter.Eq("Name", oldTaskName);
+            var arrayUpdate = Builders<Model.ForecastingTaskDeclaration>.Update.Set("Name", newTaskName).Set("Description", newTaskDescription);
 
             await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").UpdateOneAsync(arrayFilter, arrayUpdate);
             if(oldTaskName != newTaskName)
@@ -90,7 +90,7 @@ namespace DataAccess.Repositories.Implementations
             {
                 foreach (var filter in searchRequest.Filters.Distinct())
                 {
-                    filteredRecords.AddRange(taskFields.Where(x => x.FieldsValue.Any(x => x.FieldId == filter.FieldId && x.Value.ToLower() == filter.Value.Trim().ToLower())));
+                    filteredRecords.AddRange(taskFields.Where(x => x.FieldsValue.Any(x => x.FieldId == filter.FieldId && x.Value.ToLower() == filter.Value.ToLower())));
                 }
             }
             else

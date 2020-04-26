@@ -53,7 +53,7 @@ export class ForecastingTaskListComponent implements OnInit {
           this._toastr.showSuccess('Задача была успешно отредактирована!');
         }, error => {
           this.isDataLoading = false;
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });
@@ -73,7 +73,7 @@ export class ForecastingTaskListComponent implements OnInit {
           this._toastr.showSuccess('Задача была успешно удалена!');
         }, error => {
           this.isDataLoading = false;
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });
@@ -88,7 +88,7 @@ export class ForecastingTaskListComponent implements OnInit {
         this.taskEntities = data;
       }, error => {
         this.isDataLoading = false;
-        this._toastr.showError(error);
+        this._toastr.showError(error.error);
       });
   }
 }

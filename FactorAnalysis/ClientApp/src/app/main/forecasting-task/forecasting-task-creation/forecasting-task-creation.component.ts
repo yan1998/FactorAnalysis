@@ -80,7 +80,7 @@ export class ForecastingTaskCreationComponent implements OnInit {
       this._router.navigate(['/forecasting-task/list']);
     }, error => {
       this.isTaskCreating = false;
-      this._toastr.showError(error);
+      this._toastr.showError(error.error);
     });
   }
 

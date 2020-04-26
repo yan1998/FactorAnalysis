@@ -110,7 +110,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.paginator.firstPage();
           this._toastr.showSuccess('Запись была успешно удалена!');
         }, error => {
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });
@@ -143,7 +143,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this._toastr.showSuccess('Запись была успешно добавлена!');
         }, error => {
           this.isDataAdding = false;
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });
@@ -157,7 +157,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.isCsvDownloading = false;
     }, (error) => {
       this.isCsvDownloading = false;
-      this._toastr.showError(error);
+      this._toastr.showError(error.error);
     });
   }
 
@@ -177,7 +177,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.isCsvUploading = false;
     }, error => {
       this.isCsvUploading = false;
-      this._toastr.showError(error);
+      this._toastr.showError(error.error);
     });
   }
 
@@ -194,7 +194,7 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.isModelCreating = false;
         }, error => {
           this.isModelCreating = false;
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });
@@ -216,8 +216,9 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.isValuePredicating = false;
           this._toastr.showInfo('Прогнозируемое значение = ' + value);
         }, error => {
+          console.log(error);
           this.isValuePredicating = false;
-          this._toastr.showError(error);
+          this._toastr.showError(error.error);
         });
       }
     });

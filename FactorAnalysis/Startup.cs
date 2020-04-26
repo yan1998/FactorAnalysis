@@ -1,9 +1,12 @@
 using AutoMapper;
+using BusinessLogic.Exceptions;
 using BusinessLogic.Mappers;
 using DataAccess;
 using FactorAnalysis.Extensions;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -75,14 +78,23 @@ namespace FactorAnalysis
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
 
-            if (env.IsDevelopment())
+            app.UseExceptionHandler(errorApp =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-            }
+                errorApp.Run(async context =>
+                {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    if (exceptionHandlerPathFeature?.Error is DomainErrorException)
+                    {
+                        context.Response.StatusCode = 400;
+                        await context.Response.WriteAsync((exceptionHandlerPathFeature.Error as DomainErrorException).Message);
+                    }
+                    else
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("Internal Server Error!");
+                    }
+                });
+            });
 
             app.UseStaticFiles();
             if (!env.IsDevelopment())
