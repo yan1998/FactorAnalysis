@@ -61,6 +61,93 @@
             <param name="id">>Id of record</param>
             <returns></returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.GetForecastingTaskEntities">
+            <summary>
+            Get all forecasting tasks name from database
+            </summary>
+            <returns>List of entities name</returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateForecastingTaskEntity(FactorAnalysis.Model.Requests.CreateForecastingTaskEntityRequest)">
+            <summary>
+            Create new forecasting task in database
+            </summary>
+            <param name="request">Creation request</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.UpdateForecastingTaskEntity(FactorAnalysis.Model.Requests.UpdateForecastingTaskEntityRequest)">
+            <summary>
+            Update name and description for Task Entity
+            </summary>
+            <param name="request">old and new names for task entity. And new description</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.DeleteForecastingTaskEntity(System.String)">
+            <summary>
+            Delete forecasting task from database
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.DeleteForecastingTaskEntityValues(System.String,System.String)">
+            <summary>
+            Delete an array of factors values for task entity
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="id">Id of values array</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.AddForecstingTaskFactorsValue(System.String,FactorAnalysis.Model.Requests.AddForecstingTaskFactorsValueRequest)">
+            <summary>
+            Add new factors values to database
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="request">Request for adding new factors value</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.GetForecastingTaskDeclaration(System.String)">
+            <summary>
+            Gets forecasting task entity field declaration
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns>List of task fields</returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.GetPagedForecastingTask(FactorAnalysis.Model.Requests.GetPagedForecastingTaskRequest)">
+            <summary>
+            Get paged ForecastingTask factors value
+            </summary>
+            <param name="request">Search request</param>
+            <returns>Paged information</returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.SaveForecastingTaskValuesCsv(System.String)">
+            <summary>
+            Save csv file with factor values
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.UploadCsvFile(System.String)">
+            <summary>
+            Uploading a csv file with data
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.CreateTaskEntityPredictionModel(System.String,DomainModel.ForecastingTasks.LearningAlgorithm)">
+            <summary>
+            Create prediction model for concrete taskEntity
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="learningAlgorithm">Name of learning algorithm</param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,FactorAnalysis.Model.Requests.PredictValueRequest)">
+            <summary>
+            Prediction method
+            </summary>
+            <param name="taskEntityName">Name of forecasting task</param>
+            <param name="request">List of factor values</param>
+            <returns>Prediction value</returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>
             Controller for interact with ML.NET

@@ -27,7 +27,7 @@ namespace BusinessLogic.Services.Implementations
         public async Task<List<ExchangeRateFactors>> GetExchangeRateFactorsRange(DateTime dateFrom, DateTime dateTo)
         {
             if (dateFrom > dateTo)
-                throw new Exception("DateTo cannot be less than dateFrom!");
+                throw new DomainErrorException("DateTo cannot be less than dateFrom!");
 
             return await _exchangeRateFactorsRepository.GetExchangeRateFactorsRange(dateFrom, dateTo);
         }

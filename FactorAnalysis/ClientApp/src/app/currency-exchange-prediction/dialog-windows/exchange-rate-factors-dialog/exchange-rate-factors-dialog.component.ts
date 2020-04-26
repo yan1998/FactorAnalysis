@@ -64,5 +64,4 @@ export class ExchangeRateFactorsDialogComponent implements OnInit {
     }
     this.dialogRef.close(result);
   }
-
 }

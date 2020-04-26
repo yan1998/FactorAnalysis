@@ -1,0 +1,15 @@
+<div class="row" *ngFor="let factor of data;">
+    <mat-form-field class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <input type="number" matInput placeholder="{{factor.name}}" [(ngModel)]="obj[factor.id]">
+    </mat-form-field>
+</div>
+
+
+<div class="row">
+    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+        <button mat-raised-button type="submit" color="primary" [disabled]="isSubmitBtnDisabled()" (click)="onSubmitClick()" >Спрогнозировать</button>
+    </div>
+    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+        <button mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>
+    </div>
+</div>

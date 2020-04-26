@@ -1,0 +1,55 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/home']">На главную</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Задачи прогнозирования</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xs-10">
+            <h2>Задачи прогнозирования</h2>
+        </div>
+        <div id="createTaskBtn" class="col-2 col-sm-2 col-md-2 col-lg-2 col-xs-2">
+            <button mat-button color="accent" matTooltip="Создать задачу прогнозирования" (click)="goToCreation()">
+                <mat-icon>post_add</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="!isDataLoading">
+        <mat-form-field  class="col-12 col-sm-6 col-md-6 col-lg-4 col-xs-4">
+            <input matInput maxlength="50" placeholder="Поиск" [(ngModel)]="searchField">
+            <mat-icon matSuffix id="searchIcon" (click)="search()">search</mat-icon>
+        </mat-form-field>
+    </div>
+
+    <mat-spinner [diameter]="50" *ngIf="isDataLoading"></mat-spinner> 
+
+    <div id="forecastingTasks" *ngIf="!isDataLoading">
+        <div class="forecastingTask" *ngFor="let taskEntity of filteredTaskEntities">
+            <div class="row">
+                <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xs-2">
+                    <a [routerLink]="['/forecasting-task/display-task', taskEntity.name]"><img class="forecastingTaskImage" src="images/tasks/1.png" /></a>
+                </div>
+                <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xs-8">
+                    <h4 class="taskName">
+                        <a [routerLink]="['/forecasting-task/display-task', taskEntity.name]">{{ taskEntity.name }}</a>
+                    </h4>
+                    <p class="taskDescription">{{ taskEntity.description || 'Без описания' }}</p>
+                </div>
+                <div class="actions col-3 col-sm-3 col-md-3 col-lg-3 col-xs-2">
+                    <button mat-button color="primary" matTooltip="Редактировать задачу" title="Редактировать"
+                        (click)="editTaskEntity(taskEntity)">
+                        <mat-icon class="matIconActions">edit</mat-icon>
+                    </button>
+                    <button mat-button color="warn" matTooltip="Удалить задачу" matTooltipClass="tooltipRed"
+                        (click)="deleteTaskEntity(taskEntity.name)">
+                        <mat-icon class="matIconActions">delete_forever</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>

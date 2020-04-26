@@ -1,0 +1,79 @@
+#mainImage {
+    height: 400px;
+    background-image: url("../../../../../wwwroot/images/home/1.png");
+    background-attachment: fixed;
+    background-position: center bottom;
+}
+
+#title {
+    font-family: GimbalEgypHeaItal;
+    color: #bec4ca;
+    font-size: 57px;
+    text-align: center;
+    padding-top: 35px;
+}
+
+#quote {
+    font-family: GimbalEgypItal;
+    color: #35311d;
+    font-size: 40px;
+    text-align: center;
+    background-color: #f7e8e88c;
+    margin-top: 40px;
+}
+
+#btnContainer {
+    margin-top: 40px;
+    text-align: center;
+}
+
+#btnContainer button {
+    font-size: 20px;
+}
+
+#goals {
+    margin-top: 20px;
+}
+
+.goalsItem {
+    text-align: center;
+}
+
+@media(max-width: 991px) {
+    #title {
+        font-size: 40px;
+        padding-top: 80px;
+    }
+    
+    #quote {
+        font-size: 25px;
+    }
+}
+
+@media(max-width: 767px) {
+    #title {
+        font-size: 35px;
+        padding-top: 100px;
+    }
+    
+    #quote {
+        font-size: 20px;
+    }
+}
+
+
+@media(max-width: 490px) {
+    #title {
+        font-size: 25px;
+        padding-top: 100px;
+    }
+    
+    #quote {
+        font-size: 15px;
+        margin-top:40px;
+    }
+
+    #btnContainer button {
+        font-size: 13px;
+    }
+}

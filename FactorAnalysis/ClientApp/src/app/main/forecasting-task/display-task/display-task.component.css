@@ -1,0 +1,59 @@
+mat-spinner {
+  margin: 0 auto;
+}
+
+mat-panel-title,
+mat-panel-description {
+  flex-basis: 0;
+}
+
+mat-panel-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.btnSpinners {
+  float: right;
+  margin-top: 7px;
+  margin-left: 10px;
+}
+
+.removefilter, #addFilter , #search, #resetFilter {
+  text-align: center;
+}
+
+.removefilterBtn {
+  margin-top: 10px;
+}
+
+.tableContainer {
+  margin-top: 15px;
+}
+
+table, mat-paginator {
+  width: 100%;
+  background-color: #c7f1a7;
+}
+
+.tableHeader {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: GimbalEgypItal;
+  cursor: help;
+}
+
+::ng-deep .tooltipRed {
+  background: #b71c1c;
+}
+
+.example-rate-limit-reached {
+  color: #980000;
+  max-width: 360px;
+  text-align: center;
+}
+  
+mat-paginator {
+  font-size: 14px;
+  font-family: GimbalEgypItal;
+}
