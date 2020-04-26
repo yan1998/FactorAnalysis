@@ -26,4 +26,8 @@ export class CreateTaskEntityPredictionModelDialogComponent {
     const keys = Object.keys(LearningAlgorithm);
     return keys.slice(keys.length / 2);
   }
+
+  isSubmitBtnDisabled(): boolean {
+    return !this.selectedAlgorithm;
+  }
 }

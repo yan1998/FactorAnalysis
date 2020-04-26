@@ -216,6 +216,8 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
+                if (taskEntity.FieldsValues.Count == 0)
+                    throw new DomainErrorException("There are no data in the database!");
                 var nonInformationFields = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
                 var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));

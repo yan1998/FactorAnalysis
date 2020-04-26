@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-        <button mat-raised-button type="submit" color="primary" (click)="onSubmitClick()">Обучить</button>
+        <button mat-raised-button type="submit" color="primary" [disabled]="isSubmitBtnDisabled()" (click)="onSubmitClick()">Обучить</button>
     </div>
     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
         <button mat-raised-button color="basic" (click)="onCloseClick()">Закрыть</button>

@@ -95,12 +95,12 @@
                 </div>
                 <div class="row">
                     <div id="search" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-                        <button mat-button color="primary" matTooltip="Искать" [disabled]="isSearchDisabled()" (click)="search()">
+                        <button mat-button color="primary" matTooltip="Искать" [disabled]="isSearchDisabled() || isLoadingResults" (click)="search()">
                             <mat-icon>search</mat-icon>
                         </button>
                     </div>
                     <div id="resetFilter" class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-                        <button mat-button color="warn" matTooltip="Сбросить фильтра" matTooltipClass="tooltipRed" (click)="resetFilters()">
+                        <button mat-button color="warn" matTooltip="Сбросить фильтра" matTooltipClass="tooltipRed" [disabled] = "isLoadingResults" (click)="resetFilters()">
                             <mat-icon>clear</mat-icon>
                         </button>
                     </div>

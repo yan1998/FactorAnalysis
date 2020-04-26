@@ -1,5 +1,5 @@
 export enum LearningAlgorithm {
-    FastForest,
+    FastForest = 1,
     FastTree,
     FastTreeTweedie,
     Gam,
