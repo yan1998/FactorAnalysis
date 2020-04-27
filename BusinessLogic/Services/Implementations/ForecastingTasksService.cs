@@ -269,7 +269,8 @@ namespace BusinessLogic.Services.Implementations
                 entity.SetPropertyValue(myClassInstance, name, float.Parse(value.Value));
             }
 
-            return ForecastingTaskConsumeModel.Predict(myClassInstance, entityName, entity.Type);
+            var predicatedValue = ForecastingTaskConsumeModel.Predict(myClassInstance, entityName, entity.Type);
+            return (float)Math.Round(predicatedValue, 3, MidpointRounding.AwayFromZero);
         }
 
         private async Task<bool> DoesForecastingTaskEntityExist(string entityName)

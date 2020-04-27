@@ -1,0 +1,38 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/home']">На главную</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/list']">Задачи прогнозирования</a></li>
+        <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/display-task/' + taskName]">{{ taskName }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Построение диаграммы</li>
+    </ol>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+            <h2>Построение диаграммы</h2>
+        </div>
+    </div>
+
+    <mat-spinner [diameter]="50" *ngIf="isDataLoading"></mat-spinner> 
+
+    <div class="row" *ngIf="!isDataLoading">
+        <mat-form-field class="col-12 col-sm-6 col-md-5 col-lg-5 col-xs-3">
+            <mat-select [(ngModel)]="axisXField" placeholder="Выберите ось Х">
+                <mat-option *ngFor="let fieldDeclaration of taskDeclaration" [value]="fieldDeclaration.name">{{fieldDeclaration.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-12 col-sm-6 col-md-5 col-lg-5 col-xs-3">
+            <mat-select [(ngModel)]="axisYField" placeholder="Выберите ось Y">
+                <mat-option *ngFor="let fieldDeclaration of getTaskFieldsExceptInformation()" [value]="fieldDeclaration.name">{{fieldDeclaration.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div id="buildDiagram" class="col-12 col-sm-12 col-md-2 col-lg-2 col-xs-2">
+            <button id="buildDiagramBtn" mat-stroked-button color="primary" [disabled]="buildBtnDisabled()" (click)="buildDiagram()">
+               Построить диаграмму
+            </button>
+        </div>
+    </div>
+
+    <div id="chartContainer" *ngIf="!isDataLoading" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+</div>

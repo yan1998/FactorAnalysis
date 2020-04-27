@@ -259,8 +259,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   resetFilters() {
     this.searchFilters = [{
-        fieldId: null,
-        value: null
+      fieldId: null,
+      value: null
     }];
 
     this.searchFiltersRequest = [];

@@ -79,4 +79,17 @@ export class ForecastingTaskService {
     const href = this.serverUrl + `PredictValue/${taskEntityName}`;
     return this._httpClient.post<number>(href, values);
   }
+
+  getAllForecastingTaskValues(taskEntityName: string): Observable<PagedForecastingTaskResponse> {
+    const request: GetPagedForecastingTaskRequest = {
+      taskEntityName: taskEntityName,
+      forecastingTaskFieldValues: [],
+      pageNumber: 1,
+      perPage: 2147483647
+    };
+
+    const href = this.serverUrl + `PagedForecastingTaskEntity`;
+    return this._httpClient.post<PagedForecastingTaskResponse>(href, request);
+  }
+
 }

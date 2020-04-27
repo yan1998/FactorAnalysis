@@ -27,7 +27,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "../wwwroot/scripts/canvasjs.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -78,7 +80,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "../wwwroot/scripts/canvasjs.min.js"
+            ],
             "assets": [
               "src/assets"
             ]

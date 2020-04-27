@@ -12,11 +12,18 @@ mat-panel-description {
   align-items: center;
 }
 
+mat-expansion-panel {
+  background-color: #b5dc96;
+}
 
 .btnSpinners {
   float: right;
   margin-top: 7px;
   margin-left: 10px;
+}
+
+.fullWidthBtn {
+  width: 100%;
 }
 
 .removefilter, #addFilter , #search, #resetFilter {

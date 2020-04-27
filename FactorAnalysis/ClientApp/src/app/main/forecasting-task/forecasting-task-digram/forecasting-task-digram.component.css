@@ -1,0 +1,11 @@
+mat-spinner {
+    margin: 0 auto;
+  }
+
+#buildDiagram {
+    text-align: center;
+}
+
+#buildDiagramBtn {
+    margin-top: 10px;
+}
