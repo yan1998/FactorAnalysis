@@ -96,6 +96,71 @@ namespace BusinessLogic.Services.Implementations
             }
         }
 
+        public async Task<string> GenerateJsonString(string entityName)
+        {
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
+                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
+
+            try
+            {
+                var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
+                var result = new StringBuilder("{\r\n" +
+                    "\t\"data\": [");
+
+                foreach (var fieldsValue in taskEntity.FieldsValues)
+                {
+                    result.Append("\r\n\t\t{");
+                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
+                    {
+                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
+                        result.Append($"\r\n\t\t\t\"{factorDeclaration.Name}\": \"{value}\",");
+                    }
+                    result.Remove(result.Length - 1, 1);
+                    result.Append("\r\n\t\t},");
+                }
+                result.Remove(result.Length - 1, 1);
+                result.Append("\r\n\t]\r\n" +
+                    "}\r\n");
+                return result.ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> GenerateXmlString(string entityName)
+        {
+            entityName = entityName?.Trim();
+            if (!await DoesForecastingTaskEntityExist(entityName))
+                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
+
+            try
+            {
+                var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
+                var result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
+                    "<ArrayOfData>\r\n");
+
+                foreach (var fieldsValue in taskEntity.FieldsValues)
+                {
+                    result.Append("\t<Data>\r\n");
+                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
+                    {
+                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
+                        result.Append($"\t\t<{factorDeclaration.Name}>{value}</{factorDeclaration.Name}>\r\n");
+                    }
+                    result.Append("\t</Data>\r\n");
+                }
+                result.Append("</ArrayOfData>\r\n");
+                return result.ToString();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         private Task<bool> DoesForecastingTaskEntityExist(string entityName)
         {
             if (string.IsNullOrWhiteSpace(entityName))

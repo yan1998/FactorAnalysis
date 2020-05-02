@@ -102,23 +102,17 @@ namespace BusinessLogic.Services.Implementations
                 throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
 
             var report = new List<AlgorithmPredictionReport>();
-            var searchRequest = new SearchForecastingTaskRecords
-            {
-                PageNumber = 1,
-                PerPage = int.MaxValue,
-                TaskEntityName = entityName.Trim(),
-                Filters = new List<ForecastingTaskFieldValue>()
-            };
-            var data = await _forecastingTasksRepository.SearchForecastingTaskRecords(searchRequest);
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
+            var data = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName.Trim());
+            var taskEntityDeclaration = data.FieldsDeclaration;
+            var totalCount = data.FieldsValues.Count;
             var factorFieldIds = taskEntityDeclaration.Where(x => x.Type == FieldType.Factor).Select(x => x.Id).ToList();
             var predictionFieldId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
 
             int tasksToSkip;
-            if (data.TotalCount <= 100)
-                tasksToSkip = (int)Math.Floor(data.TotalCount / 5.0);
-            else if (data.TotalCount > 100 && data.TotalCount <= 500)
-                tasksToSkip = (int)Math.Floor(data.TotalCount / 10.0);
+            if (totalCount <= 100)
+                tasksToSkip = (int)Math.Floor(totalCount / 5.0);
+            else if (totalCount > 100 && totalCount <= 500)
+                tasksToSkip = (int)Math.Floor(totalCount / 10.0);
             else
                 tasksToSkip = 30;
 

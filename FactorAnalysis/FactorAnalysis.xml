@@ -140,6 +140,20 @@
             <param name="learningAlgorithm">Name of learning algorithm</param>
             <returns></returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.SaveForecastingTaskValuesJson(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="taskEntityName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.SaveForecastingTaskValuesXml(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="taskEntityName"></param>
+            <returns></returns>
+        </member>
         <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.PredictValue(System.String,FactorAnalysis.Model.Requests.PredictValueRequest)">
             <summary>
             Prediction method

@@ -51,9 +51,9 @@
                         </button>
                     </div>
                     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isXmlDownloading" (click)="exportXml()">
                             <span>Эскпорт XML</span>
-                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner> 
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isXmlDownloading"></mat-spinner> 
                         </button>
                         <input id="xmlFile" [style.display]="'none'" name="xmlFile" type="file" accept=".xml" #xmlFileInput>
                     </div>
@@ -67,9 +67,9 @@
                         </button>
                     </div>
                     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isJsonDownloading" (click)="exportJson()">
                             <span>Эскпорт JSON</span>
-                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner> 
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isJsonDownloading"></mat-spinner> 
                         </button>
                         <input id="jsonFile" [style.display]="'none'" name="jsonFile" type="file" accept=".json" #jsonFileInput>
                     </div>

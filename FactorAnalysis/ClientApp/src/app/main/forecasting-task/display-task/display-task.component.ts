@@ -37,6 +37,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   data: any;
   isCsvUploading: boolean;
   isCsvDownloading: boolean;
+  isJsonDownloading: boolean;
+  isXmlDownloading: boolean;
   isModelCreating: boolean;
   isDataAdding: boolean;
   isValuePredicating: boolean;
@@ -189,6 +191,30 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
       this.isCsvUploading = false;
     }, error => {
       this.isCsvUploading = false;
+      this._toastr.showError(error.error);
+    });
+  }
+
+  exportJson() {
+    this.isJsonDownloading = true;
+    this._forecastingTaskService.saveForecastingTaskEntityJson(this.name).subscribe(file => {
+      const blob = new Blob([file], { type: 'text/csv' });
+      this._fileDownloaderService.downloadBlob(blob, `${this.name}.json`);
+      this.isJsonDownloading = false;
+    }, (error) => {
+      this.isJsonDownloading = false;
+      this._toastr.showError(error.error);
+    });
+  }
+
+  exportXml() {
+    this.isXmlDownloading = true;
+    this._forecastingTaskService.saveForecastingTaskEntityXml(this.name).subscribe(file => {
+      const blob = new Blob([file], { type: 'text/csv' });
+      this._fileDownloaderService.downloadBlob(blob, `${this.name}.xml`);
+      this.isXmlDownloading = false;
+    }, (error) => {
+      this.isXmlDownloading = false;
       this._toastr.showError(error.error);
     });
   }

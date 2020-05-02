@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLogic.Services.Abstractions;
@@ -171,6 +169,40 @@ namespace FactorAnalysis.Controllers
         public Task CreateTaskEntityPredictionModel(string taskEntityName, LearningAlgorithm learningAlgorithm)
         {
             return _machineLearningService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskEntityName"></param>
+        /// <returns></returns>
+        [HttpGet("SaveForecastingTaskValuesJson/{taskEntityName}")]
+        public async Task<ContentResult> SaveForecastingTaskValuesJson(string taskEntityName)
+        {
+            var response = await _importExportInFileService.GenerateJsonString(taskEntityName);
+
+            ContentResult result = new ContentResult();
+            result.Content = response;
+            result.ContentType = "application/json";
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskEntityName"></param>
+        /// <returns></returns>
+        [HttpGet("SaveForecastingTaskValuesXml/{taskEntityName}")]
+        public async Task<ContentResult> SaveForecastingTaskValuesXml(string taskEntityName)
+        {
+            var response = await _importExportInFileService.GenerateXmlString(taskEntityName);
+
+            ContentResult result = new ContentResult();
+            result.Content = response;
+            result.ContentType = "application/xml";
+
+            return result;
         }
 
         /// <summary>

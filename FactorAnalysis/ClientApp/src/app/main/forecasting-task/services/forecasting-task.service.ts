@@ -72,6 +72,16 @@ export class ForecastingTaskService {
     return this._httpClient.post<void>(href, formData);
   }
 
+  saveForecastingTaskEntityJson(taskEntityName: string): Observable<Blob> {
+    const href = this.serverUrl + `SaveForecastingTaskValuesJson/${taskEntityName}`;
+    return this._httpClient.get(href, { responseType: 'blob' });
+  }
+
+  saveForecastingTaskEntityXml(taskEntityName: string): Observable<Blob> {
+    const href = this.serverUrl + `SaveForecastingTaskValuesXml/${taskEntityName}`;
+    return this._httpClient.get(href, { responseType: 'blob' });
+  }
+
   сreateTaskEntityPredictionModel(taskEntityName: string, learningAlgorithm: LearningAlgorithm): Observable<void> {
     const href = this.serverUrl + `CreateTaskEntityPredictionModel/${taskEntityName}/${learningAlgorithm}`;
     return this._httpClient.post<void>(href, null);
