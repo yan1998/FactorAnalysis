@@ -316,8 +316,9 @@ namespace BusinessLogic.Services.Implementations
                 stopwatch.Restart();
                 var iteration = 0;
                 var errorSum = 0.0;
-                foreach (var fields in data.FieldsValues.Skip(iteration * tasksToSkip).Take(1))
+                do
                 {
+                    var fields = data.FieldsValues.Skip(iteration * tasksToSkip).Take(1).Single();
                     var predicationField = fields.FieldsValue.Single(x => x.FieldId == predictionFieldId);
                     var factorFields = fields.FieldsValue.Where(x => factorFieldIds.Contains(x.FieldId)).ToList();
                     var predicationResult = await PredictValue(data.Name, factorFields, false);
@@ -330,7 +331,9 @@ namespace BusinessLogic.Services.Implementations
                         Result = predicationResult
                     };
                     algorithmPredictionReportEntity.Results.Add(algorithmPredictionResult);
-                }
+                    iteration++;
+                } while (iteration * tasksToSkip < data.FieldsValues.Count);
+
                 stopwatch.Stop();
                 algorithmPredictionReportEntity.ElapsedPredictionTime = stopwatch.Elapsed;
                 algorithmPredictionReportEntity.AverageError = errorSum / (iteration + 1);
