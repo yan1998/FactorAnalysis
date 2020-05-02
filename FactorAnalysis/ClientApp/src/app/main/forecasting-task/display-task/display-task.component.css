@@ -2,16 +2,6 @@ mat-spinner {
   margin: 0 auto;
 }
 
-mat-panel-title,
-mat-panel-description {
-  flex-basis: 0;
-}
-
-mat-panel-description {
-  justify-content: space-between;
-  align-items: center;
-}
-
 .removefilter, #addFilter , #search, #resetFilter {
   text-align: center;
 }
