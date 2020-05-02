@@ -2,15 +2,11 @@
 using BusinessLogic.Services.Abstractions;
 using DataAccess.Repositories.Abstractions;
 using DomainModel.ForecastingTasks;
-using FactorAnalysisML.Model;
-using FactorAnalysisML.Model.ModelBuilders;
 using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace BusinessLogic.Services.Implementations
 {
@@ -132,223 +128,11 @@ namespace BusinessLogic.Services.Implementations
             return await _forecastingTasksRepository.SearchForecastingTaskRecords(searchRequest);
         }
 
-        public async Task<string> GetForecastingTaskEntityForCsv(string entityName)
-        {
-            entityName = entityName?.Trim();
-            if (!await DoesForecastingTaskEntityExist(entityName))
-                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-
-            try
-            {
-                var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                var result = string.Join(',', taskEntity.FieldsDeclaration.Select(x => x.Name));
-                foreach (var fieldsValue in taskEntity.FieldsValues)
-                {
-                    var tempStr = "\r\n";
-                    foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
-                    {
-                        var value = fieldsValue.FieldsValue.Single(x => x.FieldId == factorDeclaration.Id).Value;
-                        tempStr += value + ',';
-                    }
-                    result += tempStr[0..^1];
-                }
-
-                return result;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task AddForecastingTaskFactorsViaCsv(string entityName, string csv)
-        {
-            entityName = entityName?.Trim();
-            if (!await DoesForecastingTaskEntityExist(entityName))
-                throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
-            var rows = csv.Split("\r\n");
-            var fieldsOrder = new Dictionary<int, ForecastingTaskFieldDeclaration>();
-
-            // Checking csv header
-            var headerColumns = rows.First().Split(',');
-            if (taskEntityDeclaration.Count != headerColumns.Count())
-                throw new DomainErrorException($"Forecasting task with name {entityName} and csv file have a different count of columns!");
-
-            for (int i = 0; i < headerColumns.Length; i++)
-            {
-                if (!taskEntityDeclaration.Any(x => x.Name == headerColumns[i]))
-                    throw new DomainErrorException($"Column {headerColumns[i]} doesn't exist in forecasting task with name {entityName}!");
-
-                fieldsOrder.Add(i, taskEntityDeclaration.Single(x => x.Name == headerColumns[i]));
-            }
-
-            //Add fields values
-            var fieldsValues = new List<List<ForecastingTaskFieldValue>>();
-            foreach (var row in rows.Skip(1))
-            {
-                var factorsValue = new List<ForecastingTaskFieldValue>();
-                var columns = row.Split(',');
-                for (int i = 0; i < columns.Length; i++)
-                {
-                    columns[i] = columns[i]?.Trim();
-                    if (fieldsOrder[i].Type != FieldType.InformationField && !float.TryParse(columns[i], out _))
-                        throw new DomainErrorException($"Field {fieldsOrder[i].Name} must to be filled with a number! But was filled with value: {columns[i]}");
-
-                    factorsValue.Add(new ForecastingTaskFieldValue
-                    {
-                        FieldId = fieldsOrder[i].Id,
-                        Value = columns[i]
-                    });
-                }
-                fieldsValues.Add(factorsValue);
-            }
-
-            await _forecastingTasksRepository.AddBatchOfForecastingTaskFields(entityName, fieldsValues);
-        }
-
-        public async Task CreateForecastingTaskMLModel(string entityName, LearningAlgorithm algorithm, bool isValidationNeeded = true)
-        {
-            entityName = entityName?.Trim();
-            if (isValidationNeeded)
-            {
-                if (!await DoesForecastingTaskEntityExist(entityName))
-                    throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-            }
-
-            try
-            {
-                var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                if (taskEntity.FieldsValues.Count == 0)
-                    throw new DomainErrorException("There are no data in the database!");
-                var nonInformationFields = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
-                var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
-                var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
-                foreach (var fieldsValue in taskEntity.FieldsValues)
-                {
-                    var myClassInstance = entity.CreateObject();
-                    foreach (var fieldDeclaration in nonInformationFields)
-                    {
-                        var value= fieldsValue.FieldsValue.Single(x => x.FieldId == fieldDeclaration.Id).Value;
-                        entity.SetPropertyValue(myClassInstance, fieldDeclaration.Name, float.Parse(value));
-                    }
-                    dataList.Add(myClassInstance);
-                }
-
-                var factors = nonInformationFields.Where(x => x.Type == FieldType.Factor).Select(x => x.Name);
-                var predictedValue = nonInformationFields.Single(x => x.Type == FieldType.PredictionField).Name;
-                ForecastingTaskModelBuilder.CreateModel(dataList, entityName, factors, predictedValue, algorithm);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
-        public async Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values, bool isValidationNeeded = true)
-        {
-            entityName = entityName?.Trim();
-            if (isValidationNeeded)
-            {
-                if (values.Count == 0)
-                    throw new DomainErrorException($"Factor list is empty!");
-                if (!DoMLModelFilesExist(entityName))
-                    throw new DomainErrorException("You didn't train the model! Please, do!");
-                if (!await DoesForecastingTaskEntityExist(entityName))
-                    throw new DomainErrorException($"Forecasting task with name {entityName} doesn't exist!");
-            }
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
-            var nonInformationFields = taskEntityDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
-            var predictionValueId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
-            if (values.Any(x => x.FieldId == predictionValueId))
-                throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
-            
-            var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
-            var myClassInstance = entity.CreateObject();
-            foreach (var value in values)
-            {
-                value.Value = value.Value?.Trim();
-                if (!nonInformationFields.Any(x => x.Id == value.FieldId))
-                    throw new DomainErrorException($"FieldId {value.FieldId} is incorrect!");
-
-                var name = nonInformationFields.Single(x => x.Id == value.FieldId).Name;
-                entity.SetPropertyValue(myClassInstance, name, float.Parse(value.Value));
-            }
-
-            var predicatedValue = ForecastingTaskConsumeModel.Predict(myClassInstance, entityName, entity.Type);
-            return (float)Math.Round(predicatedValue, 3, MidpointRounding.AwayFromZero);
-        }
-
-        public async Task<List<AlgorithmPredictionReport>> AnalyzePredictionAlgorithms(string entityName, List<LearningAlgorithm> algorithms)
-        {
-            var report = new List<AlgorithmPredictionReport>();
-            var searchRequest = new SearchForecastingTaskRecords
-            {
-                PageNumber = 1,
-                PerPage = int.MaxValue,
-                TaskEntityName = entityName,
-                Filters = new List<ForecastingTaskFieldValue>()
-            };
-            var data = await SearchForecastingTaskRecords(searchRequest);
-            var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
-            var factorFieldIds = taskEntityDeclaration.Where(x => x.Type == FieldType.Factor).Select(x => x.Id).ToList();
-            var predictionFieldId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
-
-            int tasksToSkip;
-            if (data.TotalCount <= 100)
-                tasksToSkip = (int)Math.Floor(data.TotalCount / 5.0);
-            else if (data.TotalCount > 100 && data.TotalCount <= 500)
-                tasksToSkip = (int)Math.Floor(data.TotalCount / 10.0);
-            else
-                tasksToSkip = 30;
-
-            foreach (var enumValue in algorithms)
-            {
-                var algorithmPredictionReportEntity = new AlgorithmPredictionReport { Algorithm = enumValue, Results = new List<AlgorithmPredictionResult>() };  
-                var stopwatch = new Stopwatch();
-                
-                stopwatch.Restart();
-                CreateForecastingTaskMLModel(entityName, enumValue, false).GetAwaiter().GetResult();
-                stopwatch.Stop();
-                algorithmPredictionReportEntity.ElapsedTrainingTime = stopwatch.Elapsed;
-
-                stopwatch.Restart();
-                var iteration = 0;
-                var errorSum = 0.0;
-                do
-                {
-                    var fields = data.FieldsValues.Skip(iteration * tasksToSkip).Take(1).Single();
-                    var predicationField = fields.FieldsValue.Single(x => x.FieldId == predictionFieldId);
-                    var factorFields = fields.FieldsValue.Where(x => factorFieldIds.Contains(x.FieldId)).ToList();
-                    var predicationResult = await PredictValue(data.Name, factorFields, false);
-                    errorSum += predicationResult - float.Parse(predicationField.Value);
-
-                    factorFields.Add(predicationField);
-                    var algorithmPredictionResult = new AlgorithmPredictionResult
-                    {
-                        FactorValues = factorFields,
-                        Result = predicationResult
-                    };
-                    algorithmPredictionReportEntity.Results.Add(algorithmPredictionResult);
-                    iteration++;
-                } while (iteration * tasksToSkip < data.FieldsValues.Count);
-
-                stopwatch.Stop();
-                algorithmPredictionReportEntity.ElapsedPredictionTime = stopwatch.Elapsed;
-                algorithmPredictionReportEntity.AverageError = errorSum / (iteration + 1);
-                report.Add(algorithmPredictionReportEntity);
-            }
-
-            return report;
-        }
-
-        private async Task<bool> DoesForecastingTaskEntityExist(string entityName)
+        private Task<bool> DoesForecastingTaskEntityExist(string entityName)
         {
             if (string.IsNullOrWhiteSpace(entityName))
                 throw new DomainErrorException($"Forecasting task name must to be filled!");
-            var existingEntityNames = await _forecastingTasksRepository.GetAllForecastingTaskEntities();
-            return existingEntityNames.Any(x => x.Name.ToLower() == entityName.ToLower());
+            return _forecastingTasksRepository.DoesForecastingTaskEntityExist(entityName);
         }
 
         private string GetAbsolutePath(string relativePath)
@@ -358,12 +142,6 @@ namespace BusinessLogic.Services.Implementations
 
             return Path.Combine(assemblyFolderPath, relativePath);
         }
-
-
-        private bool DoMLModelFilesExist(string entityName)
-        {
-            return File.Exists(GetAbsolutePath($"preparation_{entityName}MLModel.zip")) && File.Exists(GetAbsolutePath($"{entityName}MLModel.zip"));
-        }
         
         private void RemoveMLModelFiles(string entityName)
         {
@@ -372,17 +150,6 @@ namespace BusinessLogic.Services.Implementations
 
             if (File.Exists(GetAbsolutePath($"{entityName}MLModel.zip")))
                 File.Delete(GetAbsolutePath($"{entityName}MLModel.zip"));
-        }
-
-        private Dictionary<string, Type> GetFieldsType(List<ForecastingTaskFieldDeclaration> fieldsDeclaration)
-        {
-            var result = new Dictionary<string, Type>();
-            foreach (var fieldDeclaration in fieldsDeclaration)
-            {
-                var type = fieldDeclaration.Type == FieldType.InformationField ? typeof(string) : typeof(float); 
-                result.Add(fieldDeclaration.Name, type);
-            }
-            return result;
         }
 
         private async Task CreateForecastingTaskEntityValidation(string entityName, List<ForecastingTaskFieldDeclaration> declaration)

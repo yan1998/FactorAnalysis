@@ -20,14 +20,20 @@ namespace FactorAnalysis.Controllers
     {
         private readonly ILogger<ForecastingTaskEntityController> _logger;
         private readonly IForecastingTasksService _forecastingTasksService;
+        private readonly IMachineLearningService _machineLearningService;
+        private readonly IImportExportInFileService _importExportInFileService;
         private readonly IMapper _mapper;
 
         public ForecastingTaskEntityController(ILogger<ForecastingTaskEntityController> logger,
             IForecastingTasksService forecastingTasksService,
+            IMachineLearningService machineLearningService,
+            IImportExportInFileService importExportInFileService,
             IMapper mapper)
         {
             _logger = logger;
             _forecastingTasksService = forecastingTasksService;
+            _machineLearningService = machineLearningService;
+            _importExportInFileService = importExportInFileService;
             _mapper = mapper;
         }
 
@@ -134,7 +140,7 @@ namespace FactorAnalysis.Controllers
         [HttpGet("SaveForecastingTaskValuesCsv/{taskEntityName}")]
         public async Task<ContentResult> SaveForecastingTaskValuesCsv(string taskEntityName)
         {
-            var response = await _forecastingTasksService.GetForecastingTaskEntityForCsv(taskEntityName);
+            var response = await _importExportInFileService.GenerateCsvString(taskEntityName);
 
             ContentResult result = new ContentResult();
             result.Content = response;
@@ -152,7 +158,7 @@ namespace FactorAnalysis.Controllers
         public Task UploadCsvFile(string taskEntityName)
         {
             string csv = StreamConversionHelper.ConvertStreamToString(Request.Form.Files[0].OpenReadStream());
-            return _forecastingTasksService.AddForecastingTaskFactorsViaCsv(taskEntityName, csv);
+            return _importExportInFileService.AddForecastingTaskFactorsViaCsv(taskEntityName, csv);
         }
 
         /// <summary>
@@ -164,7 +170,7 @@ namespace FactorAnalysis.Controllers
         [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}/{learningAlgorithm}")]
         public Task CreateTaskEntityPredictionModel(string taskEntityName, LearningAlgorithm learningAlgorithm)
         {
-            return _forecastingTasksService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
+            return _machineLearningService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
         }
 
         /// <summary>
@@ -177,7 +183,7 @@ namespace FactorAnalysis.Controllers
         public Task<float> PredictValue(string taskEntityName, [FromBody]PredictValueRequest request)
         {
             var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
-            return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
+            return _machineLearningService.PredictValue(taskEntityName, factorValuesDomain);
         }
 
         /// <summary>
@@ -194,7 +200,7 @@ namespace FactorAnalysis.Controllers
                 algorithms.Add((LearningAlgorithm)Enum.Parse(typeof(LearningAlgorithm), algorithm));
             }
 
-            var result = await _forecastingTasksService.AnalyzePredictionAlgorithms(request.TaskEntityName, algorithms);
+            var result = await _machineLearningService.AnalyzePredictionAlgorithms(request.TaskEntityName, algorithms);
             var response = new AnalyzePredictionAlgorithmsResponse
             {
                 Reports = _mapper.Map<List<Model.AnalyzePredictionAlgorithmsReport>>(result)

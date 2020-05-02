@@ -145,5 +145,11 @@ namespace DataAccess.Repositories.Implementations
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
             return _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id));
         }
+
+        public async Task<bool> DoesForecastingTaskEntityExist(string entityName)
+        {
+            var existingEntityName = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindAsync(x => x.Name.ToLower() == entityName.ToLower());
+            return await existingEntityName.AnyAsync();
+        }
     }
 }
