@@ -1,0 +1,19 @@
+mat-spinner {
+    margin: 0 auto;
+}
+
+.algorithms {
+    margin-left: 15px;
+}
+
+table {
+    width: 100%;
+    background-color: #c7f1a7;
+}
+  
+.tableHeader {
+    font-size: 14px;
+    font-weight: bold;
+    font-family: GimbalEgypItal;
+    cursor: help;
+}

@@ -8,7 +8,6 @@
         Gam,
         LbfgsPoissonRegression,
         LightGbm,
-        OnlineGradientDescent,
         Sdca
     }
 }

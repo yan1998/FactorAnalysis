@@ -10,6 +10,8 @@ import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-fore
 import { UpdateForecastingTaskEntityRequest } from '../models/requests/update-forecasting-task-entity-request';
 import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
 import { GetForecastingTaskDeclarationResponse } from '../models/responses/get-forecasting-task-declaration-response';
+import { AnalyzePredictionAlgorithmsResponse } from '../models/responses/analyze-prediction-algorithms-response';
+import { AnalyzePredictionAlgorithmsRequest } from '../models/requests/analyze-prediction-algorithms-request';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +80,11 @@ export class ForecastingTaskService {
   predictValue(taskEntityName: string, values: PredictValueRequest): Observable<number> {
     const href = this.serverUrl + `PredictValue/${taskEntityName}`;
     return this._httpClient.post<number>(href, values);
+  }
+
+  analyzePredictionAlgorithms(request: AnalyzePredictionAlgorithmsRequest): Observable<AnalyzePredictionAlgorithmsResponse> {
+    const href = this.serverUrl + `AnalyzePredictionAlgorithms`;
+    return this._httpClient.post<AnalyzePredictionAlgorithmsResponse>(href, request);
   }
 
   getAllForecastingTaskValues(taskEntityName: string): Observable<PagedForecastingTaskResponse> {

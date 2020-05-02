@@ -1,0 +1,105 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/home']">На главную</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/list']">Задачи прогнозирования</a></li>
+    <li class="breadcrumb-item"><a [routerLink]="['/forecasting-task/display-task/' + taskName]">{{ taskName }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Анализ алгоритмов</li>
+  </ol>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <h2>Анализ эффективности алгоритмов</h2>
+    </div>
+  </div>
+
+  <mat-spinner [diameter]="50" *ngIf="isLoadingDeclaration"></mat-spinner> 
+
+  <div class="row" *ngIf="!isLoadingDeclaration">
+    <div class="col-12 col-sm-10 col-md-8 col-lg-7 col-xs-6">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="isPanelExpended">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Выбор алгоритмов
+            </mat-panel-title>
+            <mat-panel-description>
+              Обозначьте алгоритмы для проверки
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+              <mat-checkbox class="algorithms" *ngFor="let algorithm of learningAlgorithmKeys()" (change)="selectedAlgorithmsChanged($event, algorithm)">{{ algorithm }}
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xs-6">
+              <button mat-stroked-button class="fullWidthBtn" [disabled]="isTestngInProgress || selectedAlgorithms.length === 0" (click)="startTesting()">
+                <span>Запуск тестирования</span>
+                <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isTestngInProgress"></mat-spinner>
+              </button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+  
+  <br>
+
+  <div id="reports" *ngIf="!isTestngInProgress && reports">
+    <div class="row" *ngFor="let report of reports">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+        <mat-accordion>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ LearningAlgorithm[report.algorithm] }}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{ report.averageError }}
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div class="row">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xs-6">
+                <div class="row">
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">Время обучения</p>
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">{{ formatElapsedTime(report.elapsedTrainingTime) }}</p>
+                </div>
+                <div class="row">
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">Время прогнозирования</p>
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">{{ formatElapsedTime(report.elapsedPredictionTime) }}</p>
+                </div>
+                <div class="row">
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">Средняя погрешность</p>
+                  <p class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">{{ report.averageError }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="tableContainer mat-elevation-z8">
+              <table mat-table [dataSource]="getDataSource(report.results)">
+                <ng-container *ngFor="let column of taskDeclaration" matColumnDef="{{column.name}}">
+                  <th mat-header-cell class="tableHeader" matTooltip="{{column.description}}" *matHeaderCellDef>{{column.name}}</th>
+                  <td mat-cell *matCellDef="let row">{{row[column.name]}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="Results">
+                  <th mat-header-cell class="tableHeader" *matHeaderCellDef>Результат</th>
+                  <td mat-cell *matCellDef="let row">{{row.Results}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+  </div>
+</div>

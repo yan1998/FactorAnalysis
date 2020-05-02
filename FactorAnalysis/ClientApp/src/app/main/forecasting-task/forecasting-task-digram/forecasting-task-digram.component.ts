@@ -5,8 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { ForecastingTaskFieldDeclaration } from '../models/forecasting-task-field-declaration';
 import { ForecastingTaskFieldValues } from '../models/responses/paged-forecasting-task-response';
 import { FieldType } from '../models/field-type.enum';
-import { element } from 'protractor';
-import { parse } from 'url';
 declare const CanvasJS: any;
 
 @Component({
@@ -76,7 +74,7 @@ export class ForecastingTaskDigramComponent implements OnInit {
   }
 
   buildBtnDisabled(): boolean {
-    return !this.axisYField || !this.axisXField; 
+    return !this.axisYField || !this.axisXField;
   }
 
   getTaskFieldsExceptInformation(): ForecastingTaskFieldDeclaration[] {

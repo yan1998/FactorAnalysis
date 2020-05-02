@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -176,6 +178,28 @@ namespace FactorAnalysis.Controllers
         {
             var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
             return _forecastingTasksService.PredictValue(taskEntityName, factorValuesDomain);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request">Request</param>
+        /// <returns>Reports of training and prediction</returns>
+        [HttpPost("AnalyzePredictionAlgorithms")]
+        public async Task<AnalyzePredictionAlgorithmsResponse> AnalyzePredictionAlgorithms(AnalyzePredictionAlgorithmsRequest request)
+        {
+            var algorithms = new List<LearningAlgorithm>();
+            foreach (var algorithm in request.Algorithms)
+            {
+                algorithms.Add((LearningAlgorithm)Enum.Parse(typeof(LearningAlgorithm), algorithm));
+            }
+
+            var result = await _forecastingTasksService.AnalyzePredictionAlgorithms(request.TaskEntityName, algorithms);
+            var response = new AnalyzePredictionAlgorithmsResponse
+            {
+                Reports = _mapper.Map<List<Model.AnalyzePredictionAlgorithmsReport>>(result)
+            };
+            return response;
         }
     }
 }

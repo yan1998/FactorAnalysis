@@ -228,7 +228,6 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.isValuePredicating = false;
           this._toastr.showInfo('Прогнозируемое значение = ' + value);
         }, error => {
-          console.log(error);
           this.isValuePredicating = false;
           this._toastr.showError(error.error);
         });
@@ -286,7 +285,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         id: element.id
       };
       element.fieldsValue.forEach(field => {
-        obj[this.displayedColumns[field.fieldId]] = field.value;
+        const name = this.taskDeclaration.filter(x => x.id === field.fieldId)[0].name;
+        obj[name] = field.value;
       });
       this.data.push(obj);
     });

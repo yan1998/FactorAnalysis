@@ -5,6 +5,5 @@ export enum LearningAlgorithm {
     Gam,
     LbfgsPoissonRegression,
     LightGbm,
-    OnlineGradientDescent,
     Sdca
 }

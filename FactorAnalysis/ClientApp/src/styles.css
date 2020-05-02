@@ -63,3 +63,27 @@ hr {
 mat-dialog-container {
   background-color: #9cda9f !important;
 }
+
+mat-expansion-panel {
+  background-color: #b5dc96 !important;
+}
+
+.fullWidthBtn {
+  width: 100%;
+}
+
+.btnSpinners {
+  float: right;
+  margin-top: 7px !important;
+  margin-left: 10px !important;
+}
+
+mat-panel-title,
+mat-panel-description {
+  flex-basis: 0 !important;
+}
+
+mat-panel-description {
+  justify-content: space-between !important;
+  align-items: center !important;
+}

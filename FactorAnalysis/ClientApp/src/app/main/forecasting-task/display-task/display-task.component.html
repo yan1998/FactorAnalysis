@@ -28,7 +28,7 @@
                 
                 <div class="row">
                     <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
-                        <button mat-stroked-button class="fullWidthBtn"  [disabled]="isCsvUploading" (click)="csvFileInput.click()">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isCsvUploading" (click)="csvFileInput.click()">
                             <span>Импорт CSV</span>
                             <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvUploading"></mat-spinner>
                         </button>
@@ -40,6 +40,38 @@
                         </button>
                         <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
                         (change)="uploadCsvFile(csvFileInput.files)">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Импорт XML</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Эскпорт XML</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner> 
+                        </button>
+                        <input id="xmlFile" [style.display]="'none'" name="xmlFile" type="file" accept=".xml" #xmlFileInput>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Импорт JSON</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Эскпорт JSON</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner> 
+                        </button>
+                        <input id="jsonFile" [style.display]="'none'" name="jsonFile" type="file" accept=".json" #jsonFileInput>
                     </div>
                 </div>
             </mat-expansion-panel>
@@ -68,6 +100,14 @@
                             <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
                         </button>
                     </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <button mat-stroked-button  class="fullWidthBtn" [routerLink]="['/forecasting-task/analyze-prediction-algorithms', name]">
+                            <span>Анализ алгоритмов прогнозирования</span>
+                        </button>
+                    </div> 
                 </div>
             </mat-expansion-panel>
 

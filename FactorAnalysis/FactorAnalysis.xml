@@ -148,6 +148,13 @@
             <param name="request">List of factor values</param>
             <returns>Prediction value</returns>
         </member>
+        <member name="M:FactorAnalysis.Controllers.ForecastingTaskEntityController.AnalyzePredictionAlgorithms(FactorAnalysis.Model.Requests.AnalyzePredictionAlgorithmsRequest)">
+            <summary>
+            
+            </summary>
+            <param name="request">Request</param>
+            <returns>Reports of training and prediction</returns>
+        </member>
         <member name="T:FactorAnalysis.Controllers.MLModelsController">
             <summary>
             Controller for interact with ML.NET
