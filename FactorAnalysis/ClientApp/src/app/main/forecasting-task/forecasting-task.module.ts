@@ -26,6 +26,8 @@ import { GuiNotificatorService } from './services/gui-notificator.service';
 import { ToastrModule } from 'ngx-toastr';
 import { CreateTaskEntityPredictionModelDialogComponent } from './dialog-windows/create-task-entity-prediction-model-dialog/create-task-entity-prediction-model-dialog.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { ForecastingTaskDigramComponent } from './forecasting-task-digram/forecasting-task-digram.component';
+import { AnalyzePredictionAlgorithmsComponent } from './analyze-prediction-algorithms/analyze-prediction-algorithms.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { MatExpansionModule } from '@angular/material/expansion';
     AddForecastingTaskDataDialogComponent,
     PredictValueDialogComponent,
     UpdateForecastingTaskEntityDialogComponent,
-    CreateTaskEntityPredictionModelDialogComponent
+    CreateTaskEntityPredictionModelDialogComponent,
+    ForecastingTaskDigramComponent,
+    AnalyzePredictionAlgorithmsComponent
   ],
   imports: [
     CommonModule,

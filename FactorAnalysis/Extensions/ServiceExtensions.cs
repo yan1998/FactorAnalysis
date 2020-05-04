@@ -27,6 +27,8 @@ namespace FactorAnalysis.Extensions
             services.AddScoped<ISeedExchangeRateFactorsService, SeedExchangeRateFactorsService>();
             services.AddScoped<IExchangeRateFactorsService, ExchangeRateFactorsService>();
             services.AddScoped<IForecastingTasksService, ForecastingTasksService>();
+            services.AddScoped<IMachineLearningService, MachineLearningService>();
+            services.AddScoped<IImportExportInFileService, ImportExportInFileService>();
         }
 
         public static void AddContractMappings(this IMapperConfigurationExpression mapperConfigurationExpression)

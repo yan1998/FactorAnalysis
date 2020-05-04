@@ -22,22 +22,58 @@
                     </mat-panel-title>
                     <mat-panel-description>
                         Импорт/Экспорт
-                        <mat-icon>file_copy</mat-icon>
+                        <mat-icon>import_export</mat-icon>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
                 
-                <button mat-stroked-button [disabled]="isCsvDownloading" (click)="exportCsv()">
-                    <span>Эскпорт CSV</span>
-                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvDownloading"></mat-spinner> 
-                </button>
-            
-                <button id="uploadXmlBtn" mat-stroked-button [disabled]="isCsvUploading" (click)="csvFileInput.click()">
-                    <span>Импорт CSV</span>
-                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvUploading"></mat-spinner>
-                </button>
-
-                <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
-                (change)="uploadCsvFile(csvFileInput.files)">
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isCsvUploading" (click)="csvFileInput.click()">
+                            <span>Импорт CSV</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvUploading"></mat-spinner>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isCsvDownloading" (click)="exportCsv()">
+                            <span>Эскпорт CSV</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isCsvDownloading"></mat-spinner> 
+                        </button>
+                        <input id="csvFile" [style.display]="'none'" name="csvFile" type="file" accept=".csv" #csvFileInput
+                        (change)="uploadCsvFile(csvFileInput.files)">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Импорт XML</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isXmlDownloading" (click)="exportXml()">
+                            <span>Эскпорт XML</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isXmlDownloading"></mat-spinner> 
+                        </button>
+                        <input id="xmlFile" [style.display]="'none'" name="xmlFile" type="file" accept=".xml" #xmlFileInput>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="false">
+                            <span>Импорт JSON</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="false"></mat-spinner>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isJsonDownloading" (click)="exportJson()">
+                            <span>Эскпорт JSON</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isJsonDownloading"></mat-spinner> 
+                        </button>
+                        <input id="jsonFile" [style.display]="'none'" name="jsonFile" type="file" accept=".json" #jsonFileInput>
+                    </div>
+                </div>
             </mat-expansion-panel>
 
             <mat-expansion-panel hideToggle>
@@ -51,15 +87,28 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <button  mat-stroked-button [disabled]="isModelCreating"(click)="createPredictionModel()">
-                    <span>Обучить модель</span>
-                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isModelCreating"></mat-spinner> 
-                </button>
-            
-                <button  mat-stroked-button [disabled]="isValuePredicating" (click)="predictValue()">
-                    <span>Спрогнозировать значение</span>
-                    <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
-                </button>
+                <div class="row">
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isModelCreating"(click)="createPredictionModel()">
+                            <span>Обучить модель</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isModelCreating"></mat-spinner> 
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-6 col-md-6 col-lg-6 col-xs-6">
+                        <button mat-stroked-button class="fullWidthBtn" [disabled]="isValuePredicating" (click)="predictValue()">
+                            <span>Спрогнозировать значение</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isValuePredicating"></mat-spinner>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <button mat-stroked-button  class="fullWidthBtn" [routerLink]="['/forecasting-task/analyze-prediction-algorithms', name]">
+                            <span>Анализ алгоритмов прогнозирования</span>
+                        </button>
+                    </div> 
+                </div>
             </mat-expansion-panel>
 
             <mat-expansion-panel hideToggle>
@@ -106,13 +155,37 @@
                     </div>
                 </div>
             </mat-expansion-panel>
+
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Прочие операции
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        &nbsp;
+                        <mat-icon>tag_faces</mat-icon>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <button mat-stroked-button  class="fullWidthBtn" [disabled]="isDataAdding" (click)="addForecastingTaskData()">
+                            <span>Добавить данные</span>
+                            <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isDataAdding"></mat-spinner> 
+                        </button>
+                    </div>
+                </div> 
+                <br>
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xs-12">
+                        <button mat-stroked-button  class="fullWidthBtn" [routerLink]="['/forecasting-task/task-diagram', name]">
+                            <span>Построить диаграмму</span>
+                        </button>
+                    </div> 
+                </div>
+            </mat-expansion-panel>
         </mat-accordion>
     </div>
-
-    <button mat-stroked-button [disabled]="isDataAdding" (click)="addForecastingTaskData()">
-        <span>Добавить данные</span>
-        <mat-spinner class="btnSpinners" [diameter]="20" *ngIf="isDataAdding"></mat-spinner> 
-    </button>
 
     <mat-spinner [diameter]="50" *ngIf="isLoadingResults || isLoadingDeclaration"></mat-spinner> 
     

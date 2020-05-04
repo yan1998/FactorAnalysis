@@ -37,6 +37,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
   data: any;
   isCsvUploading: boolean;
   isCsvDownloading: boolean;
+  isJsonDownloading: boolean;
+  isXmlDownloading: boolean;
   isModelCreating: boolean;
   isDataAdding: boolean;
   isValuePredicating: boolean;
@@ -193,6 +195,30 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
     });
   }
 
+  exportJson() {
+    this.isJsonDownloading = true;
+    this._forecastingTaskService.saveForecastingTaskEntityJson(this.name).subscribe(file => {
+      const blob = new Blob([file], { type: 'text/csv' });
+      this._fileDownloaderService.downloadBlob(blob, `${this.name}.json`);
+      this.isJsonDownloading = false;
+    }, (error) => {
+      this.isJsonDownloading = false;
+      this._toastr.showError(error.error);
+    });
+  }
+
+  exportXml() {
+    this.isXmlDownloading = true;
+    this._forecastingTaskService.saveForecastingTaskEntityXml(this.name).subscribe(file => {
+      const blob = new Blob([file], { type: 'text/csv' });
+      this._fileDownloaderService.downloadBlob(blob, `${this.name}.xml`);
+      this.isXmlDownloading = false;
+    }, (error) => {
+      this.isXmlDownloading = false;
+      this._toastr.showError(error.error);
+    });
+  }
+
   createPredictionModel() {
     const dialogRef = this.dialog.open(CreateTaskEntityPredictionModelDialogComponent, {
       width: '300px'
@@ -228,7 +254,6 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
           this.isValuePredicating = false;
           this._toastr.showInfo('Прогнозируемое значение = ' + value);
         }, error => {
-          console.log(error);
           this.isValuePredicating = false;
           this._toastr.showError(error.error);
         });
@@ -259,8 +284,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
 
   resetFilters() {
     this.searchFilters = [{
-        fieldId: null,
-        value: null
+      fieldId: null,
+      value: null
     }];
 
     this.searchFiltersRequest = [];
@@ -286,7 +311,8 @@ export class DisplayTaskComponent implements OnInit, AfterViewInit {
         id: element.id
       };
       element.fieldsValue.forEach(field => {
-        obj[this.displayedColumns[field.fieldId]] = field.value;
+        const name = this.taskDeclaration.filter(x => x.id === field.fieldId)[0].name;
+        obj[name] = field.value;
       });
       this.data.push(obj);
     });

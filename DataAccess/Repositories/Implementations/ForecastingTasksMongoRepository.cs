@@ -111,7 +111,7 @@ namespace DataAccess.Repositories.Implementations
             return pagedForecastingTask;
         }
 
-        public async Task AddForecastingTaskFields(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue> values)
+        public async Task AddForecastingTaskRecord(string taskName, List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue> values)
         {
             var dataRecord = new Model.ForecastingTaskFieldValues
             {
@@ -121,7 +121,7 @@ namespace DataAccess.Repositories.Implementations
             await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertOneAsync(dataRecord);
         }
 
-        public async Task AddBatchOfForecastingTaskFields(string taskName, List<List<ForecastingTaskFieldValue>> values)
+        public async Task AddBatchOfForecastingTaskRecords(string taskName, List<List<ForecastingTaskFieldValue>> values)
         {
             var dataRecords = new List<Model.ForecastingTaskFieldValues>();
             values.ForEach(x =>
@@ -135,15 +135,21 @@ namespace DataAccess.Repositories.Implementations
             await _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).InsertManyAsync(dataRecords);
         }
 
-        public Task DeleteForecastingTaskFieldsById(string taskName, string id)
+        public Task DeleteForecastingTaskRecordById(string taskName, string recordId)
         {
-            return _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(id));
+            return _database.GetCollection<Model.ForecastingTaskFieldValues>(taskName).DeleteOneAsync(x => x._id == ObjectId.Parse(recordId));
         }
 
         public async Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldsDeclaration(string taskName)
         {
             var taskDeclaration = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindSync(x => x.Name == taskName).SingleAsync();
             return _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id));
+        }
+
+        public async Task<bool> DoesForecastingTaskEntityExist(string taskName)
+        {
+            var existingEntityName = await _database.GetCollection<Model.ForecastingTaskDeclaration>("__declarations").FindAsync(x => x.Name.ToLower() == taskName.ToLower());
+            return await existingEntityName.AnyAsync();
         }
     }
 }

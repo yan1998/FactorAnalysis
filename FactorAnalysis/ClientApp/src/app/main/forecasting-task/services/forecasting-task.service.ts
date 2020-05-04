@@ -10,6 +10,8 @@ import { GetForecastingTaskEntitiesResponse } from '../models/responses/get-fore
 import { UpdateForecastingTaskEntityRequest } from '../models/requests/update-forecasting-task-entity-request';
 import { GetPagedForecastingTaskRequest } from '../models/requests/get-paged-forecasting-task-request';
 import { GetForecastingTaskDeclarationResponse } from '../models/responses/get-forecasting-task-declaration-response';
+import { AnalyzePredictionAlgorithmsResponse } from '../models/responses/analyze-prediction-algorithms-response';
+import { AnalyzePredictionAlgorithmsRequest } from '../models/requests/analyze-prediction-algorithms-request';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +72,16 @@ export class ForecastingTaskService {
     return this._httpClient.post<void>(href, formData);
   }
 
+  saveForecastingTaskEntityJson(taskEntityName: string): Observable<Blob> {
+    const href = this.serverUrl + `SaveForecastingTaskValuesJson/${taskEntityName}`;
+    return this._httpClient.get(href, { responseType: 'blob' });
+  }
+
+  saveForecastingTaskEntityXml(taskEntityName: string): Observable<Blob> {
+    const href = this.serverUrl + `SaveForecastingTaskValuesXml/${taskEntityName}`;
+    return this._httpClient.get(href, { responseType: 'blob' });
+  }
+
   сreateTaskEntityPredictionModel(taskEntityName: string, learningAlgorithm: LearningAlgorithm): Observable<void> {
     const href = this.serverUrl + `CreateTaskEntityPredictionModel/${taskEntityName}/${learningAlgorithm}`;
     return this._httpClient.post<void>(href, null);
@@ -79,4 +91,22 @@ export class ForecastingTaskService {
     const href = this.serverUrl + `PredictValue/${taskEntityName}`;
     return this._httpClient.post<number>(href, values);
   }
+
+  analyzePredictionAlgorithms(request: AnalyzePredictionAlgorithmsRequest): Observable<AnalyzePredictionAlgorithmsResponse> {
+    const href = this.serverUrl + `AnalyzePredictionAlgorithms`;
+    return this._httpClient.post<AnalyzePredictionAlgorithmsResponse>(href, request);
+  }
+
+  getAllForecastingTaskValues(taskEntityName: string): Observable<PagedForecastingTaskResponse> {
+    const request: GetPagedForecastingTaskRequest = {
+      taskEntityName: taskEntityName,
+      forecastingTaskFieldValues: [],
+      pageNumber: 1,
+      perPage: 2147483647
+    };
+
+    const href = this.serverUrl + `PagedForecastingTaskEntity`;
+    return this._httpClient.post<PagedForecastingTaskResponse>(href, request);
+  }
+
 }

@@ -14,6 +14,9 @@ namespace FactorAnalysis.Mappers
             CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration, Model.ForecastingTaskFieldDeclaration>();
             CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValues, Model.ForecastingTaskFieldValues>();
             CreateMap<DomainModel.ForecastingTasks.ForecastingTaskFieldValue, Model.ForecastingTaskFieldValue>();
+
+            CreateMap<DomainModel.ForecastingTasks.AlgorithmPredictionReport, Model.AnalyzePredictionAlgorithmsReport>();
+            CreateMap<DomainModel.ForecastingTasks.AlgorithmPredictionResult, Model.AlgorithmPredictionResult>();
         }
     }
 }

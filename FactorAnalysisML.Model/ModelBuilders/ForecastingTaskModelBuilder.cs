@@ -51,9 +51,9 @@ namespace FactorAnalysisML.Model.ModelBuilders
                 case LearningAlgorithm.LightGbm:
                     trainer = mlContext.Regression.Trainers.LightGbm(labelColumnName: predicatedValueName, featureColumnName: "Features");
                     break;
-                case LearningAlgorithm.OnlineGradientDescent:
-                    trainer = mlContext.Regression.Trainers.OnlineGradientDescent(labelColumnName: predicatedValueName, featureColumnName: "Features");
-                    break;
+                //case LearningAlgorithm.OnlineGradientDescent:
+                //    trainer = mlContext.Regression.Trainers.OnlineGradientDescent(labelColumnName: predicatedValueName, featureColumnName: "Features");
+                //    break;
                 case LearningAlgorithm.Sdca:
                     trainer = mlContext.Regression.Trainers.Sdca(labelColumnName: predicatedValueName, featureColumnName: "Features");
                     break;

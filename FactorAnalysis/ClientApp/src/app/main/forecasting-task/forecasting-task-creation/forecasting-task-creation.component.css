@@ -2,12 +2,6 @@
     margin-top: 5px;
 }
 
-#btnSpinner {
-    float: right;
-    margin-top: 7px;
-    margin-left: 10px;
-}
-
 .removefield, #addField, #saveTask {
     text-align: center;
 }
