@@ -18,14 +18,14 @@ namespace DataAccess.Repositories.Abstractions
 
         Task<PagedForecastingTask> SearchForecastingTaskRecords(SearchForecastingTaskRecords searchRequest);
 
-        Task AddForecastingTaskFields(string taskName, List<ForecastingTaskFieldValue> values);
+        Task AddForecastingTaskRecord(string taskName, List<ForecastingTaskFieldValue> values);
 
-        Task AddBatchOfForecastingTaskFields(string taskName, List<List<ForecastingTaskFieldValue>> values);
+        Task AddBatchOfForecastingTaskRecords(string taskName, List<List<ForecastingTaskFieldValue>> values);
 
-        Task DeleteForecastingTaskFieldsById(string taskName, string id);
+        Task DeleteForecastingTaskRecordById(string taskName, string recordId);
 
         Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskFieldsDeclaration(string taskName);
 
-        Task<bool> DoesForecastingTaskEntityExist(string entityName);
+        Task<bool> DoesForecastingTaskEntityExist(string taskName);
     }
 }

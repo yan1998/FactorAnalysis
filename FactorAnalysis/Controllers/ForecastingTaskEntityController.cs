@@ -12,6 +12,9 @@ using Microsoft.Extensions.Logging;
 
 namespace FactorAnalysis.Controllers
 {
+    /// <summary>
+    /// Main controller for Managing Forecasting task entities
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ForecastingTaskEntityController : ControllerBase
@@ -22,6 +25,14 @@ namespace FactorAnalysis.Controllers
         private readonly IImportExportInFileService _importExportInFileService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Constructor for controller instantiation
+        /// </summary>
+        /// <param name="logger">Logger</param>
+        /// <param name="forecastingTasksService">Service for managing forecasting tasks</param>
+        /// <param name="machineLearningService">Service for machine learning functionallity</param>
+        /// <param name="importExportInFileService">Service for files functionallity</param>
+        /// <param name="mapper">Mapper</param>
         public ForecastingTaskEntityController(ILogger<ForecastingTaskEntityController> logger,
             IForecastingTasksService forecastingTasksService,
             IMachineLearningService machineLearningService,
@@ -36,21 +47,20 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Get all forecasting tasks name from database
+        /// Get all Forecasting Tasks name and description
         /// </summary>
-        /// <returns>List of entities name</returns>
+        /// <returns>List of Forecasting Task entities information</returns>
         [HttpGet("ForecastingTaskEntities")]
-        public async Task<List<GetForecastingTaskEntitiesResponse>> GetForecastingTaskEntities()
+        public async Task<List<GetForecastingTaskEntitiesResponse>> GetAllForecastingTaskEntities()
         {
             var shortInfo = await _forecastingTasksService.GetAllForecastingTaskEntities();
             return _mapper.Map<List<GetForecastingTaskEntitiesResponse>>(shortInfo);
         }
 
         /// <summary>
-        /// Create new forecasting task in database
+        /// Create new Forecasting Task
         /// </summary>
-        /// <param name="request">Creation request</param>
-        /// <returns></returns>
+        /// <param name="request">Task creation request</param>
         [HttpPost("ForecastingTaskEntity")]
         public Task CreateForecastingTaskEntity([FromBody]CreateForecastingTaskEntityRequest request)
         {
@@ -59,21 +69,19 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Update name and description for Task Entity
+        /// Update name and description of the Forecasting Task entity
         /// </summary>
-        /// <param name="request">old and new names for task entity. And new description</param>
-        /// <returns></returns>
+        /// <param name="request">Old and new names of the Forecasting Task entity with new description</param>
         [HttpPut("ForecastingTaskEntity")]
         public Task UpdateForecastingTaskEntity([FromBody]UpdateForecastingTaskEntityRequest request)
         {
-            return _forecastingTasksService.RenameForecastingTaskEntity(request.OldTaskName, request.NewTaskName, request.Description);
+            return _forecastingTasksService.EditForecastingTaskEntity(request.OldTaskName, request.NewTaskName, request.Description);
         }
 
         /// <summary>
-        /// Delete forecasting task from database
+        /// Delete the Forecasting Task entity
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
         [HttpDelete("ForecastingTaskEntity/{taskEntityName}")]
         public Task DeleteForecastingTaskEntity(string taskEntityName)
         {
@@ -81,35 +89,33 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Delete an array of factors values for task entity
+        /// Delete the record from the Forecasting Task entity
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <param name="id">Id of values array</param>
-        /// <returns></returns>
-        [HttpDelete("ForecastingTaskEntity/{taskEntityName}/{id}")]
-        public Task DeleteForecastingTaskEntityValues(string taskEntityName, string id)
+        /// <param name="taskEntityName">Name of the Forecasting Task Entity</param>
+        /// <param name="recordId">Id of record</param>
+        [HttpDelete("ForecastingTaskEntity/{taskEntityName}/{recordId}")]
+        public Task DeleteForecastingTaskEntityRecord(string taskEntityName, string recordId)
         {
-            return _forecastingTasksService.DeleteForecastingTaskFactorsById(taskEntityName, id);
+            return _forecastingTasksService.DeleteForecastingTaskRecordById(taskEntityName, recordId);
         }
 
         /// <summary>
-        /// Add new factors values to database
+        /// Add new record for the Forecasting Tasks entity
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <param name="request">Request for adding new factors value</param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task Entity</param>
+        /// <param name="request">Request for adding new record</param>
         [HttpPost("ForecastingTaskEntity/{taskEntityName}")]
-        public Task AddForecstingTaskFactorsValue(string taskEntityName, [FromBody]AddForecstingTaskFactorsValueRequest request)
+        public Task AddForecstingTaskEntityRecord(string taskEntityName, [FromBody]AddForecstingTaskFactorsValueRequest request)
         {
             var values = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
-            return _forecastingTasksService.AddForecastingTaskFactors(taskEntityName, values);
+            return _forecastingTasksService.AddForecastingTaskRecord(taskEntityName, values);
         }
 
         /// <summary>
-        /// Gets forecasting task entity field declaration
+        /// Get declaration of the Forecasting Task entity
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <returns>List of task fields</returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
+        /// <returns>List of the Forecasting Task entity fields</returns>
         [HttpGet("TaskDeclaration/{taskEntityName}")]
         public async Task<GetForecastingTaskDeclarationResponse> GetForecastingTaskDeclaration(string taskEntityName)
         {
@@ -119,24 +125,24 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Get paged ForecastingTask factors value
+        /// Get filtered and paged the Forecasting Task records
         /// </summary>
         /// <param name="request">Search request</param>
-        /// <returns>Paged information</returns>
+        /// <returns>Paged and filtered information</returns>
         [HttpPost("PagedForecastingTaskEntity")]
-        public async Task<GetPagedForecastingTaskResponse> GetPagedForecastingTask(GetPagedForecastingTaskRequest request)
+        public async Task<GetPagedForecastingTaskResponse> GetPagedForecastingTaskRecords(GetPagedForecastingTaskRequest request)
         {
             var response = await _forecastingTasksService.SearchForecastingTaskRecords(_mapper.Map<SearchForecastingTaskRecords>(request));
             return _mapper.Map<GetPagedForecastingTaskResponse>(response);
         }
 
         /// <summary>
-        /// Save csv file with factor values
+        /// Save a CSV file with the FOrecasting Task entity records
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
+        /// <returns>Content result with file</returns>
         [HttpGet("SaveForecastingTaskValuesCsv/{taskEntityName}")]
-        public async Task<ContentResult> SaveForecastingTaskValuesCsv(string taskEntityName)
+        public async Task<ContentResult> SaveForecastingTaskValuesCsvFile(string taskEntityName)
         {
             var response = await _importExportInFileService.GenerateCsvString(taskEntityName);
 
@@ -148,36 +154,23 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Uploading a csv file with data
+        /// Upload a CSV file with data
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
         [HttpPost("UploadCsvFile/{taskEntityName}"), DisableRequestSizeLimit]
         public Task UploadCsvFile(string taskEntityName)
         {
             string csv = StreamConversionHelper.ConvertStreamToString(Request.Form.Files[0].OpenReadStream());
-            return _importExportInFileService.AddForecastingTaskFactorsViaCsv(taskEntityName, csv);
+            return _importExportInFileService.AddForecastingTaskRecordsViaCsv(taskEntityName, csv);
         }
 
         /// <summary>
-        /// Create prediction model for concrete taskEntity
+        /// Save a JSON file with the Forecasting Task entity records
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
-        /// <param name="learningAlgorithm">Name of learning algorithm</param>
-        /// <returns></returns>
-        [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}/{learningAlgorithm}")]
-        public Task CreateTaskEntityPredictionModel(string taskEntityName, LearningAlgorithm learningAlgorithm)
-        {
-            return _machineLearningService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="taskEntityName"></param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
+        /// <returns>Content result with file</returns>
         [HttpGet("SaveForecastingTaskValuesJson/{taskEntityName}")]
-        public async Task<ContentResult> SaveForecastingTaskValuesJson(string taskEntityName)
+        public async Task<ContentResult> SaveForecastingTaskValuesJsonFile(string taskEntityName)
         {
             var response = await _importExportInFileService.GenerateJsonString(taskEntityName);
 
@@ -189,12 +182,12 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Save a XML file with the Forecasting Task entity records
         /// </summary>
-        /// <param name="taskEntityName"></param>
-        /// <returns></returns>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
+        /// <returns>Content result with file</returns>
         [HttpGet("SaveForecastingTaskValuesXml/{taskEntityName}")]
-        public async Task<ContentResult> SaveForecastingTaskValuesXml(string taskEntityName)
+        public async Task<ContentResult> SaveForecastingTaskValuesXmlFile(string taskEntityName)
         {
             var response = await _importExportInFileService.GenerateXmlString(taskEntityName);
 
@@ -206,22 +199,33 @@ namespace FactorAnalysis.Controllers
         }
 
         /// <summary>
-        /// Prediction method
+        /// Create a prediction model for the Forecasting Task entity
         /// </summary>
-        /// <param name="taskEntityName">Name of forecasting task</param>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
+        /// <param name="learningAlgorithm">Name of learning algorithm</param>
+        [HttpPost("CreateTaskEntityPredictionModel/{taskEntityName}/{learningAlgorithm}")]
+        public Task CreateTaskEntityPredictionModel(string taskEntityName, LearningAlgorithm learningAlgorithm)
+        {
+            return _machineLearningService.CreateForecastingTaskMLModel(taskEntityName, learningAlgorithm);
+        }
+
+        /// <summary>
+        /// Predict value for the Forecasting Task entity
+        /// </summary>
+        /// <param name="taskEntityName">Name of the Forecasting Task entity</param>
         /// <param name="request">List of factor values</param>
-        /// <returns>Prediction value</returns>
+        /// <returns>Predicted value</returns>
         [HttpPost("PredictValue/{taskEntityName}")]
         public Task<float> PredictValue(string taskEntityName, [FromBody]PredictValueRequest request)
         {
             var factorValuesDomain =_mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValue>>(request.Values);
-            return _machineLearningService.PredictValue(taskEntityName, factorValuesDomain);
+            return _machineLearningService.PredictValueByFactors(taskEntityName, factorValuesDomain);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="request">Request</param>
+        /// <param name="request">Request with Forecasting Task entity name and list of names of learning algorithms</param>
         /// <returns>Reports of training and prediction</returns>
         [HttpPost("AnalyzePredictionAlgorithms")]
         public async Task<AnalyzePredictionAlgorithmsResponse> AnalyzePredictionAlgorithms(AnalyzePredictionAlgorithmsRequest request)

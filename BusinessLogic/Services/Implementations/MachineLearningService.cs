@@ -62,12 +62,12 @@ namespace BusinessLogic.Services.Implementations
             }
         }
 
-        public async Task<float> PredictValue(string entityName, List<ForecastingTaskFieldValue> values, bool isValidationNeeded = true)
+        public async Task<float> PredictValueByFactors(string entityName, List<ForecastingTaskFieldValue> factors, bool isValidationNeeded = true)
         {
             entityName = entityName?.Trim();
             if (isValidationNeeded)
             {
-                if (values.Count == 0)
+                if (factors.Count == 0)
                     throw new DomainErrorException($"Factor list is empty!");
                 if (!DoMLModelFilesExist(entityName))
                     throw new DomainErrorException("You didn't train the model! Please, do!");
@@ -77,12 +77,12 @@ namespace BusinessLogic.Services.Implementations
             var taskEntityDeclaration = await _forecastingTasksRepository.GetForecastingTaskFieldsDeclaration(entityName);
             var nonInformationFields = taskEntityDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
             var predictionValueId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
-            if (values.Any(x => x.FieldId == predictionValueId))
+            if (factors.Any(x => x.FieldId == predictionValueId))
                 throw new DomainErrorException($"FieldId {predictionValueId} is incorrect! This is the prediction value!");
 
             var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
             var myClassInstance = entity.CreateObject();
-            foreach (var value in values)
+            foreach (var value in factors)
             {
                 value.Value = value.Value?.Trim();
                 if (!nonInformationFields.Any(x => x.Id == value.FieldId))
@@ -134,7 +134,7 @@ namespace BusinessLogic.Services.Implementations
                     var fields = data.FieldsValues.Skip(iteration * tasksToSkip).Take(1).Single();
                     var predicationField = fields.FieldsValue.Single(x => x.FieldId == predictionFieldId);
                     var factorFields = fields.FieldsValue.Where(x => factorFieldIds.Contains(x.FieldId)).ToList();
-                    var predicationResult = await PredictValue(data.Name, factorFields, false);
+                    var predicationResult = await PredictValueByFactors(data.Name, factorFields, false);
                     errorSum += predicationResult - float.Parse(predicationField.Value);
 
                     factorFields.Add(predicationField);

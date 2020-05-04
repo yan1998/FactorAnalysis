@@ -19,7 +19,7 @@ namespace BusinessLogic.Services.Implementations
             _forecastingTasksRepository = forecastingTasksRepository;
         }
 
-        public async Task AddForecastingTaskFactorsViaCsv(string entityName, string csv)
+        public async Task AddForecastingTaskRecordsViaCsv(string entityName, string csv)
         {
             entityName = entityName?.Trim();
             if (!await DoesForecastingTaskEntityExist(entityName))
@@ -63,7 +63,7 @@ namespace BusinessLogic.Services.Implementations
                 fieldsValues.Add(factorsValue);
             }
 
-            await _forecastingTasksRepository.AddBatchOfForecastingTaskFields(entityName, fieldsValues);
+            await _forecastingTasksRepository.AddBatchOfForecastingTaskRecords(entityName, fieldsValues);
         }
 
         public async Task<string> GenerateCsvString(string entityName)

@@ -6,7 +6,7 @@ namespace BusinessLogic.Services.Abstractions
     {
         Task<string> GenerateCsvString(string entityName);
 
-        Task AddForecastingTaskFactorsViaCsv(string entityName, string csv);
+        Task AddForecastingTaskRecordsViaCsv(string entityName, string csv);
 
         Task<string> GenerateJsonString(string entityName);
 

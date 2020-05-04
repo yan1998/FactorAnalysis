@@ -10,13 +10,13 @@ namespace BusinessLogic.Services.Abstractions
 
         Task CreateForecastingTaskEntity(string entityName, string description, List<ForecastingTaskFieldDeclaration> declaration);
 
-        Task RenameForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription);
+        Task EditForecastingTaskEntity(string oldTaskName, string newTaskName, string newTaskDescription);
 
         Task DeleteForecastingTaskEntity(string entityName);
 
-        Task AddForecastingTaskFactors(string entityName, List<ForecastingTaskFieldValue> values);
+        Task AddForecastingTaskRecord(string entityName, List<ForecastingTaskFieldValue> fields);
 
-        Task DeleteForecastingTaskFactorsById(string entityName, string id);
+        Task DeleteForecastingTaskRecordById(string entityName, string recordId);
 
         Task<List<ForecastingTaskFieldDeclaration>> GetForecastingTaskEntityDeclaration(string entityName);
 
