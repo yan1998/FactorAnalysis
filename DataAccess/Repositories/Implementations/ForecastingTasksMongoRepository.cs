@@ -74,8 +74,9 @@ namespace DataAccess.Repositories.Implementations
             var domainObject = new DomainModel.ForecastingTasks.ForecastingTask
             {
                 Name = taskName,
+                Description = taskDeclaration.Description,
                 FieldsDeclaration = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldDeclaration>>(taskDeclaration.FieldsDeclaration.OrderBy(x => x.Id)),
-                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(taskfields)
+                Records = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskRecord>>(taskfields)
             };
             return domainObject;
         }
@@ -105,7 +106,7 @@ namespace DataAccess.Repositories.Implementations
             var pagedForecastingTask = new PagedForecastingTask
             {
                 Name = searchRequest.TaskEntityName,
-                FieldsValues = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskFieldValues>>(filteredRecords.Skip((searchRequest.PageNumber - 1) * searchRequest.PerPage).Take(searchRequest.PerPage)),
+                Records = _mapper.Map<List<DomainModel.ForecastingTasks.ForecastingTaskRecord>>(filteredRecords.Skip((searchRequest.PageNumber - 1) * searchRequest.PerPage).Take(searchRequest.PerPage)),
                 TotalCount = filteredRecords.Count
             };
             return pagedForecastingTask;

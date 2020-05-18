@@ -2,7 +2,7 @@
 
 namespace DomainModel.ForecastingTasks
 {
-    public class ForecastingTaskFieldValues
+    public class ForecastingTaskRecord
     {
         public string Id { get; set; }
 

@@ -36,10 +36,10 @@ namespace BusinessLogic.Services.Implementations
 
             for (int i = 0; i < headerColumns.Length; i++)
             {
-                if (!taskEntityDeclaration.Any(x => x.Name == headerColumns[i]))
-                    throw new DomainErrorException($"Column {headerColumns[i]} doesn't exist in forecasting task with name {entityName}!");
+                if (!taskEntityDeclaration.Any(x => x.Name == headerColumns[i].Trim()))
+                    throw new DomainErrorException($"Column {headerColumns[i].Trim()} doesn't exist in forecasting task with name {entityName}!");
 
-                fieldsOrder.Add(i, taskEntityDeclaration.Single(x => x.Name == headerColumns[i]));
+                fieldsOrder.Add(i, taskEntityDeclaration.Single(x => x.Name == headerColumns[i].Trim()));
             }
 
             //Add fields values
@@ -77,7 +77,7 @@ namespace BusinessLogic.Services.Implementations
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
                 var result = new StringBuilder(string.Join(',', taskEntity.FieldsDeclaration.Select(x => x.Name)));
 
-                foreach (var fieldsValue in taskEntity.FieldsValues)
+                foreach (var fieldsValue in taskEntity.Records)
                 {
                     var tempStr = "\r\n";
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
@@ -108,7 +108,7 @@ namespace BusinessLogic.Services.Implementations
                 var result = new StringBuilder("{\r\n" +
                     "\t\"data\": [");
 
-                foreach (var fieldsValue in taskEntity.FieldsValues)
+                foreach (var fieldsValue in taskEntity.Records)
                 {
                     result.Append("\r\n\t\t{");
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
@@ -142,7 +142,7 @@ namespace BusinessLogic.Services.Implementations
                 var result = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
                     "<ArrayOfData>\r\n");
 
-                foreach (var fieldsValue in taskEntity.FieldsValues)
+                foreach (var fieldsValue in taskEntity.Records)
                 {
                     result.Append("\t<Data>\r\n");
                     foreach (var factorDeclaration in taskEntity.FieldsDeclaration)
