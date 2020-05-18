@@ -36,12 +36,12 @@ namespace BusinessLogic.Services.Implementations
             try
             {
                 var taskEntity = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName);
-                if (taskEntity.FieldsValues.Count == 0)
+                if (taskEntity.Records.Count == 0)
                     throw new DomainErrorException("There are no data in the database!");
                 var nonInformationFields = taskEntity.FieldsDeclaration.Where(x => x.Type != FieldType.InformationField).ToList();
                 var entity = new ClassBuilder(entityName, GetFieldsType(nonInformationFields));
                 var dataList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(entity.Type));
-                foreach (var fieldsValue in taskEntity.FieldsValues)
+                foreach (var fieldsValue in taskEntity.Records)
                 {
                     var myClassInstance = entity.CreateObject();
                     foreach (var fieldDeclaration in nonInformationFields)
@@ -104,7 +104,7 @@ namespace BusinessLogic.Services.Implementations
             var report = new List<AlgorithmPredictionReport>();
             var data = await _forecastingTasksRepository.GetForecastingTaskEntity(entityName.Trim());
             var taskEntityDeclaration = data.FieldsDeclaration;
-            var totalCount = data.FieldsValues.Count;
+            var totalCount = data.Records.Count;
             var factorFieldIds = taskEntityDeclaration.Where(x => x.Type == FieldType.Factor).Select(x => x.Id).ToList();
             var predictionFieldId = taskEntityDeclaration.Single(x => x.Type == FieldType.PredictionField).Id;
 
@@ -131,7 +131,7 @@ namespace BusinessLogic.Services.Implementations
                 var errorSum = 0.0;
                 do
                 {
-                    var fields = data.FieldsValues.Skip(iteration * tasksToSkip).Take(1).Single();
+                    var fields = data.Records.Skip(iteration * tasksToSkip).Take(1).Single();
                     var predicationField = fields.FieldsValue.Single(x => x.FieldId == predictionFieldId);
                     var factorFields = fields.FieldsValue.Where(x => factorFieldIds.Contains(x.FieldId)).ToList();
                     var predicationResult = await PredictValueByFactors(data.Name, factorFields, false);
@@ -145,7 +145,7 @@ namespace BusinessLogic.Services.Implementations
                     };
                     algorithmPredictionReportEntity.Results.Add(algorithmPredictionResult);
                     iteration++;
-                } while (iteration * tasksToSkip < data.FieldsValues.Count);
+                } while (iteration * tasksToSkip < data.Records.Count);
 
                 stopwatch.Stop();
                 algorithmPredictionReportEntity.ElapsedPredictionTime = stopwatch.Elapsed;

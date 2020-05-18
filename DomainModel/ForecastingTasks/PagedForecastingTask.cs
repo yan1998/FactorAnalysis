@@ -6,7 +6,7 @@ namespace DomainModel.ForecastingTasks
     {
         public string Name { get; set; }
 
-        public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
+        public List<ForecastingTaskRecord> Records { get; set; }
 
         public long TotalCount { get; set; }
     }

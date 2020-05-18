@@ -1,6 +1,5 @@
 ﻿using FactorAnalysisML.Model.Models;
 using Microsoft.ML;
-using Microsoft.ML.Data;
 using System;
 using System.Linq;
 

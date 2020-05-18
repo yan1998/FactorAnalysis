@@ -6,8 +6,10 @@ namespace DomainModel.ForecastingTasks
     {
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public List<ForecastingTaskFieldDeclaration> FieldsDeclaration { get; set; }
 
-        public List<ForecastingTaskFieldValues> FieldsValues { get; set; }
+        public List<ForecastingTaskRecord> Records { get; set; }
     }
 }
