@@ -14,7 +14,8 @@ namespace FactorAnalysis
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseIISIntegration()
+                    .UseStartup<Startup>();
                 });
     }
 }

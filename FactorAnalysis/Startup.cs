@@ -62,12 +62,6 @@ namespace FactorAnalysis
         {
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                context.Database.Migrate();
-            }
-
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 

@@ -4,63 +4,6 @@
         <name>FactorAnalysis</name>
     </assembly>
     <members>
-        <member name="T:FactorAnalysis.Controllers.ExchangeRateFactorsController">
-            <summary>
-            Controller for interact with ExchangeRateFactors
-            </summary>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.GetExchangeRateFactorsRange(System.DateTime,System.DateTime)">
-            <summary>
-            Get ExchangeRateFactors for date range
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PredictUSDCurrencyExchange(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
-            <summary>
-            Get Currency Exchange prediction result for USD
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PredictEURCurrencyExchange(FactorAnalysis.Model.Requests.CurrencyExchangePredictionRequest)">
-            <summary>
-            Get Currency Exchange prediction result for EUR
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.ExchangeRateFactorsById(System.Int32)">
-            <summary>
-            Get Currency Exchange rate factors record by id
-            </summary>
-            <param name="id">Database id field</param>
-            <returns></returns>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.PagedExchangeRateFactors(System.Int32,System.Int32)">
-            <summary>
-            Get Currency Exchange rate factors with pagination support
-            </summary>
-            <param name="pageNumber">Number of page</param>
-            <param name="perPage">Count of record per page</param>
-            <returns></returns>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.CreateExchangeRateFactors(DomainModel.ExchangeRateFactors.ExchangeRateFactors)">
-            <summary>
-            Create new ExchangeRateFactors record to database
-            </summary>
-            <param name="request">Creation request</param>
-            <returns></returns>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.UpdateExchangeRateFactors(System.Int32,DomainModel.ExchangeRateFactors.ExchangeRateFactors)">
-            <summary>
-            Update ExchangeRateFactors record by id
-            </summary>
-            <param name="id">Id of record</param>
-            <param name="request">Creation request</param>
-            <returns></returns>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.ExchangeRateFactorsController.DeleteExchangeRateFactors(System.Int32)">
-            <summary>
-            Remove ExchangeRateFactors record from Database by id
-            </summary>
-            <param name="id">>Id of record</param>
-            <returns></returns>
-        </member>
         <member name="T:FactorAnalysis.Controllers.ForecastingTaskEntityController">
             <summary>
             Main controller for Managing Forecasting task entities
@@ -176,68 +119,6 @@
             </summary>
             <param name="request">Request with Forecasting Task entity name and list of names of learning algorithms</param>
             <returns>Reports of training and prediction</returns>
-        </member>
-        <member name="T:FactorAnalysis.Controllers.MLModelsController">
-            <summary>
-            Controller for interact with ML.NET
-            </summary>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.MLModelsController.CreateEURCurrencyExchangeModel">
-            <summary>
-            Create Predication model for EURCurrencyExchange
-            </summary>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.MLModelsController.RetrainEURCurrencyExchangeModel">
-            <summary>
-            Retrain Predication model for EURCurrencyExchange
-            </summary>
-        </member>
-        <member name="T:FactorAnalysis.Controllers.SeedExchangeRateFactorsController">
-            <summary>
-            Controller for Seed data to ExchangeRateFactors table
-            </summary>
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExchangeRateEUR(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed ExchangeRateEUR field to Database
-            SeedData/ExchangeRateEUR.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExchangeRateUSD(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed ExchangeRateUSD field to Database
-            SeedData/ExchangeRateUSD.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedCreditRate(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed CreditRate field to Database
-            SeedData/CreditRate.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedExportIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed ExportIndicator field to Database
-            SeedData/ExportIndicator.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedImportIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed ImportIndicator field to Database
-            SeedData/ImportIndicator.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedGDPIndicator(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed GDPIndicator field to Database
-            SeedData/GDPIndicator.csv
-            </summary> 
-        </member>
-        <member name="M:FactorAnalysis.Controllers.SeedExchangeRateFactorsController.SeedInflationIndex(FactorAnalysis.Model.Requests.SeedFilePathRequest)">
-            <summary>
-            Seed InflationIndex field to Database
-            SeedData/InflationIndex.csv
-            </summary> 
         </member>
     </members>
 </doc>
